@@ -1,4 +1,4 @@
-# BonClay — Local Multilingual Voice Cloning, Voice Agents & Audio Provenance Studio
+# BonClay - Local Multilingual Voice Cloning, Voice Agents & Audio Provenance Studio
 
 <p align="center">
   <img src="docs/assets/bonclay-banner.jpg" alt="BonClay — Twin Voices, Consented & Verifiable" width="100%" />
