@@ -12,14 +12,13 @@ export function useNextPath(): string {
 
 export function AuthShell({ subtitle, children }: { subtitle: string; children: ReactNode }) {
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center bg-bg-base px-4 py-10 sm:px-6">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-80" style={{ background: "var(--gradient-glow)" }} />
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-[#FAF9F5] px-4 py-10 sm:px-6">
       <div className="relative w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center text-center">
-          <Logo size={36} />
-          <p className="mt-3 text-sm text-text-secondary">{subtitle}</p>
+          <Logo size={42} />
+          <p className="mt-3 text-sm font-medium text-[#141414]/70">{subtitle}</p>
         </div>
-        <div className="space-y-5 rounded-2xl border border-border bg-bg-surface p-6 sm:p-8">{children}</div>
+        <div className="space-y-5 rounded-3xl border-[1.5px] border-[#141414] bg-[#FFFFFF] p-6 shadow-[0_4px_0_#141414] sm:p-8">{children}</div>
       </div>
     </div>
   );
@@ -28,13 +27,13 @@ export function AuthShell({ subtitle, children }: { subtitle: string; children: 
 export function Field({ label, id, ...rest }: { label: string; id: string } & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block text-xs font-medium text-text-secondary">
+      <label htmlFor={id} className="mb-1.5 block text-xs font-semibold text-[#141414]/80">
         {label}
       </label>
       <input
         id={id}
         {...rest}
-        className="h-10 w-full rounded-lg border border-border bg-bg-base px-3 text-sm text-text-primary placeholder:text-text-muted transition-colors duration-200 focus:border-accent-primary focus:outline-none"
+        className="h-11 w-full rounded-full border-[1.5px] border-[#141414] bg-[#FAF9F5] px-4 text-sm font-medium text-[#141414] placeholder:text-[#141414]/40 shadow-[0_1px_0_#141414] transition-all focus:bg-[#FFFFFF] focus:outline-none"
       />
     </div>
   );
@@ -43,9 +42,9 @@ export function Field({ label, id, ...rest }: { label: string; id: string } & In
 export function Divider() {
   return (
     <div className="flex items-center gap-3" role="separator">
-      <div className="h-px flex-1 bg-border" />
-      <span className="text-xs text-text-muted">or</span>
-      <div className="h-px flex-1 bg-border" />
+      <div className="h-[1px] flex-1 bg-[#141414]/20" />
+      <span className="text-xs font-semibold uppercase tracking-wider text-[#141414]/50">or</span>
+      <div className="h-[1px] flex-1 bg-[#141414]/20" />
     </div>
   );
 }
@@ -55,7 +54,7 @@ export function GoogleButton({ onClick }: { onClick: () => void }) {
     <button
       type="button"
       onClick={onClick}
-      className="flex h-10 w-full items-center justify-center gap-3 rounded-lg border border-border text-sm font-medium text-text-primary transition-colors duration-200 hover:border-accent-primary hover:bg-bg-elevated"
+      className="flex h-11 w-full items-center justify-center gap-3 rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] text-sm font-semibold text-[#141414] shadow-[0_2px_0_#141414] transition-all hover:-translate-y-0.5 hover:bg-[#FAF9F5]"
     >
       <svg className="size-4" viewBox="0 0 24 24" aria-hidden>
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />

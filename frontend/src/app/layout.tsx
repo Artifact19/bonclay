@@ -36,8 +36,8 @@ export const metadata: Metadata = {
   },
 };
 
-/** Runs before first paint so the saved theme never flashes. Defaults to light, matching the marketing site. */
-const themeScript = `(function(){try{var t=localStorage.getItem('bonclay-theme');if(t!=='light'&&t!=='dark'){t='light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`;
+/** Runs before first paint so the saved theme never flashes. Light Musmentor theme is default everywhere. */
+const themeScript = `(function(){try{document.documentElement.setAttribute('data-theme','light');localStorage.setItem('bonclay-theme','light');}catch(e){}})();`;
 
 /** Before first paint on the marketing pages (the list in components/site/routes): hide the hero and [data-reveal] elements via CSS (html.reveal-on) so server-rendered text
  *  never flashes and then snaps away when GSAP starts. Skipped under reduced motion and without JS (everything shows).

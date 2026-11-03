@@ -9,18 +9,18 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
-  { variant = "glass", interactive = false, padded = true, className, ...rest },
+  { variant = "solid", interactive = false, padded = true, className, ...rest },
   ref
 ) {
   return (
     <div
       ref={ref}
       className={cn(
-        "rounded-2xl border",
-        variant === "glass" ? "glass" : "bg-bg-surface border-border",
+        "rounded-2xl border-[1.5px] border-[#141414] bg-[#FFFFFF] shadow-[0_2px_0_#141414]",
+        variant === "glass" ? "bg-[#FFFFFF]" : "bg-[#FFFFFF]",
         padded && "p-5",
         interactive &&
-          "transition-[border-color,transform] duration-300 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:border-accent-primary/60",
+          "transition-[transform,box-shadow] duration-200 ease-[var(--ease-out-expo)] hover:-translate-y-0.5 hover:shadow-[0_4px_0_#141414]",
         className
       )}
       {...rest}

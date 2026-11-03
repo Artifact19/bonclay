@@ -85,7 +85,7 @@ export default function VerifyPage() {
         <Link
           href="/dashboard"
           prefetch={true}
-          className="group ml-auto inline-flex h-10 items-center gap-1.5 rounded-full bg-[var(--s-ink)] pl-4 pr-3.5 s-small font-medium text-white transition-transform duration-200 active:scale-[0.97]"
+          className="group ml-auto inline-flex h-10 items-center gap-1.5 rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] pl-4 pr-3.5 s-small font-semibold text-[#141414] shadow-[0_2px_0_#141414] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#eef17a] active:scale-[0.97]"
         >
           Open studio
           <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
@@ -93,8 +93,8 @@ export default function VerifyPage() {
       </header>
 
       <section className="mx-auto max-w-[47.5rem] px-[var(--s-gutter)] pb-24 pt-10 md:pt-16">
-        <h1 className="s-title">Verify a clip</h1>
-        <p className="lede mt-4">
+        <h1 className="s-title text-[#141414]">Verify a clip</h1>
+        <p className="lede mt-4 text-[#141414]/75">
           Every clip BonClay makes carries an inaudible watermark and a signed receipt. Upload audio to see whether it came from here.
         </p>
 
@@ -105,8 +105,8 @@ export default function VerifyPage() {
           }}
           onDragLeave={() => setDragging(false)}
           onDrop={onDrop}
-          className={`mt-8 rounded-[var(--s-r-card)] border-2 border-dashed px-6 py-12 text-center transition-colors ${
-            dragging ? "border-[var(--s-ink)] bg-[var(--s-paper)]" : "border-[var(--s-bar)] bg-[var(--s-paper)]/60"
+          className={`mt-8 rounded-3xl border-2 border-dashed border-[#141414] bg-[#FFFFFF] px-6 py-12 text-center shadow-[0_4px_0_#141414] transition-colors ${
+            dragging ? "bg-[#F3F59E]/20" : ""
           }`}
         >
           <input
@@ -124,8 +124,8 @@ export default function VerifyPage() {
           />
           {busy ? (
             <div className="mx-auto flex max-w-sm flex-col items-center gap-4" role="status">
-              <LoaderCircle className="h-8 w-8 animate-spin text-[var(--s-ink-2)]" aria-hidden />
-              <p className="s-body text-[var(--s-ink-2)]">Checking {file?.name}...</p>
+              <LoaderCircle className="h-8 w-8 animate-spin text-[#141414]" aria-hidden />
+              <p className="s-body text-[#141414]">Checking {file?.name}...</p>
               <TaskProgressBar
                 value={verifyPct}
                 label="Scanning watermark & receipt"
@@ -135,13 +135,13 @@ export default function VerifyPage() {
             </div>
           ) : (
             <div className="flex flex-col items-center gap-4">
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--s-ground)]">
+              <span className="grid h-12 w-12 place-items-center rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] text-[#141414]">
                 {file ? <FileAudio className="h-6 w-6" aria-hidden /> : <Upload className="h-6 w-6" aria-hidden />}
               </span>
-              <p className="s-body text-[var(--s-ink-2)]">
+              <p className="s-body text-[#141414]">
                 {file ? (
                   <>
-                    <span className="font-medium text-[var(--s-ink)]">{file.name}</span> ({sizeLabel(file.size)})
+                    <span className="font-semibold text-[#141414]">{file.name}</span> ({sizeLabel(file.size)})
                   </>
                 ) : (
                   "Drag an audio file here"
@@ -150,7 +150,7 @@ export default function VerifyPage() {
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                className="inline-flex h-11 items-center rounded-full bg-[var(--s-ink)] px-6 s-body font-medium text-white transition-transform duration-200 active:scale-[0.97]"
+                className="inline-flex h-11 items-center rounded-full border-[1.5px] border-[#141414] bg-[#141414] px-6 s-body font-semibold text-[#FAF9F5] shadow-[0_2px_0_#141414] transition-all hover:-translate-y-0.5 hover:bg-[#262626] active:scale-[0.97]"
               >
                 {file ? "Check another clip" : "Choose a file"}
               </button>

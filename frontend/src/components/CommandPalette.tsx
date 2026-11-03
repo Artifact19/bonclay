@@ -168,9 +168,9 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
         role="dialog"
         aria-modal="true"
         aria-label="Search and commands"
-        className="relative flex max-h-[80vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-bg-surface shadow-2xl"
+        className="relative flex max-h-[80vh] w-full max-w-lg flex-col overflow-hidden rounded-3xl border-[2px] border-[#141414] bg-[#FAF9F5] shadow-[0_8px_0_#141414]"
       >
-        <div className="flex items-center gap-3 border-b border-border px-4">
+        <div className="flex items-center gap-3 border-b-[1.5px] border-[#141414] px-4">
           <Search className="size-4 shrink-0 text-text-secondary" aria-hidden />
           <input
             ref={inputRef}
@@ -191,10 +191,10 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
             placeholder="Search pages, agents and actions"
             className="h-12 min-w-0 flex-1 bg-transparent text-base text-text-primary outline-none placeholder:text-text-secondary"
           />
-          <kbd className="hidden rounded border border-border px-1.5 py-0.5 text-[11px] text-text-secondary md:block">Esc</kbd>
+          <kbd className="hidden rounded-full border border-[#141414] bg-[#E2DDD3] px-2 py-0.5 text-[11px] font-semibold text-[#141414] md:block">Esc</kbd>
         </div>
 
-        <ul ref={listRef} id={listId} role="listbox" aria-label="Results" className="min-h-0 flex-1 overflow-y-auto p-2">
+        <ul ref={listRef} id={listId} role="listbox" aria-label="Results" className="min-h-0 flex-1 overflow-y-auto p-2 space-y-1">
           {results.map((a, i) => (
             <li
               key={a.id}
@@ -210,8 +210,8 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
               }}
               onClick={() => run(a)}
               className={cn(
-                "flex min-h-11 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-primary",
-                i === current ? "bg-bg-elevated" : ""
+                "flex min-h-11 cursor-pointer items-center gap-3 rounded-full border border-transparent px-4 py-2 text-sm text-[#141414] transition-all",
+                i === current ? "border-[#141414] bg-[#F3F59E] font-medium shadow-[0_2px_0_#141414]" : "hover:bg-[#E2DDD3]/60"
               )}
             >
               {a.agent ? (
@@ -221,12 +221,12 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
               )}
               <span className="min-w-0 flex-1 truncate">{a.label}</span>
               <span className="shrink-0 text-xs text-text-secondary">{a.hint}</span>
-              {i === current && <CornerDownLeft className="hidden size-3.5 shrink-0 text-text-secondary md:block" aria-hidden />}
+              {i === current && <CornerDownLeft className="hidden size-3.5 shrink-0 text-[#141414] md:block" aria-hidden />}
             </li>
           ))}
         </ul>
 
-        <div role="status" className="border-t border-border px-4 py-2 text-xs text-text-secondary">
+        <div role="status" className="border-t-[1.5px] border-[#141414] px-4 py-2.5 text-xs text-[#141414]/75 bg-[#E2DDD3]/50">
           {results.length === 0
             ? `Nothing matches "${query.trim()}".`
             : loading

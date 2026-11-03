@@ -26,7 +26,7 @@ interface RetentionReport {
 }
 
 const selectClass =
-  "h-11 rounded-xl border border-[var(--color-border)] bg-[hsl(var(--au-surface))] px-3 text-sm text-[var(--color-text-primary)] focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40";
+  "h-11 rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] px-4 text-sm font-medium text-[#141414] shadow-[0_2px_0_#141414] focus:outline-none";
 
 export function VoiceLibrary() {
   const router = useRouter();
@@ -159,7 +159,7 @@ export function VoiceLibrary() {
               onChange={(e) => setQuery(e.target.value)}
               aria-label="Search voices by name"
               placeholder="Search voices"
-              className="h-11 w-full rounded-xl border border-[var(--color-border)] bg-[hsl(var(--au-surface))] pl-10 pr-3 text-base text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)]/70 focus:border-[var(--color-accent)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+              className="h-11 w-full rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] pl-10 pr-4 text-base text-[#141414] placeholder:text-[#141414]/50 shadow-[0_2px_0_#141414] focus:outline-none"
             />
           </div>
           <select aria-label="Filter by language" value={language} onChange={(e) => setLanguage(e.target.value)} className={selectClass}>

@@ -22,11 +22,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants: Record<ButtonVariant, string> = {
   solid:
-    "bg-brand text-[var(--color-on-accent)] border border-transparent hover:opacity-90 active:scale-[0.98]",
+    "bg-[#141414] text-[#FAF9F5] border-[1.5px] border-[#141414] shadow-[0_2px_0_#141414] hover:-translate-y-0.5 hover:bg-[#262626] active:scale-[0.98]",
   ghost:
-    "bg-transparent text-text-secondary border border-transparent hover:bg-bg-elevated hover:text-text-primary",
+    "bg-transparent text-[#141414] border border-transparent hover:bg-[#E2DDD3] hover:text-[#141414]",
   outline:
-    "bg-bg-surface text-text-primary border border-border hover:border-text-primary",
+    "bg-[#FFFFFF] text-[#141414] border-[1.5px] border-[#141414] shadow-[0_2px_0_#141414] hover:bg-[#FAF9F5] hover:-translate-y-0.5",
 };
 
 const sizes: Record<ButtonSize, string> = {

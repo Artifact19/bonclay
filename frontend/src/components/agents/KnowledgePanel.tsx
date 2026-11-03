@@ -138,8 +138,8 @@ export function KnowledgePanel({ agentId }: { agentId: string }) {
           setDragging(false);
           if (!uploading) void uploadFiles(e.dataTransfer.files);
         }}
-        className={`flex flex-col items-center gap-2 rounded-xl border border-dashed px-4 py-8 text-center transition-colors ${
-          dragging ? "border-accent-primary bg-accent-primary/5" : "border-border"
+        className={`flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed px-4 py-8 text-center transition-colors shadow-[0_2px_0_#141414] bg-[#FFFFFF] ${
+          dragging ? "border-[#141414] bg-[#F3F59E]/30" : "border-[#141414]"
         }`}
       >
         {uploading ? (
@@ -184,7 +184,7 @@ export function KnowledgePanel({ agentId }: { agentId: string }) {
             <button
               type="button"
               onClick={() => inputRef.current?.click()}
-              className="rounded-lg border border-border bg-bg-surface min-h-10 px-4 py-1.5 text-sm text-text-primary hover:border-text-primary focus-visible:outline-2 focus-visible:outline-accent-primary"
+              className="rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] min-h-10 px-5 py-1.5 text-sm font-semibold text-[#141414] shadow-[0_2px_0_#141414] hover:bg-[#FAF9F5] focus-visible:outline-2"
             >
               Choose files
             </button>
@@ -273,7 +273,7 @@ export function KnowledgePanel({ agentId }: { agentId: string }) {
       ) : !docs.data?.length ? (
         <p className="text-center text-sm text-text-secondary">No documents yet. Until you add one, this agent can only use its instructions.</p>
       ) : (
-        <ul className="divide-y divide-border rounded-xl border border-border">
+        <ul className="divide-y divide-[#141414]/15 rounded-2xl border-[1.5px] border-[#141414] bg-[#FFFFFF] shadow-[0_2px_0_#141414]">
           {docs.data.map((d) => (
             <li key={d.id} className="flex items-center gap-3 px-4 py-3">
               <FileText className="size-4 shrink-0 text-text-secondary" aria-hidden />

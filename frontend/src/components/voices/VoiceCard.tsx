@@ -139,14 +139,14 @@ export const VoiceCard = memo(function VoiceCard({ voice, onGenerate, onDelete, 
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <article
-      className={`relative flex h-full flex-col rounded-2xl border border-[var(--color-border)] bg-[hsl(var(--au-surface)/0.6)] p-4 transition-[box-shadow,border-color] duration-300 hover:border-[hsl(var(--au-accent)/0.5)] focus-within:border-[hsl(var(--au-accent)/0.5)] sm:p-5 ${
+      className={`relative flex h-full flex-col rounded-2xl border-[1.5px] border-[#141414] bg-[#FFFFFF] p-5 shadow-[0_2px_0_#141414] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_0_#141414] ${
         menuOpen ? "z-20" : ""
       }`}
     >
       <div className="flex items-start gap-3">
         <span
           aria-hidden="true"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[hsl(var(--au-accent)/0.18)] text-base font-semibold text-[var(--color-text-primary)]"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] text-base font-bold text-[#141414]"
         >
           {voice.name.trim().charAt(0).toUpperCase() || "?"}
         </span>
@@ -156,7 +156,7 @@ export const VoiceCard = memo(function VoiceCard({ voice, onGenerate, onDelete, 
           </h3>
           <span
             data-testid="voice-status"
-            className={`mt-1 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium ${toneClass[status.tone]}`}
+            className={`mt-1 inline-flex items-center gap-1.5 rounded-full border border-[#141414] px-2.5 py-0.5 text-xs font-medium ${toneClass[status.tone]}`}
           >
             <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
             {status.label}
@@ -171,14 +171,14 @@ export const VoiceCard = memo(function VoiceCard({ voice, onGenerate, onDelete, 
       </p>
 
       <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-        <Button variant="outline" className="h-11 sm:flex-none sm:px-5" onClick={() => onGenerate(voice)} aria-label={`Preview ${voice.name}`}>
+        <Button variant="outline" className="h-10 rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] shadow-[0_2px_0_#141414] text-[#141414] sm:flex-none sm:px-5" onClick={() => onGenerate(voice)} aria-label={`Preview ${voice.name}`}>
           <Play className="h-4 w-4" aria-hidden="true" />
           Preview
         </Button>
         <Link
           href={`/dashboard/studio/agents?voice=${encodeURIComponent(voice.id)}`}
           onClick={() => toast.info(`In your agent's Voice box, pick "${voice.name}".`)}
-          className="inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap sm:w-auto sm:flex-1 rounded-full bg-brand px-4 text-sm font-medium text-[var(--color-on-accent)] transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+          className="inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap sm:w-auto sm:flex-1 rounded-full border-[1.5px] border-[#141414] bg-[#141414] px-4 text-sm font-semibold text-[#FAF9F5] shadow-[0_2px_0_#141414] transition-all hover:-translate-y-0.5 hover:bg-[#262626]"
         >
           <Bot className="h-4 w-4" aria-hidden="true" />
           Use for an agent

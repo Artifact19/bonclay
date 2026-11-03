@@ -363,27 +363,25 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
         title={compact ? (count ? `${label}: ${waiting}` : label) : undefined}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "group relative flex h-11 items-center rounded-lg md:h-9 text-sm font-medium transition-colors duration-150",
-          compact ? "justify-center" : "gap-3 px-3",
-          active ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
+          "group relative flex h-11 items-center rounded-full md:h-9 text-sm font-medium transition-all duration-150",
+          compact ? "justify-center" : "gap-3 px-3.5",
+          active ? "text-[#141414] font-semibold" : "text-[#141414]/75 hover:text-[#141414]"
         )}
       >
         {active && (
           <motion.span
             layoutId={inDrawer ? "nav-active-drawer" : "nav-active"}
-            className="absolute inset-0 rounded-lg bg-[color-mix(in_srgb,var(--area-accent)_14%,transparent)]"
+            className="absolute inset-0 rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] shadow-[0_2px_0_#141414]"
             transition={{ type: "spring", stiffness: 420, damping: 34 }}
-          >
-            <span aria-hidden className="absolute left-0 top-2 bottom-2 w-0.5 rounded-full bg-[var(--area-accent)]" />
-          </motion.span>
+          />
         )}
-        {!active && <span aria-hidden className="absolute inset-0 rounded-lg bg-bg-elevated opacity-0 transition-opacity group-hover:opacity-100" />}
+        {!active && <span aria-hidden className="absolute inset-0 rounded-full border-[1.5px] border-transparent hover:border-[#141414]/30 hover:bg-[#E2DDD3]/60 transition-colors" />}
         <Icon active={active} className="relative size-[19px] shrink-0" />
         {!compact && <span className="relative min-w-0 flex-1 truncate">{label}</span>}
         {count > 0 && (
           <span
             className={cn(
-              "relative grid place-items-center rounded-full bg-accent-warning text-[11px] font-semibold leading-none text-black",
+              "relative grid place-items-center rounded-full border border-[#141414] bg-[#E8632B] text-[11px] font-semibold leading-none text-white",
               compact ? "absolute right-1 top-0.5 h-4 min-w-4 px-1" : "h-5 min-w-5 px-1.5"
             )}
           >
@@ -398,7 +396,7 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
   /** `compact` hides labels (desktop collapsed). Drawer always renders expanded. */
   const content = (compact: boolean, inDrawer: boolean) => (
     <div data-area={area} className={cn("flex h-full flex-col", inDrawer && "overflow-y-auto")}>
-      <div className={cn("flex h-14 shrink-0 items-center border-b border-border", compact ? "justify-center" : "justify-between px-4")}>
+      <div className={cn("flex h-14 shrink-0 items-center border-b-[1.5px] border-[#141414]", compact ? "justify-center" : "justify-between px-4")}>
         <Link
           href="/"
           aria-label="BonClay home"
@@ -411,7 +409,7 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
           {compact ? <LogoMark size={28} /> : <Logo size={26} />}
         </Link>
         {inDrawer ? (
-          <button onClick={() => setDrawerOpen(false)} aria-label="Close menu" className="grid size-11 place-items-center rounded-lg text-text-secondary hover:bg-bg-elevated hover:text-text-primary">
+          <button onClick={() => setDrawerOpen(false)} aria-label="Close menu" className="grid size-11 place-items-center rounded-full text-[#141414] hover:bg-[#E2DDD3]">
             <X className="size-5" />
           </button>
         ) : null}
@@ -428,11 +426,11 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
             key={group.id}
             role="group"
             aria-label={group.title ?? `${AREAS.find((a) => a.id === area)?.label} home`}
-            className={cn(i > 0 && (compact ? "mt-3 border-t border-border pt-3" : "mt-4 border-t border-border pt-3"))}
+            className={cn(i > 0 && (compact ? "mt-3 border-t border-[#141414]/15 pt-3" : "mt-4 border-t border-[#141414]/15 pt-3"))}
           >
             {group.title && !compact && (
-              <p className="flex items-center gap-2 px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-secondary">
-                <span aria-hidden className="h-2.5 w-0.5 rounded-full bg-[var(--area-accent)]" />
+              <p className="flex items-center gap-2 px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#141414]/60">
+                <span aria-hidden className="h-2 w-2 rounded-full bg-[#E8632B]" />
                 {group.title}
               </p>
             )}
@@ -441,7 +439,7 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
         ))}
       </nav>
 
-      <div className="shrink-0 space-y-2.5 border-t border-border p-3">
+      <div className="shrink-0 space-y-2.5 border-t-[1.5px] border-[#141414] p-3">
         {/* In both areas: the same API keys for everything. */}
         <div role="group" aria-label="Developers" className="space-y-0.5">
           {SHARED_ITEMS.map((item) => navLink(item, compact, inDrawer))}
@@ -466,8 +464,8 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
           onClick={toggleStorage}
           title={`Storage: ${local ? "local" : "cloud"}. Click to switch.`}
           className={cn(
-            "flex h-9 w-full items-center rounded-lg border border-border text-xs font-medium text-text-secondary transition-colors hover:border-accent-primary/60 hover:text-text-primary",
-            compact ? "justify-center" : "gap-2 px-3"
+            "flex h-9 w-full items-center rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] text-xs font-semibold text-[#141414] shadow-[0_2px_0_#141414] transition-all hover:-translate-y-0.5 hover:bg-[#FAF9F5]",
+            compact ? "justify-center" : "gap-2 px-3.5"
           )}
         >
           {local ? <HardDrive className="size-4" /> : <Cloud className="size-4 text-accent-secondary" />}
@@ -476,7 +474,7 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
 
         {/* User */}
         <div className={cn("flex items-center", compact ? "flex-col gap-2" : "gap-2.5")}>
-          <div className="grid size-8 shrink-0 place-items-center rounded-full bg-brand text-xs font-semibold text-[var(--color-on-accent)]" aria-hidden>
+          <div className="grid size-8 shrink-0 place-items-center rounded-full border-[1.5px] border-[#141414] bg-[#141414] text-xs font-semibold text-[#FAF9F5]" aria-hidden>
             {name.charAt(0).toUpperCase()}
           </div>
           {!compact && (
@@ -512,7 +510,7 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
       {/* Desktop */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 hidden h-screen flex-col border-r border-border bg-bg-base md:flex",
+          "fixed left-0 top-0 z-40 hidden h-screen flex-col border-r-[1.5px] border-[#141414] bg-[#FAF9F5] md:flex",
           "transition-[width] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
           collapsed ? "w-16" : "w-60"
         )}
@@ -522,7 +520,7 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
           onClick={onToggleCollapsed}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           aria-expanded={!collapsed}
-          className="absolute -right-3 top-[68px] grid size-6 place-items-center rounded-full border border-border bg-bg-surface text-text-secondary transition-colors hover:text-text-primary"
+          className="absolute -right-3 top-[68px] grid size-6 place-items-center rounded-full border-[1.5px] border-[#141414] bg-[#FFFFFF] shadow-[0_1px_0_#141414] text-[#141414] transition-transform hover:scale-105"
         >
           {collapsed ? <PanelLeftOpen className="size-3.5" /> : <PanelLeftClose className="size-3.5" />}
         </button>

@@ -36,7 +36,7 @@ export function AreaSwitch({ area, onChange, compact = false }: { area: Area; on
       role="radiogroup"
       aria-label="Area"
       onKeyDown={onKeyDown}
-      className={cn("rounded-xl border border-border bg-bg-surface p-1", compact ? "flex flex-col gap-1" : "grid grid-cols-2 gap-1")}
+      className={cn("rounded-full border-[1.5px] border-[#141414] bg-[#E2DDD3] p-1 shadow-[0_2px_0_#141414]", compact ? "flex flex-col gap-1 rounded-2xl" : "grid grid-cols-2 gap-1")}
     >
       {AREAS.map(({ id, label, hint }) => {
         const checked = id === area;
@@ -62,14 +62,13 @@ export function AreaSwitch({ area, onChange, compact = false }: { area: Area; on
             }}
             onClick={() => onChange(id)}
             className={cn(
-              "flex h-11 min-w-0 items-center justify-center gap-2 rounded-lg text-sm font-semibold outline-none transition-colors duration-150",
-              "focus-visible:ring-2 focus-visible:ring-[var(--area-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-bg-surface",
+              "flex h-11 min-w-0 items-center justify-center gap-2 rounded-full text-sm font-semibold outline-none transition-all duration-150",
               checked
-                ? "bg-[var(--area-accent)] text-[var(--color-on-accent)]"
-                : "text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
+                ? "bg-[#141414] text-[#FAF9F5] shadow-sm"
+                : "text-[#141414]/75 hover:bg-[#FAF9F5]/80 hover:text-[#141414]"
             )}
           >
-            <Icon className="size-[18px] shrink-0" />
+            <Icon className="size-4 shrink-0" active={checked} />
             {!compact && <span className="truncate">{label}</span>}
           </button>
         );
