@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Talk to {{NAME}} | BonClay</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/call/assets/call.css">
+</head>
+<body>
+<header class="top"><span class="brand">BonClay</span></header>
+
+<main id="call-root" data-link="{{LINK}}" data-minutes="{{MINUTES}}">
+  <section id="v-start" class="card" aria-labelledby="agent-name">
+    <p class="eyebrow">AI voice agent</p>
+    <h1 id="agent-name">{{NAME}}</h1>
+    <p class="lead">Talk to this agent out loud, right here in your browser. No phone call, no sign-in.</p>
+    <div class="notice" role="note">
+      <p><strong>You are talking to an AI, not a person.</strong> Your voice is recorded while you speak and sent to be
+      turned into text and answered. The conversation may be saved by the person who shared this link.</p>
+      <p>Calls last up to {{MINUTES}} minutes. Please use headphones if you can, so the agent does not hear itself.</p>
+    </div>
+    <p id="start-error" class="error" role="alert" hidden></p>
+    <button id="start" class="btn primary big" type="button">Start talking</button>
+    <noscript><p class="error">This page needs JavaScript to record your voice.</p></noscript>
+  </section>
+
+  <section id="v-live" class="card" aria-labelledby="live-title" hidden>
+    <div class="live-head">
+      <h2 id="live-title" tabindex="-1">Talking with {{NAME}}</h2>
+      <span id="clock" class="clock" aria-hidden="true"></span>
+    </div>
+    <div id="captions" class="captions" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation captions"></div>
+    <p id="state" class="state" aria-live="off">Getting ready</p>
+    <div class="meter" aria-hidden="true"><span id="level" class="level"></span></div>
+    <p id="live-error" class="error" role="alert" hidden></p>
+    <div class="controls">
+      <button id="mute" class="btn" type="button" aria-pressed="false">Mute microphone</button>
+      <button id="end" class="btn danger" type="button">End call</button>
+    </div>
+  </section>
+
+  <section id="v-end" class="card" aria-labelledby="end-title" hidden>
+    <h2 id="end-title" tabindex="-1">Call ended</h2>
+    <p id="end-text" class="lead" role="status"></p>
+    <button id="again" class="btn primary big" type="button">Start a new call</button>
+  </section>
+</main>
+
+<footer class="foot">
+  <p>Voice is AI-generated, watermarked and signed; check a clip at
+  <a href="https://{{VERIFY}}" target="_blank" rel="noopener noreferrer">{{VERIFY}}</a>.</p>
+</footer>
+<script src="/call/assets/call.js" defer></script>
+</body>
+</html>

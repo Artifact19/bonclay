@@ -1,0 +1,500 @@
+@import "tailwindcss";
+@reference "tailwindcss";
+
+/* ============================================================================
+   BonClay Design Tokens (dark-first). Light theme overrides further below.
+   ============================================================================ */
+/* inline: the utilities (font-sans, font-display, font-mono) keep these var() references, so they resolve on the element
+   that uses them. The app fonts are declared on the app shell's wrapper, not on :root (see .app-fonts). */
+@theme inline {
+  --font-sans: var(--nf-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--nf-display), var(--nf-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+@theme {
+  --color-bg-base: #0C0D0F;
+  --color-bg-surface: #141518;
+  --color-bg-elevated: #1C1D21;
+  --color-border: #2A2B30;
+  --color-accent-primary: #F0A23A;
+  --color-accent-secondary: #F5C37E;
+  --color-accent-success: #3FBF8C;
+  --color-accent-warning: #E8B04B;
+  --color-accent-error: #F06A5A;
+  --color-text-primary: #F3F3F1;
+  --color-text-secondary: #A4A7AE;
+  --color-text-muted: #6E727B;
+
+  --gradient-brand: linear-gradient(135deg, #F4AE4A 0%, #E8892F 100%);
+  --gradient-surface: linear-gradient(180deg, #1C1D21 0%, #141518 100%);
+  --gradient-glow: radial-gradient(60% 60% at 50% 0%, rgba(240, 162, 58, 0.14) 0%, rgba(224, 120, 42, 0.04) 55%, transparent 100%);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-ripple: ripple 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes ripple {
+    from { transform: scale(0); opacity: 0.45; }
+    to { transform: scale(1); opacity: 0; }
+  }
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Legacy HSL-triple aliases, remapped onto the new palette */
+  --au-bg: 220 9% 5%;
+  --au-surface: 225 8% 9%;
+  --au-border: rgba(255, 255, 255, 0.08);
+  --au-text-primary: 60 6% 95%;
+  --au-text-secondary: 222 5% 66%;
+  --au-accent: 35 86% 58%;
+  --au-accent-cyan: 35 85% 72%;
+  --au-success: 160 84% 39%;
+
+  --color-bg-primary: var(--color-bg-base);
+  --color-surface: var(--color-bg-surface);
+  --color-accent: var(--color-accent-primary);
+  --color-accent-cyan: var(--color-accent-secondary);
+  --color-success: var(--color-accent-success);
+  --color-bg-secondary: var(--color-bg-surface);
+  --color-bg-tertiary: var(--color-bg-elevated);
+  --color-text-tertiary: var(--color-text-muted);
+  --color-accent-soft: hsl(var(--au-accent) / 0.08);
+  --glass-bg: rgba(20, 21, 24, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+
+  --color-on-accent: #141008;
+  --radius-card: 16px;
+  --radius-control: 8px;
+  --radius-pro: 16px;
+  --sidebar-width: 240px;
+  --header-height: 56px;
+  --mobile-nav-height: 64px;
+}
+
+/* Light theme: set by the no-flash script via <html data-theme="light"> */
+[data-theme="light"] {
+  color-scheme: light;
+  /* Musmentor Bento / Editorial theme: warm sand (#E2DDD3), crisp paper (#FAF9F5 / #FFFFFF), ink (#141414), persimmon (#E8632B), lemon (#F3F59E) */
+  --color-bg-base: #FAF9F5;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-elevated: #E2DDD3;
+  --color-border: #141414;
+  --color-accent-primary: #E8632B;
+  --color-accent-secondary: #B44518;
+  --color-accent-success: #1E7A55;
+  --color-accent-warning: #8F5A07;
+  --color-accent-error: #C2412F;
+  --color-text-primary: #141414;
+  --color-text-secondary: #484641;
+  --color-text-muted: #6B6860;
+  --gradient-brand: linear-gradient(135deg, #141414 0%, #262626 100%);
+  --color-on-accent: #FFFFFF;
+  --gradient-surface: linear-gradient(180deg, #FFFFFF 0%, #FAF9F5 100%);
+  --gradient-glow: radial-gradient(60% 60% at 50% 0%, rgba(232, 99, 43, 0.08) 0%, transparent 70%);
+  --au-bg: 48 33% 97%;
+  --au-surface: 0 0% 100%;
+  --au-border: rgba(20, 20, 20, 0.85);
+  --au-text-primary: 0 0% 8%;
+  --au-text-secondary: 40 5% 27%;
+  --au-accent: 18 80% 54%;
+  --au-accent-cyan: 62 82% 79%;
+  --au-success: 155 61% 30%;
+  --glass-bg: #FFFFFF;
+  --glass-border: #141414;
+}
+
+/* Each dashboard area has its own accent, taken from the existing palette: Studio is marigold, Agents is the calm green.
+   Set data-area on the sidebar, the drawer and each home page; everything inside reads var(--area-accent). */
+[data-area="studio"] {
+  --area-accent: var(--color-accent-primary);
+}
+[data-area="agents"] {
+  --area-accent: var(--color-accent-success);
+}
+
+/* ============================================================================
+   Base
+   ============================================================================ */
+@layer base {
+  html, body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-primary);
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+  body { min-height: 100vh; overflow-x: hidden; }
+
+  table, .tabular, [data-numeric] { font-variant-numeric: tabular-nums; }
+
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+
+  ::selection { background: rgba(240, 162, 58, 0.4); color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-secondary);
+    outline-offset: 2px;
+  }
+  input, textarea { caret-color: var(--color-accent-secondary); }
+  a { text-underline-offset: 3px; }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+  }
+  *::-webkit-scrollbar { width: 6px; height: 6px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background-color: var(--color-border); border-radius: 6px; }
+  *::-webkit-scrollbar-thumb:hover { background-color: var(--color-text-muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================================================
+   Component classes (kept for existing pages)
+   ============================================================================ */
+@layer components {
+  .btn-ghost {
+    @apply flex items-center justify-center font-medium rounded-[var(--radius-control)] transition-all duration-200 active:scale-95;
+  }
+  .btn-primary {
+    @apply bg-[var(--color-accent-primary)] text-[var(--color-on-accent)] hover:brightness-110 shadow-sm border border-transparent;
+  }
+  .btn-secondary {
+    @apply bg-transparent text-[var(--color-text-primary)] border border-[var(--color-border)] hover:bg-[var(--color-bg-elevated)];
+  }
+
+  .surface-card {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    transition: border-color 0.2s ease;
+  }
+  .surface-card:hover { border-color: var(--color-text-muted); }
+
+  .badge-qwen3, .badge-kokoro, .badge-indicf5 {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-radius: var(--radius-control);
+  }
+  .badge-qwen3 { background: hsl(var(--au-accent) / 0.14); color: var(--color-accent-primary); }
+  .badge-kokoro { background: hsl(var(--au-accent-cyan) / 0.14); color: var(--color-accent-secondary); }
+  .badge-indicf5 { background: hsl(var(--au-success) / 0.14); color: var(--color-accent-success); }
+
+  .mobile-safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + var(--mobile-nav-height) + 1rem);
+  }
+  .mono { font-family: var(--font-geist-mono), ui-monospace, monospace; }
+
+  /* Glass: backdrop blur used on surfaces that float over content */
+  .glass {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border-radius: var(--radius-card);
+    box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.45);
+  }
+  .bg-brand { background-image: var(--gradient-brand); }
+}
+
+/* ============================================================================
+   Legacy animation helpers
+   ============================================================================ */
+.wave-bar {
+  width: 1px;
+  height: 20%;
+  background: var(--color-text-primary);
+  opacity: 0.3;
+  animation: wave 1.5s ease-in-out infinite;
+}
+@keyframes wave {
+  0%, 100% { height: 20%; opacity: 0.1; }
+  50% { height: 100%; opacity: 0.4; }
+}
+@keyframes wave-sm {
+  0%, 100% { height: 30%; }
+  50% { height: 100%; }
+}
+.animate-wave-sm { animation: wave-sm 0.6s ease-in-out infinite; }
+
+.aurora-container {
+  display: none;
+}
+.aurora-blob {
+  display: none;
+}
+.grainy-overlay { display: none; }
+
+/* ============================================================================
+   Marketing site (/): Musmentor Bento / Editorial theme
+   Warm sand (#E2DDD3), crisp white paper (#FAF9F5 / #FFFFFF), 1.5px solid #141414 ink borders,
+   pastel lemon-yellow (#F3F59E) pills, and persimmon-orange (#E8632B) accents.
+   ============================================================================ */
+.app-fonts { --nf-display: var(--nf-body); }
+html:has(.site), html:has(.site) body { background-color: #FAF9F5; color-scheme: light; }
+html:has(.site) { font-size: clamp(100%, min(0.4vw + 0.67rem, 1.85svh), 150%); }
+.site :is(.font-mono, code, kbd, samp, pre) { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+html:has(.site) body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+
+.site {
+  --font-geist-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --s-ground: #FAF9F5;
+  --s-paper: #FFFFFF;
+  --s-fill: #E2DDD3;
+  --s-ink: #141414;
+  --s-ink-2: #2E2D2A;
+  --s-mute: #57534A;
+  --s-line: #141414;
+  --s-bar: #141414;
+  --s-bronze: #D4521E;
+  --s-bronze-deep: #A83E14;
+  --s-marigold: #E8632B;
+  --s-marigold-ink: #141414;
+  --s-gold: #F3F59E;
+  --s-lemon: #F3F59E;
+  --s-night: #141414;
+  --s-night-2: #1F1E1C;
+  --s-night-text: #FAF9F5;
+  --s-night-mute: #D4CFC4;
+  --s-night-line: rgba(250, 249, 245, 0.22);
+  --s-brand-gradient: linear-gradient(115deg, #1F1F1F 0%, #141414 100%);
+  --s-shadow-paper: 0 3px 0 #141414;
+  --s-shadow-float: 0 3px 0 #141414;
+  --s-shadow-night: 0 4px 0 #141414;
+  --s-dots: radial-gradient(circle, rgba(20, 20, 20, 0.14) 1px, transparent 1.2px);
+  /* Card radius tokens (rem, so they scale with the page) */
+  --s-r-card: 1.5rem;
+  --s-r-island: 1.75rem;
+  --s-r-inner: 1rem;
+  --s-r-chip: 0.75rem;
+  --s-r-pill: 999px;
+
+  /* ---- Layout ----------------------------------------------------------------------------------------------
+     --s-gutter: space between the viewport edge and the content. 20 px on a phone (never under 16), 4vw on a laptop,
+       4 rem at most, so wide screens get a real margin without the column shrinking.
+     --s-max: widest the content gets. 72 rem (about 1190 px at 1440) is the floor for ordinary screens; above that it
+       follows 88vw up to 112 rem, which at the scaled root size is 1.9k px on a 1920 screen and 2.3k px on a 2560 one.
+     --s-edge: where the container's left edge sits, for full-bleed rows (the language track) that must line up with it.
+       It uses % (the width of the element it is used on, not 100vw) so a classic scrollbar does not shift it. */
+  --s-gutter: clamp(1.25rem, 4vw, 4rem);
+  --s-max: clamp(72rem, 88vw, 112rem);
+  --s-edge: max(var(--s-gutter), calc((100% - var(--s-max)) / 2));
+
+  /* ---- Type families ---------------------------------------------------------------------------------------
+     Two faces with one job each (see siteFont.ts). Instrument Serif for display and headings, at tight negative
+     tracking, with one italic phrase in bronze. Manrope (variable weight) for everything else: body at 400, labels and
+     buttons at 500 to 600, numerals at 500. The Anek Indic cuts (fonts.ts) still set the scripts beside them. */
+  --s-font-body: var(--s-font-latin), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --s-font-display: var(--s-font-serif), "Instrument Serif", Georgia, "Times New Roman", serif;
+
+  /* ---- Type roles (named by what the text does). rem + vw: display responds to the space, body stays near 16-17 px.
+     The serif has a small x-height, so its sizes run about 10% above the old sans sizes at every step. */
+  --s-text-display: clamp(3rem, 1.4rem + 5vw, 6.5rem);         /* hero headline, never above 6.5 rem */
+  --s-text-title: clamp(2.5rem, 1.1rem + 3.8vw, 5rem);         /* page h1, closing call to action */
+  --s-text-h2: clamp(2.25rem, 1.2rem + 2.6vw, 3.75rem);        /* section headings */
+  --s-text-h3: clamp(1.625rem, 1.1rem + 1.4vw, 2.25rem);       /* card and panel headings */
+  --s-text-stat: clamp(2.5rem, 1.2rem + 2.6vw, 3.6rem);        /* big numerals */
+  --s-text-item: clamp(1.125rem, 1.06rem + 0.25vw, 1.3125rem); /* titles inside a card or list row */
+  --s-text-lede: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);  /* the sentence under a heading */
+  --s-text-body: clamp(1rem, 0.96rem + 0.12vw, 1.0625rem);     /* running text, buttons, links: 16-17 px */
+  --s-text-small: clamp(0.875rem, 0.84rem + 0.1vw, 0.9375rem); /* notes, citations, captions: 14-15 px */
+  --s-text-label: 0.8125rem;                                   /* names a number or a control: 13 px, the floor */
+  --s-lh-body: 1.6;
+  --s-lh-small: 1.5;
+  --s-w-body: 400;
+  /* The slow carousel (Languages) and the marquee (StackStrip): one lap of the duplicated track. */
+  --s-lap-cards: 80s;
+  --s-lap-logos: 70s;
+
+  /* ---- Spacing. Tailwind's scale is already a 4-unit base in rem (p-1 = 0.25 rem), so layouts use it as is and stay
+     on 4/8/12/16/24/32/48/64/96 px steps: tight 1-3 (4-12 px) inside a label or a row, related 4-6 (16-24 px) between
+     a heading and its text or between cards, group 8-12 (32-48 px) between a heading and its content, section 24-36
+     (96-144 px) between sections. Heading to text is always smaller than the gap above the heading. ---- */
+
+  /* Deceleration for every Tailwind transition on the site; the nav pop-in is the one overshoot. */
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  --s-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--s-ground);
+  color: var(--s-ink);
+  font-family: var(--s-font-body);
+  font-size: var(--s-text-body);
+  line-height: var(--s-lh-body);
+  color-scheme: light;
+}
+.site ::selection { background: var(--s-marigold); color: var(--s-marigold-ink); }
+/* The italic phrase in a heading: Instrument Serif italic in bronze on paper, gold on night. Headings on marigold keep ink. */
+.site .accent { font-style: italic; color: var(--s-bronze); }
+.site .on-night .accent { color: var(--s-gold); }
+/* A small uppercase label above a heading, in bronze (or gold on night). 12 px, wide tracking, 600. */
+.site .s-eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--s-bronze); line-height: 1.3; }
+.site .on-night .s-eyebrow { color: var(--s-gold); }
+.site .s-eyebrow::before { content: ""; width: 1.25rem; height: 1px; background: currentColor; opacity: 0.7; }
+/* The dot grid that sits behind product mocks, on a pseudo-element so it never affects layout. */
+.site .s-dots { position: relative; isolation: isolate; }
+.site .s-dots::before { content: ""; position: absolute; inset: -1.5rem 0; z-index: -1; pointer-events: none; background-image: var(--s-dots); background-size: 24px 24px; mask-image: radial-gradient(70% 70% at 50% 50%, #000 40%, transparent 100%); -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000 40%, transparent 100%); }
+/* A night panel: charcoal with an amber glow at the top right and two softer glows that drift. */
+.site .s-night-panel {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: radial-gradient(ellipse at 80% 10%, rgba(177, 124, 73, 0.22), transparent 65%), var(--s-night);
+  color: var(--s-night-text);
+  border: 1px solid var(--s-night-line);
+  box-shadow: var(--s-shadow-night);
+}
+.site .s-night-panel::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;
+  background: radial-gradient(at 20% 20%, rgba(204, 149, 82, 0.17), transparent 60%) 0 0 / 150% 150%, radial-gradient(at 85% 90%, rgba(0, 0, 0, 0.53), transparent 65%);
+  animation: s-drift 16s ease-in-out infinite alternate;
+}
+@keyframes s-drift { to { background-position: 100% 100%, 0 0; } }
+/* A paper card with the Musmentor crisp ink border. */
+.site .s-paper-card { background: var(--s-paper); border: 1.5px solid var(--s-line); border-radius: var(--s-r-card); box-shadow: var(--s-shadow-paper); }
+@media (prefers-reduced-motion: reduce) { .site .s-night-panel::before { animation: none; } }
+.site :focus-visible { outline: 2px solid var(--s-ink); outline-offset: 3px; border-radius: 0.375rem; }
+.site .on-night :focus-visible { outline-color: var(--s-marigold); }
+/* Sections focused after an in-page jump (for screen readers) get no ring. */
+.site [tabindex="-1"]:focus, .site [tabindex="-1"]:focus-visible { outline: none; }
+.site a { text-underline-offset: 0.2em; }
+.site [id] { scroll-margin-top: 4.5rem; }
+
+/* Reveal motion (see SmoothScroll.tsx). Hidden ONLY while html carries .reveal-on, which is added by an inline
+   script / SmoothScroll and removed under reduced motion, so no-JS and reduced-motion users see everything. */
+html.reveal-on .site :is([data-reveal], [data-line], [data-fade], [data-reel]) { opacity: 0; }
+.site [data-countup] { display: inline-block; font-variant-numeric: tabular-nums; }
+.s-progress {
+  position: fixed; inset: 0 0 auto 0; z-index: 60; height: 2px; pointer-events: none;
+  background: var(--s-marigold, #F0A23A); transform-origin: 0 50%; transform: scaleX(0);
+}
+@media (prefers-reduced-motion: reduce) { .s-progress { display: none; } }
+
+/* ---- Type roles --------------------------------------------------------------------------------------------
+   In @layer components so a utility (font-medium, leading-snug, tracking-*, text colour) on the same element still wins.
+   Display and headings: Anek at a heavier weight and a narrower width, tracking between -0.03 and -0.01 em (never under
+   -0.04), tight line height. Body: width 100, weight 400, default tracking, line height about 1.5. Light text on the dark
+   panels (.on-night) gets a little more line height, weight and tracking, because light-on-dark reads thinner. */
+@layer components {
+  .site .on-night { --s-lh-body: 1.65; --s-lh-small: 1.6; --s-w-body: 430; letter-spacing: 0.01em; }
+
+  .site .display, .site .s-title, .site .h2, .site .s-h3, .site .s-item, .site .s-stat {
+    font-family: var(--s-font-display);
+    text-wrap: balance;
+  }
+  /* Serif display and headings at one weight; hierarchy comes from size and the italic accent, not from boldness. */
+  .site .display { font-size: var(--s-text-display); font-weight: 400; letter-spacing: -0.04em; line-height: 1.02; }
+  .site .s-title { font-size: var(--s-text-title); font-weight: 400; letter-spacing: -0.035em; line-height: 1.04; }
+  .site .h2, .site .s-h2 { font-size: var(--s-text-h2); font-weight: 400; letter-spacing: -0.03em; line-height: 1.06; }
+  .site .s-h3 { font-size: var(--s-text-h3); font-weight: 400; letter-spacing: -0.025em; line-height: 1.12; }
+  /* Titles inside a card or list row and the numerals stay in Manrope: the serif is for large sizes only. */
+  .site .s-item { font-family: var(--s-font-body); font-size: var(--s-text-item); font-weight: 600; letter-spacing: -0.01em; line-height: 1.25; }
+  .site .s-stat { font-family: var(--s-font-body); font-size: var(--s-text-stat); font-weight: 500; letter-spacing: -0.03em; line-height: 1; font-variant-numeric: tabular-nums; }
+
+  .site .lede, .site .s-lede { color: var(--s-mute); font-size: var(--s-text-lede); line-height: 1.5; max-width: 60ch; text-wrap: pretty; }
+  .site .s-body { font-size: var(--s-text-body); font-weight: var(--s-w-body); line-height: var(--s-lh-body); }
+  .site .s-small { font-size: var(--s-text-small); font-weight: var(--s-w-body); line-height: var(--s-lh-small); }
+  /* Labels name a number, a control or a state. Sentence case at 0.01 em: wide-tracked capitals at 13 px are slow to read. */
+  .site .s-label { font-size: var(--s-text-label); font-weight: 500; line-height: 1.35; letter-spacing: 0.01em; }
+}
+.site :is(p, li, dd, figcaption, q) { text-wrap: pretty; }
+.site .tabular, .site [data-numeric], .site time { font-variant-numeric: tabular-nums; }
+/* Guard: nothing on the site renders under the label size, even where older markup still asks for 9 to 12.5 px. */
+.site :is(.text-xs, [class*="text-[9px]"], [class*="text-[10px]"], [class*="text-[11px]"], [class*="text-[12px]"], [class*="text-[12.5px]"]) { font-size: var(--s-text-label); line-height: 1.35; }
+
+/* One container for every section: gutter on each side, capped at --s-max (see the layout tokens above). */
+.s-container { width: min(100% - 2 * var(--s-gutter), var(--s-max)); margin-inline: auto; }
+
+/* ---- Buttons: two sizes (3 rem default, 2.5 rem .s-btn--sm) ---------------------------------------------------- */
+.site .s-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  height: 3rem; padding: 0 1.5rem;
+  border: 1px solid transparent; border-radius: var(--s-r-pill);
+  font-size: var(--s-text-body); font-weight: 500; line-height: 1; white-space: nowrap; text-decoration: none;
+  transition: transform 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.site .s-btn:active { transform: scale(0.97); }
+.site .s-btn--sm { height: 2.5rem; padding: 0 1.125rem; font-size: var(--s-text-small); }
+/* On a 320 px phone the nav (logo, this button, the menu toggle) is 28 px too wide with the arrow, so it goes. */
+@media (max-width: 23.75rem) { .site .s-btn--sm { padding: 0 0.875rem; } .site .s-btn--sm > svg { display: none; } }
+/* Primary: the brand gradient with a hairline of light along the top edge and a soft warm drop; it lifts 1 px on hover and
+   a shimmer sweeps across once. The arrow chip (.s-btn__chip) is a small paper circle at the right, as on a toolbar. */
+.site .s-btn--primary { position: relative; overflow: hidden; isolation: isolate; background: var(--s-brand-gradient); color: #FBFAF7; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255, 250, 240, 0.18), var(--s-shadow-float); }
+.site .s-btn--primary:hover { transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255, 250, 240, 0.22), 0 12px 24px rgba(79, 59, 36, 0.12); }
+.site .s-btn--primary::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; transform: translateX(-120%); background: linear-gradient(105deg, transparent 35%, rgba(251, 250, 247, 0.12) 45%, rgba(251, 250, 247, 0.35) 50%, rgba(251, 250, 247, 0.12) 55%, transparent 65%); }
+.site .s-btn--primary:hover::after { animation: s-shimmer 0.9s var(--s-ease) 1; }
+@keyframes s-shimmer { to { transform: translateX(120%); } }
+.site .s-btn__chip { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; margin-right: -0.5rem; border-radius: 50%; background: rgba(251, 250, 247, 0.14); transition: background-color 0.2s, transform 0.3s var(--s-ease); }
+.site .s-btn--primary:hover .s-btn__chip { background: rgba(251, 250, 247, 0.24); transform: translateX(2px); }
+.site .s-btn--secondary { background: rgba(253, 251, 247, 0.75); border-color: var(--s-line); color: var(--s-ink); font-weight: 600; box-shadow: var(--s-shadow-float); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.site .s-btn--secondary:hover { border-color: var(--s-bar); background: var(--s-paper); transform: translateY(-1px); }
+.site .s-btn--light { background: var(--s-night-text); color: var(--s-ink); }
+.site .s-btn--light:hover { background: #fff; }
+.site .s-btn--ghost-light { border-color: var(--s-night-line); color: var(--s-night-text); }
+.site .s-btn--ghost-light:hover { border-color: var(--s-night-text); }
+/* Quiet text link with a 2.75 rem (at least 44 px) hit area. */
+.site .s-link { display: inline-flex; min-height: 2.75rem; align-items: center; gap: 0.25rem; font-size: var(--s-text-body); color: var(--s-ink-2); text-decoration: underline; text-decoration-color: var(--s-bar); text-underline-offset: 0.3em; transition: color 0.2s, text-decoration-color 0.2s; }
+.site .s-link:hover { color: var(--s-ink); text-decoration-color: currentColor; }
+@media (prefers-reduced-motion: reduce) {
+  .site .s-btn { transition: none; }
+  .site .s-btn:active, .site .s-btn:hover { transform: none; }
+  .site .s-btn--primary:hover::after { animation: none; }
+}
+
+/* ---- Cards ------------------------------------------------------------------------------------------------- */
+.site .s-card { border: 1.5px solid var(--s-line); border-radius: var(--s-r-card); background: var(--s-paper); }
+.site .s-card--fill { border: 1.5px solid var(--s-line); background: var(--s-fill); }
+.site .s-card--inner { border-radius: var(--s-r-inner); }
+
+/* ---- Slow loops: the language carousel and the stack marquee ------------------------------------------------------
+   The track holds its items twice; moving it by half its width and starting over is a seamless loop. One CSS animation,
+   nothing per frame in JS. Hover or focus inside pauses it (so a card can be read and a link clicked). Under reduced
+   motion the track does not move and the viewport scrolls natively instead (see .s-loop[data-static]). */
+.site .s-loop { overflow: hidden; }
+.site .s-loop__track { display: flex; width: max-content; animation: s-loop var(--s-lap, 60s) linear infinite; }
+.site .s-loop:hover .s-loop__track, .site .s-loop:focus-within .s-loop__track { animation-play-state: paused; }
+@keyframes s-loop { to { transform: translateX(-50%); } }
+.site .s-loop--masked { mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.site .s-loop[data-static] { overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none; }
+.site .s-loop[data-static]::-webkit-scrollbar { display: none; }
+.site .s-loop[data-static] .s-loop__track { animation: none; }
+.site .s-loop[data-motion] .s-loop__track { animation: none; }
+@media (prefers-reduced-motion: reduce) { .site .s-loop__track { animation: none; } }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+@keyframes eq { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+@keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.page-in { animation: page-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@media (prefers-reduced-motion: reduce) { .page-in { animation: none; } }

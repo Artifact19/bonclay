@@ -1,0 +1,14 @@
+{
+  "about": "One sentence about booking an appointment, rendered once on 15 October 2026 on an Apple M4 with PRESET voices only (no cloned voice). Compressed to mono AAC 64 kbps m4a with ffmpeg.",
+  "clips": {
+    "en": {"engine": "Kokoro-82M", "voice": "af_heart"},
+    "hi": {"engine": "Kokoro-82M", "voice": "hf_alpha"},
+    "fr": {"engine": "Kokoro-82M", "voice": "ff_siwis"},
+    "es": {"engine": "Kokoro-82M", "voice": "ef_dora"},
+    "mr": {"engine": "Indic-Speak (Bodhan AI / AI4Bharat)", "voice": "Anagha"},
+    "ta": {"engine": "Indic-Speak (Bodhan AI / AI4Bharat)", "voice": "Anitha"},
+    "bn": {"engine": "Indic-Speak (Bodhan AI / AI4Bharat)", "voice": "Ishita"},
+    "te": {"engine": "Indic-Speak (Bodhan AI / AI4Bharat)", "voice": "Sravani"}
+  },
+  "attribution": "Built with Indic-Speak from Bodhan AI / AI4Bharat."
+}

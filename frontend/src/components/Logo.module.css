@@ -1,0 +1,65 @@
+/* BonClay brand lockup. Typography follows the brand spec: Manrope 400, wordmark tracked -0.045em,
+   VOICE STUDIO at 11/64 of the wordmark size tracked 0.32em. Scoped to this module only. */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.wordmark {
+  --logo-ink: #171717;
+  --logo-sub: #77716a;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.19em;
+  font-family: var(--font-manrope), "Manrope", ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  font-synthesis: none;
+  /* Manrope has a 0.72em cap height and no descenders in "BonClay", so 0.75 hugs the ink and the
+     lockup centres on the glyphs rather than on the font's empty ascent/descent. */
+  line-height: 0.75;
+  white-space: nowrap;
+  color: var(--logo-ink);
+}
+
+.name {
+  letter-spacing: -0.045em;
+  /* letter-spacing is also applied after the last glyph; give it back so the word centres on its ink. */
+  padding-right: 0.045em;
+}
+
+.subtitle {
+  font-size: 0.171875em; /* 11px at the 64px reference wordmark */
+  letter-spacing: 0.32em;
+  padding-left: 0.32em; /* balances the trailing tracking so the line centres under the wordmark */
+  text-transform: uppercase;
+  color: var(--logo-sub);
+}
+
+.light {
+  --logo-ink: #171717;
+  --logo-sub: #77716a;
+}
+
+.dark {
+  --logo-ink: #f4f1eb;
+  --logo-sub: #8c867d;
+}
+
+/* tone="auto": follow the app theme, except on the always-light marketing site and its dark bands. */
+:global([data-theme="dark"]) .auto {
+  --logo-ink: #f4f1eb;
+  --logo-sub: #8c867d;
+}
+
+:global(.site) .auto {
+  --logo-ink: #171717;
+  --logo-sub: #77716a;
+}
+
+:global(.site .on-night) .auto {
+  --logo-ink: #f4f1eb;
+  --logo-sub: #8c867d;
+}

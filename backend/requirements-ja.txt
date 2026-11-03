@@ -1,0 +1,12 @@
+# Optional: Japanese voices for Kokoro (jf_alpha). Install with:  pip install -r requirements-ja.txt
+#
+# Not part of requirements.txt because pyopenjtalk has no pre-built wheels: pip compiles it from source on install
+# (it brings its own cmake, but needs a C++ compiler), which would break a slim Docker image or a CI runner.
+# Without these packages the Japanese voice is reported as unavailable and everything else keeps working.
+pyopenjtalk
+fugashi
+jaconv
+mojimoji
+# MeCab dictionary for fugashi (about 250 MB installed). The full `unidic` package works too, but needs a separate
+# ~500 MB download (python -m unidic download).
+unidic-lite

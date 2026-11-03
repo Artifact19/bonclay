@@ -1,0 +1,54 @@
+[
+ {
+  "language": "hinglish",
+  "id": "hinglish-01",
+  "text": "Namaste, hamare clinic mein aapka swagat hai, main aapki kya madad kar sakti hoon?",
+  "number_words": [],
+  "kind": "greeting",
+  "spoken": "नमस्ते, हमारे क्लिनिक में आपका स्वागत है, मैं आपकी क्या मदद कर सकती हूँ?"
+ },
+ {
+  "language": "hinglish",
+  "id": "hinglish-02",
+  "text": "Aapki appointment kal subah das baje fix hui hai.",
+  "number_words": [
+   "दस"
+  ],
+  "kind": "date",
+  "spoken": "आपकी अपॉइंटमेंट कल सुबह दस बजे फिक्स हुई है।"
+ },
+ {
+  "language": "hinglish",
+  "id": "hinglish-03",
+  "text": "Pehli baar dikhane ki fees chaar sau rupaye hai, payment counter par karna hoga.",
+  "number_words": [
+   "चार सौ"
+  ],
+  "kind": "fee",
+  "spoken": "पहली बार दिखाने की फीस चार सौ रुपये है, पेमेंट काउंटर पर करना होगा।"
+ },
+ {
+  "language": "hinglish",
+  "id": "hinglish-04",
+  "text": "Please apni purani report aur medicine ki parchi saath lekar aaiye.",
+  "number_words": [],
+  "kind": "loanwords",
+  "spoken": "प्लीज़ अपनी पुरानी रिपोर्ट और मेडिसिन की पर्ची साथ लेकर आइए।"
+ },
+ {
+  "language": "hinglish",
+  "id": "hinglish-05",
+  "text": "Agar aap time par nahi aa sakte toh please pehle call karke bata dijiye.",
+  "number_words": [],
+  "kind": "instruction",
+  "spoken": "अगर आप टाइम पर नहीं आ सकते तो प्लीज़ पहले कॉल करके बता दीजिए।"
+ },
+ {
+  "language": "hinglish",
+  "id": "hinglish-06",
+  "text": "Aaj mera schedule bahut busy hai, par main aapko shaam ko call karta hoon.",
+  "number_words": [],
+  "kind": "mixed",
+  "spoken": "आज मेरा शेड्यूल बहुत बिज़ी है, पर मैं आपको शाम को कॉल करता हूँ।"
+ }
+]

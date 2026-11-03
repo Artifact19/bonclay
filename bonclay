@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# BonClay — One-command launcher for macOS & Linux
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKEND_DIR="$ROOT_DIR/backend"
+FRONTEND_DIR="$ROOT_DIR/frontend"
+STATE_DIR="$ROOT_DIR/.bonclay"
+mkdir -p "$STATE_DIR"
+
+CMD="${1:-up}"
+
+case "$CMD" in
+  setup)
+    echo "[BonClay] Setting up backend Python virtual environment..."
+    cd "$BACKEND_DIR"
+    python3 -m venv .venv
+    .venv/bin/pip install --upgrade pip
+    .venv/bin/pip install -r requirements.txt
+    [ -f .env ] || cp .env.example .env
+    echo "[BonClay] Installing frontend packages..."
+    cd "$FRONTEND_DIR"
+    npm install --no-audit --no-fund
+    echo "[BonClay] Setup complete!"
+    ;;
+  up|start|"")
+    [ -d "$BACKEND_DIR/.venv" ] || "$0" setup
+    echo "[BonClay] Starting Backend (http://localhost:8000) & Frontend (http://localhost:3000)..."
+    (cd "$BACKEND_DIR" && .venv/bin/uvicorn backend:app --host 0.0.0.0 --port 8000) &
+    BACK_PID=$!
+    (cd "$FRONTEND_DIR" && npm run dev) &
+    FRONT_PID=$!
+    trap 'kill $BACK_PID $FRONT_PID 2>/dev/null || true' INT TERM EXIT
+    wait
+    ;;
+  test)
+    (cd "$BACKEND_DIR" && .venv/bin/python -m pytest -q)
+    (cd "$FRONTEND_DIR" && npm test -- --watchAll=false)
+    ;;
+  *)
+    echo "Usage: ./bonclay [setup|up|test]"
+    exit 1
+    ;;
+esac
+

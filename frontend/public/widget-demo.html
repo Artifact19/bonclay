@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BonClay widget demo</title>
+  <style>
+    body { font: 16px/1.5 system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; color: #1c2230; }
+    code, pre { background: #f3f5fa; border-radius: 6px; padding: 2px 6px; }
+    pre { padding: 12px; overflow-x: auto; }
+    label { display: block; margin: 12px 0 4px; font-weight: 600; }
+    input { width: 100%; padding: 8px; font: inherit; box-sizing: border-box; }
+    button.go { margin-top: 12px; padding: 8px 16px; font: inherit; }
+  </style>
+</head>
+<body>
+  <h1>BonClay widget demo</h1>
+  <p>A stand-in for a business's own website. The microphone button at the bottom right is the widget.</p>
+
+  <form id="cfg">
+    <label for="agent">Widget key (from Agent Studio &gt; Embed on your website)</label>
+    <input id="agent" name="agent" placeholder="awk_..." autocomplete="off">
+    <label for="api">API address</label>
+    <input id="api" name="api" value="http://localhost:8000">
+    <button class="go" type="submit">Load the widget</button>
+  </form>
+
+  <h2>What a real site pastes</h2>
+  <pre id="snippet"></pre>
+  <p>Before it works, add this page's address (<code id="origin"></code>) to the agent's allowed websites.
+  See <code>docs/WIDGET.md</code>.</p>
+
+  <script>
+    // Demo only: the page reads ?agent=KEY&api=http://host:port and then inserts exactly the two tags a site would paste.
+    var q = new URLSearchParams(location.search);
+    var key = q.get('agent') || '';
+    var api = (q.get('api') || 'http://localhost:8000').replace(/\/$/, '');
+    document.getElementById('agent').value = key;
+    document.getElementById('api').value = api;
+    document.getElementById('origin').textContent = location.origin;
+    document.getElementById('snippet').textContent =
+      '<script src="' + api + '/widget/v1/bonclay-agent.js" defer></' + 'script>\n<bonclay-agent agent="' + (key || 'PUBLIC_AGENT_KEY') + '"></bonclay-agent>';
+    if (key) {
+      var s = document.createElement('script');
+      s.src = api + '/widget/v1/bonclay-agent.js';
+      s.defer = true;
+      document.head.appendChild(s);
+      var el = document.createElement('bonclay-agent');
+      el.setAttribute('agent', key);
+      document.body.appendChild(el);
+    }
+  </script>
+</body>
+</html>

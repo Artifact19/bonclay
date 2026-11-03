@@ -1,0 +1,7 @@
+# Versions known to work together (tested on macOS arm64 and used by the setup script).
+# qwen-tts pins transformers 4.x; sentence-transformers 6 and huggingface_hub 1.x need transformers 5.x.
+transformers==4.57.3
+tokenizers==0.22.2
+huggingface_hub==0.36.2
+sentence-transformers==5.6.1
+qwen-tts==0.1.1

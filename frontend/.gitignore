@@ -1,0 +1,36 @@
+# Local Backend (NOT for GitHub)
+backend/
+run.bat
+tunnel.bat
+voices.db
+saved_voices/
+__pycache__/
+*.pyc
+
+# Next.js
+.next/
+out/
+build/
+
+# Node
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.production
+.env.development
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large model assets (backups)
+*.pth
+*.onnx
+*.bin
+*.safetensors
+.lighthouseci/

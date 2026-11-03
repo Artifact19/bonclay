@@ -1,0 +1,253 @@
+{
+ "about": "Pairs for bench/instant_answer_threshold.py. `approved` is the owner-approved instant-answer question, `asked` is what a caller says. should_match=true: a paraphrase the approved answer correctly answers. should_match=false: a near miss the approved answer would answer WRONGLY (another day, number, negation, an opposite, another course or topic, a booking request).",
+ "pairs": [
+  {
+   "lang": "en",
+   "approved": "When does the clinic open?",
+   "asked": "What time do you open?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "What are the clinic timings?",
+   "asked": "What are your opening hours?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "What is the consultation fee?",
+   "asked": "How much is the consultation fee?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "What is the address of the clinic?",
+   "asked": "Where is the clinic located?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "Do you have parking?",
+   "asked": "Is there parking available at the clinic?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "When is the admission deadline?",
+   "asked": "What is the last date to apply for admission?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "What is the fee for the BCom course?",
+   "asked": "How much does the BCom course cost?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "Does the college have a hostel?",
+   "asked": "Is hostel accommodation available at the college?",
+   "should_match": true
+  },
+  {
+   "lang": "hi",
+   "approved": "क्लिनिक खुलने का समय क्या है?",
+   "asked": "क्लिनिक कब खुलता है?",
+   "should_match": true
+  },
+  {
+   "lang": "hi",
+   "approved": "डॉक्टर की फीस कितनी है?",
+   "asked": "परामर्श शुल्क कितना है?",
+   "should_match": true
+  },
+  {
+   "lang": "hi",
+   "approved": "क्लिनिक का पता क्या है?",
+   "asked": "क्लिनिक कहाँ है?",
+   "should_match": true
+  },
+  {
+   "lang": "hi",
+   "approved": "क्या कॉलेज में हॉस्टल है?",
+   "asked": "कॉलेज में हॉस्टल की सुविधा है क्या?",
+   "should_match": true
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Clinic ka timing kya hai?",
+   "asked": "Clinic kab khulta hai?",
+   "should_match": true
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Doctor ki fees kitni hai?",
+   "asked": "Consultation fee kitni hai?",
+   "should_match": true
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Admission ki last date kya hai?",
+   "asked": "Admission kab tak kar sakte hain?",
+   "should_match": true
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Clinic ka address kya hai?",
+   "asked": "Clinic kahan pe hai?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "Is the clinic open on Sunday?",
+   "asked": "Are you open on Sundays?",
+   "should_match": true
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Doctor ki fees kitni hai?",
+   "asked": "Doctor ki fees kitni lagti hai?",
+   "should_match": true
+  },
+  {
+   "lang": "en",
+   "approved": "Is the clinic open on Saturday?",
+   "asked": "Is the clinic open on Sunday?",
+   "should_match": false,
+   "note": "another day"
+  },
+  {
+   "lang": "en",
+   "approved": "Which insurance do you accept?",
+   "asked": "Which insurance do you not accept?",
+   "should_match": false,
+   "note": "negation"
+  },
+  {
+   "lang": "en",
+   "approved": "What is the fee for the first visit?",
+   "asked": "What is the fee for a second visit?",
+   "should_match": false,
+   "note": "another number"
+  },
+  {
+   "lang": "en",
+   "approved": "When does the clinic open?",
+   "asked": "When does the clinic close?",
+   "should_match": false,
+   "note": "opposite"
+  },
+  {
+   "lang": "en",
+   "approved": "What are the clinic timings?",
+   "asked": "What is the consultation fee?",
+   "should_match": false,
+   "note": "another topic"
+  },
+  {
+   "lang": "en",
+   "approved": "What are the clinic timings?",
+   "asked": "Can I book an appointment for tomorrow morning?",
+   "should_match": false,
+   "note": "booking request"
+  },
+  {
+   "lang": "en",
+   "approved": "What is the fee for the BCom course?",
+   "asked": "What is the fee for the MBA course?",
+   "should_match": false,
+   "note": "another course"
+  },
+  {
+   "lang": "en",
+   "approved": "What is the last date for admission?",
+   "asked": "What documents do I need for admission?",
+   "should_match": false,
+   "note": "another question, same topic"
+  },
+  {
+   "lang": "en",
+   "approved": "Is there a pharmacy in the clinic?",
+   "asked": "Is there a lab for blood tests in the clinic?",
+   "should_match": false,
+   "note": "another facility"
+  },
+  {
+   "lang": "hi",
+   "approved": "क्या क्लिनिक शनिवार को खुला है?",
+   "asked": "क्या क्लिनिक रविवार को खुला है?",
+   "should_match": false,
+   "note": "another day"
+  },
+  {
+   "lang": "hi",
+   "approved": "क्लिनिक कब खुलता है?",
+   "asked": "क्लिनिक कब बंद होता है?",
+   "should_match": false,
+   "note": "opposite"
+  },
+  {
+   "lang": "hi",
+   "approved": "क्या कॉलेज में हॉस्टल है?",
+   "asked": "क्या कॉलेज में कैंटीन है?",
+   "should_match": false,
+   "note": "another facility"
+  },
+  {
+   "lang": "hi",
+   "approved": "डॉक्टर की फीस कितनी है?",
+   "asked": "क्या मैं कल के लिए अपॉइंटमेंट बुक कर सकता हूँ?",
+   "should_match": false,
+   "note": "booking request"
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Kya clinic Sunday ko khula hai?",
+   "asked": "Kya clinic Sunday ko band hai?",
+   "should_match": false,
+   "note": "opposite"
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Admission ki fees kitni hai?",
+   "asked": "Hostel ki fees kitni hai?",
+   "should_match": false,
+   "note": "another fee"
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Doctor kitne baje aate hain?",
+   "asked": "Doctor kitne baje jaate hain?",
+   "should_match": false,
+   "note": "opposite"
+  },
+  {
+   "lang": "hinglish",
+   "approved": "Clinic ka timing kya hai?",
+   "asked": "Kal subah ka appointment mil sakta hai kya?",
+   "should_match": false,
+   "note": "booking request"
+  },
+  {
+   "lang": "en",
+   "approved": "Is the clinic open on Sunday?",
+   "asked": "Is the clinic closed on Sunday?",
+   "should_match": false,
+   "note": "opposite"
+  },
+  {
+   "lang": "en",
+   "approved": "Is the doctor available in the morning?",
+   "asked": "Is the doctor available in the evening?",
+   "should_match": false,
+   "note": "another time of day"
+  },
+  {
+   "lang": "hi",
+   "approved": "क्या रविवार को क्लिनिक खुला रहता है?",
+   "asked": "क्या रविवार को क्लिनिक बंद रहता है?",
+   "should_match": false,
+   "note": "opposite"
+  }
+ ]
+}

@@ -1,0 +1,193 @@
+[
+ {
+  "text": "{\"tool\": \"book_appointment\", \"arguments\": {\"name\": \"Priya Sharma\", \"phone\": \"9876543210\", \"date\": \"2026-10-16\", \"time\": \"16:30\", \"doctor\": \"Dr. Imran Shaikh\"}}",
+  "ttft_s": 69.39925622940063,
+  "total_s": 77.32423520088196,
+  "completion_tokens": 524,
+  "prompt_tokens": 2098,
+  "chunks": 68,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 1254,
+  "ttft_any_s": 21.760662078857422,
+  "id": "t01",
+  "score": {
+   "called": true,
+   "tool": "book_appointment",
+   "args": {
+    "name": "Priya Sharma",
+    "phone": "9876543210",
+    "date": "2026-10-16",
+    "time": "16:30",
+    "doctor": "Dr. Imran Shaikh"
+   },
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "{\"tool\": \"book_appointment\", \"arguments\": {\"name\": \"Rahul Verma\", \"phone\": \"9822012345\", \"date\": \"2026-10-16\", \"time\": \"10:00\"}}",
+  "ttft_s": 60.97829484939575,
+  "total_s": 66.78186702728271,
+  "completion_tokens": 540,
+  "prompt_tokens": 2109,
+  "chunks": 58,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 1504,
+  "ttft_any_s": 10.132226943969727,
+  "id": "t02",
+  "score": {
+   "called": true,
+   "tool": "book_appointment",
+   "args": {
+    "name": "Rahul Verma",
+    "phone": "9822012345",
+    "date": "2026-10-16",
+    "time": "10:00"
+   },
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "{\"tool\": \"book_appointment\", \"arguments\": {\"name\": \"Neha Joshi\", \"phone\": \"9922334455\", \"date\": \"2026-10-19\", \"time\": \"11:00\", \"doctor\": \"Dr. Meera Kulkarni\"}}",
+  "ttft_s": 36.23722195625305,
+  "total_s": 42.36553907394409,
+  "completion_tokens": 540,
+  "prompt_tokens": 2091,
+  "chunks": 70,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 1394,
+  "ttft_any_s": 0.6725499629974365,
+  "id": "t03",
+  "score": {
+   "called": true,
+   "tool": "book_appointment",
+   "args": {
+    "name": "Neha Joshi",
+    "phone": "9922334455",
+    "date": "2026-10-19",
+    "time": "11:00",
+    "doctor": "Dr. Meera Kulkarni"
+   },
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "{\"tool\": \"find_booking\", \"arguments\": {\"phone\": \"9811122233\"}}",
+  "ttft_s": 6.477652072906494,
+  "total_s": 8.593822956085205,
+  "completion_tokens": 107,
+  "prompt_tokens": 2078,
+  "chunks": 26,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 192,
+  "ttft_any_s": 0.5405988693237305,
+  "id": "t04",
+  "score": {
+   "called": true,
+   "tool": "find_booking",
+   "args": {
+    "phone": "9811122233"
+   },
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "{\"tool\": \"find_booking\", \"arguments\": {\"phone\": \"9876501234\"}}",
+  "ttft_s": 24.514724016189575,
+  "total_s": 26.50858998298645,
+  "completion_tokens": 331,
+  "prompt_tokens": 2094,
+  "chunks": 26,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 950,
+  "ttft_any_s": 0.5524389743804932,
+  "id": "t05",
+  "score": {
+   "called": true,
+   "tool": "find_booking",
+   "args": {
+    "phone": "9876501234"
+   },
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "{\"tool\": \"cancel_appointment\", \"arguments\": {\"booking_id\": \"A12\"}}",
+  "ttft_s": 4.7545928955078125,
+  "total_s": 6.439289808273315,
+  "completion_tokens": 76,
+  "prompt_tokens": 2093,
+  "chunks": 21,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 157,
+  "ttft_any_s": 0.6989588737487793,
+  "id": "t06",
+  "score": {
+   "called": true,
+   "tool": "cancel_appointment",
+   "args": {
+    "booking_id": "A12"
+   },
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "I can certainly help you with that. Could you please provide your booking ID or the phone number you used for the appointment?",
+  "ttft_s": 23.35372805595398,
+  "total_s": 26.141527891159058,
+  "completion_tokens": 266,
+  "prompt_tokens": 2062,
+  "chunks": 25,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 969,
+  "ttft_any_s": 1.173259973526001,
+  "id": "t07",
+  "score": {
+   "called": false,
+   "tool": null,
+   "args": null,
+   "invented_id": false,
+   "pass": true,
+   "why": ""
+  }
+ },
+ {
+  "text": "Aapka appointment Saturday ko nahi hoga. Dentist Sir sirf Tuesday aur Friday ko hi OPD mein hote hain. Aapko kaunsa din pasand hai?",
+  "ttft_s": 33.87299680709839,
+  "total_s": 35.44477105140686,
+  "completion_tokens": 504,
+  "prompt_tokens": 2109,
+  "chunks": 31,
+  "error": null,
+  "finish": "stop",
+  "reasoning_chars": 1659,
+  "ttft_any_s": 0.9016861915588379,
+  "id": "t08",
+  "score": {
+   "called": false,
+   "tool": null,
+   "args": null,
+   "invented_id": false,
+   "pass": false,
+   "why": "no valid tool call (plain text or bad JSON)"
+  }
+ }
+]

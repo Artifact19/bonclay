@@ -1,0 +1,150 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.pytest_temp/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+.env
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Model cache and large files
+*.pth
+*.onnx
+*.bin
+*.safetensors
+.cache/
+huggingface/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Audio files (samples, outputs)
+*.wav
+*.mp3
+*.flac
+*.ogg
+!examples/*.wav
+!fixtures/*.wav
+
+# Lock files (package manager specific)
+requirements.lock.txt
+*.lock
+
+# Environment-specific
+environment.txt
+
+# Frontend is a separate repo
+frontend/
+
+# Local Database & Storage
+voices.db
+saved_voices/
+
+# Runtime data written by the API (keys, generation log, RAG index, generated audio)
+data/api_keys.json
+data/generations.json
+data/generations/
+data/rag/
+data/jobs/
+
+# Provenance: signed receipts and the HMAC secret that signs them
+data/receipts.json
+data/receipt_secret
+data/receipt_ed25519.key
+data/voice_keys/
+
+# MLX virtualenv for Apple Silicon voice cloning (created by scripts/setup_mlx.sh)
+.venv-mlx/
+
+# Indic-Speak virtualenv for Indian-language speech (created by scripts/setup_indic_speak.sh)
+.venv-indic/
+
+# Local-mode data: agents/conversations/knowledge (JSON) and voice audio, consent recordings, embeddings
+data/local_db/
+data/audio/
+data/llm_usage*.json
+data/voices.json
+
+# Bookings of the local appointment MCP server (mcp_servers/appointments.py)
+data/mcp/
+
+# Downloaded models (speaker-verification model for the consent check)
+data/models/
+
+# Benchmark results (written by backend/bench/*.py)
+bench/results/
+
+# Chatterbox Multilingual virtualenv for Hindi voice cloning (created by scripts/setup_chatterbox.sh)
+.venv-chatterbox/
+data/test-run-backup-*/
+data/receipts.jsonl
+data/receipts.json.migrated
+data/logs/
+
+# Per-agent integration secrets and delivery logs (services/integrations.py)
+data/integrations/
+
+# Secrets and keys written or expected under data/ (never commit)
+data/widget_secret
+data/google_calendar.json
+data/*.pem
+data/phone_numbers.json
+data/say_it_once_rtf.json
+
+# Rendered phone greetings (services/phone_greeting.py) and the owner's instant answers (services/instant_answers.py)
+data/phone_greetings/
+data/instant_answers.json
+
+# Answer audit results (services/answer_audit.py)
+data/answer_audit.json
+
+# Per-agent fact sheets built from the documents (services/fact_sheet.py)
+data/fact_sheets/
+
+# Everything the running app writes under data/ is private (voices, call records, accounts, keys, caches): never commit it.
+data/*

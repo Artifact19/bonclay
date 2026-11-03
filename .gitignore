@@ -1,0 +1,32 @@
+# Runtime state of ./bonclay (pid files, logs)
+.bonclay/
+# Local editor/agent run configuration
+.claude/launch.json
+# Playwright & Next.js output
+frontend/test-results/
+frontend/playwright-report/
+frontend/.next/
+frontend/out/
+frontend/node_modules/
+frontend/.cache/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.env.development
+# Python & Backend runtime
+backend/.venv/
+backend/.venv-*/
+backend/.env
+backend/data/*
+backend/.pytest_cache/
+backend/.pytest_temp/
+# OS & cache files
+.DS_Store
+**/.DS_Store
+Thumbs.db
+*.tsbuildinfo
+.impeccable/
+trial-audio/
+.pytest_temp/
+__pycache__/
+*.py[cod]

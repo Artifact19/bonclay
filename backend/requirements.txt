@@ -1,0 +1,60 @@
+# Parrot AI - Voice Cloning Requirements
+# For use with: pip install -r requirements.txt
+# Note: Assumes PyTorch with CUDA is already installed
+
+qwen-tts>=0.0.5
+transformers>=4.45.0
+accelerate>=1.0.0
+soundfile>=0.13.0
+librosa>=0.10.0
+numpy>=2.0.0
+einops
+sox
+onnxruntime
+openai-whisper
+
+# Flash Attention 2 (requires separate install with --no-build-isolation)
+# pip install flash-attn --no-build-isolation
+groq
+pypdf
+sentence-transformers
+slowapi
+
+# Kokoro-82M preset voices: English, Spanish, French, Hindi, Italian and Portuguese work with `kokoro` alone
+# (the non-English ones also need the system package espeak-ng: brew install espeak-ng / apt install espeak-ng).
+kokoro>=0.9.4
+# Mandarin front-end for Kokoro (small, pure Python). Japanese needs more: see requirements-ja.txt.
+misaki[zh]>=0.9.4
+
+# API server / platform
+fastapi>=0.110
+uvicorn[standard]
+python-multipart
+python-dotenv
+PyJWT
+httpx
+supabase
+structlog
+bcrypt
+psutil
+langdetect
+indic-transliteration
+
+# Model Context Protocol: agent tools (services/tools.py is the client, mcp_servers/ the local servers). Works with the
+# 1.x and 2.x SDKs.
+mcp>=1.12
+
+# Speaker verification for the consent check (ECAPA-TDNN; optional: the check is skipped when missing)
+speechbrain
+
+# Fast, resumable model downloads
+hf_transfer
+
+# Inaudible watermark on every generated clip (Meta AudioSeal; code and weights are MIT-licensed, commercial use allowed).
+# Optional: without it clips are still signed with a receipt but carry no watermark.
+audioseal
+# C2PA manifest beside the watermark on generated clips (services/c2pa_manifest.py; MIT OR Apache-2.0). Optional: without
+# it C2PA_MANIFEST=on is inert and clips are still watermarked and receipted.
+c2pa-python>=0.38
+# Fuzzy name matching for ASR entity snapping (services/query_understanding.py; difflib fallback without it)
+rapidfuzz>=3.0
