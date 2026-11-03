@@ -5,6 +5,11 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { SystemStatus } from "@/components/dashboard/SystemStatus";
 import { useHealth, useKnowledgeGaps, useOnboarding, useSetupHints, useWarmup } from "@/hooks/useApi";
 
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: jest.fn(), replace: jest.fn(), prefetch: jest.fn() }),
+  usePathname: () => "/dashboard",
+}));
+
 jest.mock("@/hooks/useApi", () => ({
   useOnboarding: jest.fn(),
   useKnowledgeGaps: jest.fn(),

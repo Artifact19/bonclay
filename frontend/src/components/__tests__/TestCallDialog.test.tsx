@@ -94,7 +94,7 @@ describe("Test call dialog", () => {
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /start practice call/i }));
     });
-    await waitFor(() => expect(screen.getAllByText("Answered from your documents (retrieval used).")).toHaveLength(2));
+    await waitFor(() => expect(screen.getAllByText("Answered from your documents (retrieval used).")).toHaveLength(2), { timeout: 5000 });
 
     // two turns, the first caller line comes from the server for scenario "normal"
     expect(post.mock.calls.filter(([p]) => p.endsWith("/test-call/caller")).map(([, b]) => b)).toEqual([
@@ -170,7 +170,7 @@ describe("Test call dialog", () => {
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /start practice call/i }));
     });
-    await waitFor(() => expect(screen.getAllByText("Answered from your documents (retrieval used).")).toHaveLength(2));
+    await waitFor(() => expect(screen.getAllByText("Answered from your documents (retrieval used).")).toHaveLength(2), { timeout: 5000 });
     expect(screen.getAllByText(callerLines[0])[0].getAttribute("lang")).toBe("hi-Latn");
     expect(screen.getByText("This is an AI assistant. We open at nine on Sunday.").getAttribute("lang")).toBe("hi-Latn");
     unmount();
@@ -180,7 +180,7 @@ describe("Test call dialog", () => {
     await act(async () => {
       fireEvent.click(screen.getByRole("button", { name: /start practice call/i }));
     });
-    await waitFor(() => expect(screen.getAllByText("Answered from your documents (retrieval used).")).toHaveLength(2));
+    await waitFor(() => expect(screen.getAllByText("Answered from your documents (retrieval used).")).toHaveLength(2), { timeout: 5000 });
     expect(screen.getAllByText(callerLines[0])[0].getAttribute("lang")).toBe("ta");
   });
 

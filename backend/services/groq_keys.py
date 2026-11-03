@@ -1,7 +1,7 @@
 """Several Groq accounts, one list of keys.
 
 Groq's limits are per account (organisation) and per model: requests and tokens per minute (RPM, TPM) and per day
-(RPD, TPD), audio seconds per hour and per day for Whisper. A student project on the free tier hits them fast, so the
+(RPD, TPD), audio seconds per hour and per day for Whisper. A deployment on the free tier hits them fast, so the
 owner can add more accounts and a request that one account cannot take goes out on the next account's key instead of
 failing or dropping to a weaker model.
 

@@ -778,25 +778,15 @@ export function Closing() {
 export function SiteFooter() {
   return (
     <footer className="s-container mt-24 pb-12">
-      <div data-reveal className="grid gap-10 border-t border-[var(--s-line)] pt-10 md:grid-cols-[1.2fr_1fr_1fr]">
+      <div data-reveal className="grid gap-10 border-t border-[var(--s-line)] pt-10 md:grid-cols-[1.2fr_1fr]">
         <div>
           <Logo size={40} />
           <p className="mt-4 max-w-[36ch] s-body leading-relaxed text-[var(--s-mute)]">
-            A voice studio for India. Final-year B.Tech project, MIT School of Computing, Pune.
+            A voice studio for India.
           </p>
           <Link href="/verify" className="mt-4 inline-flex min-h-[2.75rem] items-center gap-1 s-body underline underline-offset-4">
             Verify a clip <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
           </Link>
-        </div>
-        <div>
-          <p className="s-small font-medium">Built by</p>
-          <ul className="mt-3 space-y-1.5 s-body text-[var(--s-mute)]">
-            <li>Ayush Chougula</li>
-            <li>Atharva Gaikwad</li>
-            <li>Arnav Raut</li>
-            <li>Harpalsing Rajput</li>
-          </ul>
-          <p className="mt-3 s-small text-[var(--s-mute)]">Guided by Prof. Neha Chaube</p>
         </div>
         <div>
           <p className="s-small font-medium">Open models</p>

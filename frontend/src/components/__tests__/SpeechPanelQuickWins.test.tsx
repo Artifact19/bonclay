@@ -88,7 +88,7 @@ describe("SpeechPanel over-limit text", () => {
 });
 
 describe("SpeechPanel generate: honest progress, Stop, errors, Make again", () => {
-  it("shows a plain message and elapsed seconds instead of a percentage, and keeps aria-live off the button", async () => {
+  it("shows a plain message, elapsed seconds and percentage, and keeps aria-live off the button", async () => {
     pendingBlob();
     render(<SpeechPanel />);
     type("Hello there");
@@ -96,7 +96,7 @@ describe("SpeechPanel generate: honest progress, Stop, errors, Make again", () =
 
     expect(await screen.findByTestId("generate-hint")).toHaveTextContent("Making audio. Usually 10 to 40 seconds.");
     expect(screen.getByTestId("generate-elapsed").textContent).toMatch(/^\d+ s$/);
-    expect(document.body.textContent).not.toMatch(/\d+%/);
+    expect(document.body.textContent).toMatch(/\d+%/);
     expect(document.querySelectorAll('button[aria-live]')).toHaveLength(0);
     expect(screen.getByTestId("generate-status")).toHaveTextContent("Making audio");
   });

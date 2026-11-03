@@ -8,9 +8,187 @@ FRONTEND_DIR="$ROOT_DIR/frontend"
 STATE_DIR="$ROOT_DIR/.bonclay"
 mkdir -p "$STATE_DIR"
 
+_read_setting() {
+  local key="$1"
+  local def="${2:-}"
+  if [ -n "${!key+x}" ] && [ -n "${!key}" ]; then
+    echo "${!key}"
+    return 0
+  fi
+  local env_file="$BACKEND_DIR/.env"
+  if [ -f "$env_file" ]; then
+    local val=""
+    local found=0
+    while IFS= read -r line || [ -n "$line" ]; do
+      line="$(echo "$line" | sed -e 's/^[[:space:]]*export[[:space:]]\+//' -e 's/^[[:space:]]\+//')"
+      case "$line" in
+        \#*|"") continue ;;
+      esac
+      if [[ "$line" =~ ^${key}[[:space:]]*=[[:space:]]*(.*)$ ]]; then
+        found=1
+        val="${BASH_REMATCH[1]}"
+        val="${val%$'\r'}"
+        if [[ "$val" =~ ^\"(.*)\"([[:space:]]*#.*)?$ ]]; then
+          val="${BASH_REMATCH[1]}"
+        elif [[ "$val" =~ ^\'(.*)\'([[:space:]]*#.*)?$ ]]; then
+          val="${BASH_REMATCH[1]}"
+        else
+          val="$(echo "$val" | sed -e 's/[[:space:]]\+#.*$//' -e 's/[[:space:]]*$//')"
+        fi
+      fi
+    done < "$env_file"
+    if [ "$found" -eq 1 ]; then
+      if [ -n "$val" ]; then
+        echo "$val"
+        return 0
+      else
+        echo "$def"
+        return 0
+      fi
+    fi
+  fi
+  echo "$def"
+}
+
+_tunnel_kind() {
+  local t
+  t="$(_read_setting BONCLAY_TUNNEL auto)"
+  if [ "$t" = "off" ]; then
+    echo "off"
+    return 0
+  fi
+  if [ "$t" = "auto" ]; then
+    if command -v ngrok >/dev/null 2>&1; then
+      echo "ngrok"
+      return 0
+    elif command -v cloudflared >/dev/null 2>&1; then
+      echo "cloudflared"
+      return 0
+    fi
+    echo "off"
+    return 0
+  fi
+  echo "$t"
+}
+
+_start_tunnel() {
+  local kind
+  kind="$(_tunnel_kind)"
+  if [ "$kind" = "off" ]; then
+    local url
+    url="$(_read_setting PUBLIC_BASE_URL)"
+    if [ -n "$url" ]; then
+      echo "Tunnel  $url  (your own tunnel; BONCLAY_TUNNEL=off)"
+    else
+      echo "phone calls need PUBLIC_BASE_URL; PUBLIC_BASE_URL is empty"
+    fi
+    return 0
+  fi
+  if [ "$kind" = "ngrok" ]; then
+    ngrok http "$(_read_setting PHONE_PUBLIC_PORT 8010)" &
+  elif [ "$kind" = "cloudflared" ]; then
+    cloudflared tunnel &
+  fi
+}
+
+_clear_web_cache() {
+  if ! git -C "$ROOT_DIR" rev-parse HEAD >/dev/null 2>&1; then
+    return 0
+  fi
+  local current_sha
+  current_sha="$(git -C "$ROOT_DIR" rev-parse HEAD)"
+  mkdir -p "$STATE_DIR"
+  local head_file="$STATE_DIR/web.head"
+  local cache_dir="$FRONTEND_DIR/.next"
+  if [ -f "$head_file" ]; then
+    local recorded_sha
+    recorded_sha="$(cat "$head_file" 2>/dev/null || true)"
+    if [ "$recorded_sha" != "$current_sha" ]; then
+      if [ -d "$cache_dir" ]; then
+        rm -rf "$cache_dir"
+        echo "Cleared the web build cache (code changed since the last start)"
+      fi
+      echo "$current_sha" > "$head_file"
+    fi
+  else
+    if [ -d "$cache_dir" ]; then
+      rm -rf "$cache_dir"
+      echo "Cleared the web build cache (code changed since the last start)"
+    fi
+    echo "$current_sha" > "$head_file"
+  fi
+}
+
+_clean_web() {
+  local pid_file="$STATE_DIR/web.pid"
+  if [ -f "$pid_file" ]; then
+    local pid
+    pid="$(cat "$pid_file" 2>/dev/null || true)"
+    if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+      echo "The web app is running (PID $pid); cannot delete frontend/.next"
+      return 1
+    fi
+  fi
+  local cache_dir="$FRONTEND_DIR/.next"
+  if [ ! -d "$cache_dir" ]; then
+    echo "No web build cache (frontend/.next) to delete"
+    return 0
+  fi
+  rm -rf "$cache_dir"
+  rm -f "$STATE_DIR/web.head"
+  echo "Deleted frontend/.next"
+}
+
+_status() {
+  local kind
+  kind="$(_tunnel_kind)"
+  if [ "$kind" = "off" ]; then
+    local url
+    url="$(_read_setting PUBLIC_BASE_URL)"
+    if [ -n "$url" ]; then
+      echo "Tunnel  $url  (your own tunnel; BONCLAY_TUNNEL=off)"
+    else
+      echo "phone calls need PUBLIC_BASE_URL"
+    fi
+  fi
+}
+
+_doctor() {
+  if [ "${BONCLAY_DOCTOR_SKIP_TUNNEL_CHECK:-}" = "1" ]; then
+    local url
+    url="$(_read_setting PUBLIC_BASE_URL)"
+    if [ -z "$url" ]; then
+      echo "Phone tunnel reachability check skipped; PUBLIC_BASE_URL is empty"
+    else
+      echo "Phone tunnel reachability check skipped"
+    fi
+  fi
+}
+
 CMD="${1:-up}"
 
 case "$CMD" in
+  _setting)
+    _read_setting "${2:-}" "${3:-}"
+    ;;
+  _tunnel_kind)
+    _tunnel_kind
+    ;;
+  _start_tunnel)
+    _start_tunnel
+    ;;
+  _clear_web_cache)
+    _clear_web_cache
+    ;;
+  clean-web)
+    _clean_web
+    ;;
+  status)
+    _status
+    ;;
+  doctor)
+    _doctor
+    ;;
   setup)
     echo "[BonClay] Setting up backend Python virtual environment..."
     cd "$BACKEND_DIR"
@@ -24,6 +202,7 @@ case "$CMD" in
     echo "[BonClay] Setup complete!"
     ;;
   up|start|"")
+    _clear_web_cache
     [ -d "$BACKEND_DIR/.venv" ] || "$0" setup
     echo "[BonClay] Starting Backend (http://localhost:8000) & Frontend (http://localhost:3000)..."
     (cd "$BACKEND_DIR" && .venv/bin/uvicorn backend:app --host 0.0.0.0 --port 8000) &
@@ -42,4 +221,3 @@ case "$CMD" in
     exit 1
     ;;
 esac
-

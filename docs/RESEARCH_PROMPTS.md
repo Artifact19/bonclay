@@ -4,7 +4,7 @@ Copy any prompt below into a deep-research tool. Each one is self-contained: it 
 
 ## Shared context (already included in every prompt)
 
-> BonClay is an open, local-first voice-AI studio for India, built by a student team. It runs on an Apple M4 MacBook
+> BonClay is an open, local-first voice-AI studio for India. It runs on an Apple M4 MacBook
 > (16 GB unified memory) with no keys, and should also run on Windows laptops with an RTX 3050 Ti (4 GB VRAM). Pipeline
 > per spoken turn: browser VAD (Silero) → ASR (Groq Whisper, or MLX Whisper small + large-v3-turbo) → retrieval (BGE-M3
 > + BM25, RRF) → LLM (Groq qwen/qwen3.8-27b → gpt-oss fallbacks → local Llama-3.2-3B 4-bit via mlx_lm) streamed

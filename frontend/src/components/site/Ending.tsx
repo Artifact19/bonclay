@@ -229,7 +229,7 @@ const FAQ_ITEMS: Item[] = [
   },
   {
     q: "Is this legal in India?",
-    text: "BonClay builds in the things India's rules on synthetic media and personal data are concerned with: spoken consent before cloning, a retention period, one-click withdrawal, an AI-generated label and a watermark on everything it makes, and an AI disclosure at the start of every agent call. That is a design choice, not a legal opinion. We are a student project, not lawyers: what is lawful for your use, for example calling people, is for you to check.",
+    text: "BonClay builds in the things India's rules on synthetic media and personal data are concerned with: spoken consent before cloning, a retention period, one-click withdrawal, an AI-generated label and a watermark on everything it makes, and an AI disclosure at the start of every agent call. That is a design choice, not a legal opinion. What is lawful for your use, for example calling people, is for you to check.",
     a: (
       <>
         <p>
@@ -238,7 +238,7 @@ const FAQ_ITEMS: Item[] = [
           start of every agent call.
         </p>
         <p>
-          That is a design choice, not a legal opinion. We are a student project, not lawyers, so this is not legal advice. What is lawful
+          That is a design choice, not a legal opinion. This is software, not legal advice. What is lawful
           for your use, for example calling people, is for you to check.
         </p>
       </>
@@ -415,7 +415,7 @@ export function Footer() {
         <div>
           <Logo size={40} />
           <p className="mt-4 max-w-[36ch] s-body leading-relaxed text-[var(--s-mute)]">
-            A voice studio for India. Final-year B.Tech project, MIT School of Computing, Pune.
+            A voice studio for India.
           </p>
           <p className="mt-4 max-w-[36ch] s-small leading-relaxed text-[var(--s-mute)]">
             No trackers or analytics on this site. Cookies are used only to keep you signed in when a hosted setup is configured.
@@ -450,17 +450,7 @@ export function Footer() {
         </nav>
       </div>
 
-      <div className="mt-12 grid gap-10 border-t border-[var(--s-line)] pt-10 md:grid-cols-[1fr_1fr_1.4fr]" data-reveal>
-        <div>
-          <p className="s-small font-medium">Built by</p>
-          <ul className="mt-3 space-y-1.5 s-body text-[var(--s-mute)]">
-            <li>Ayush Chougula</li>
-            <li>Atharva Gaikwad</li>
-            <li>Arnav Raut</li>
-            <li>Harpalsing Rajput</li>
-          </ul>
-          <p className="mt-3 s-small text-[var(--s-mute)]">Guided by Prof. Neha Chaube</p>
-        </div>
+      <div className="mt-12 grid gap-10 border-t border-[var(--s-line)] pt-10 md:grid-cols-[1fr_1.4fr]" data-reveal>
         <div>
           <p className="s-small font-medium">Open models</p>
           <ul className="mt-3 space-y-1.5 s-body text-[var(--s-mute)]">
