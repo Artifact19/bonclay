@@ -541,7 +541,17 @@ function Invoke-Warm {
         Fix '.\bonclay.ps1 logs api'
         exit 1
     }
-    Ok ("Ready in {0:N0}s. First replies will be fast." -f $watch.Elapsed.TotalSeconds)
+    if (Test-Alive 'web') {
+        Step 'Pre-compiling web pages for instant navigation'
+        $pages = @('', '/dashboard', '/dashboard/studio/home', '/dashboard/studio', '/dashboard/say-it-once', '/dashboard/voices', '/dashboard/studio/agents', '/dashboard/knowledge', '/dashboard/playground', '/dashboard/calls', '/dashboard/approvals', '/dashboard/analytics', '/dashboard/eval', '/dashboard/keys', '/verify')
+        foreach ($p in $pages) {
+            try {
+                $null = Invoke-WebRequest -Uri "http://127.0.0.1:$WebPort$p" -UseBasicParsing -TimeoutSec 10
+            } catch {}
+        }
+        Ok 'Web pages pre-compiled and ready'
+    }
+    Ok ("Ready in {0:N0}s. First replies and page navigations will be fast." -f $watch.Elapsed.TotalSeconds)
 }
 
 function Stop-Named {

@@ -224,7 +224,7 @@ export function WhySection({ compact = false, id = "why" }: { compact?: boolean;
                       {body}
                     </a>
                   ) : (
-                    <Link href={u.href} prefetch={u.href.startsWith("/dashboard") ? false : undefined} className={cls}>
+                    <Link href={u.href} prefetch={true} className={cls}>
                       {body}
                     </Link>
                   )}

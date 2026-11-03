@@ -84,7 +84,7 @@ export default function VerifyPage() {
         </Link>
         <Link
           href="/dashboard"
-          prefetch={false}
+          prefetch={true}
           className="group ml-auto inline-flex h-10 items-center gap-1.5 rounded-full bg-[var(--s-ink)] pl-4 pr-3.5 s-small font-medium text-white transition-transform duration-200 active:scale-[0.97]"
         >
           Open studio

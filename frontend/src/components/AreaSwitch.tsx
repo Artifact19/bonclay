@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, type KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
 import { AgentsIcon, StudioIcon } from "./icons/NavIcons";
-import { AREAS, type Area } from "@/lib/areas";
+import { AREAS, AREA_HOME, type Area } from "@/lib/areas";
 import { cn } from "@/lib/utils";
 
 const ICONS = { studio: StudioIcon, agents: AgentsIcon } as const;
@@ -13,6 +14,7 @@ const ICONS = { studio: StudioIcon, agents: AgentsIcon } as const;
  * `compact` (the collapsed sidebar) stacks the two options as icon-only buttons.
  */
 export function AreaSwitch({ area, onChange, compact = false }: { area: Area; onChange: (next: Area) => void; compact?: boolean }) {
+  const router = useRouter();
   const refs = useRef<Partial<Record<Area, HTMLButtonElement | null>>>({});
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -52,6 +54,12 @@ export function AreaSwitch({ area, onChange, compact = false }: { area: Area; on
             title={compact ? `${label}: ${hint}` : hint}
             tabIndex={checked ? 0 : -1}
             data-area={id}
+            onMouseEnter={() => {
+              try { router.prefetch(AREA_HOME[id]); } catch {}
+            }}
+            onFocus={() => {
+              try { router.prefetch(AREA_HOME[id]); } catch {}
+            }}
             onClick={() => onChange(id)}
             className={cn(
               "flex h-11 min-w-0 items-center justify-center gap-2 rounded-lg text-sm font-semibold outline-none transition-colors duration-150",

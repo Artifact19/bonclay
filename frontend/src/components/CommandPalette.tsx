@@ -201,7 +201,13 @@ function PaletteDialog({ onClose }: { onClose: () => void }) {
               id={`${uid}-opt-${i}`}
               role="option"
               aria-selected={i === current}
-              onMouseMove={() => i !== current && setActive(i)}
+              onMouseMove={() => {
+                if (i !== current) setActive(i);
+                try { router.prefetch(a.href); } catch {}
+              }}
+              onMouseEnter={() => {
+                try { router.prefetch(a.href); } catch {}
+              }}
               onClick={() => run(a)}
               className={cn(
                 "flex min-h-11 cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-primary",

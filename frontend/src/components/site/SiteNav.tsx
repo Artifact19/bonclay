@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { LayoutGroup } from "motion/react";
@@ -41,6 +41,7 @@ const NAV_CSS = `
 export function SiteNav() {
   const lenis = useLenis();
   const pathname = usePathname();
+  const router = useRouter();
   const isCurrent = (href: string) => pathname === href || pathname === `${href}/`;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -54,6 +55,28 @@ export function SiteNav() {
   }
   const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
+
+  // Proactively warm marketing and entry routes when idle
+  useEffect(() => {
+    const routesToWarm = ["/dashboard", "/login", "/how-it-works", "/channels", "/proof", "/run-it", "/faq", "/verify"];
+    const warm = () => {
+      routesToWarm.forEach((r) => {
+        try {
+          router.prefetch(r);
+        } catch {}
+      });
+    };
+    if (typeof window !== "undefined") {
+      const win = window as unknown as { requestIdleCallback?: (cb: () => void) => number; cancelIdleCallback?: (id: number) => void };
+      if (typeof win.requestIdleCallback === "function") {
+        const id = win.requestIdleCallback(warm);
+        return () => win.cancelIdleCallback?.(id);
+      } else {
+        const t = setTimeout(warm, 1000);
+        return () => clearTimeout(t);
+      }
+    }
+  }, [router]);
 
   const close = useCallback((restoreFocus = false) => {
     setOpen(false);
@@ -138,7 +161,16 @@ export function SiteNav() {
         className="nav-pill flex h-14 items-center gap-3 xl:gap-5 data-[floating]:h-13"
         aria-label="Main"
       >
-        <Link href="/" className="flex items-center pl-1" aria-label="BonClay home" aria-current={pathname === "/" ? "page" : undefined}>
+        <Link
+          href="/"
+          prefetch={true}
+          onMouseEnter={() => {
+            try { router.prefetch("/"); } catch {}
+          }}
+          className="flex items-center pl-1"
+          aria-label="BonClay home"
+          aria-current={pathname === "/" ? "page" : undefined}
+        >
           <Logo size={28} />
         </Link>
         <span aria-hidden className="hidden h-[1.5px] w-12 shrink-0 bg-[#141414]/65 xl:block" />
@@ -159,9 +191,16 @@ export function SiteNav() {
                   )}
                   <Link
                     href={href}
+                    prefetch={true}
                     aria-current={current ? "page" : undefined}
-                    onMouseEnter={() => setHovered(href)}
-                    onFocus={() => setHovered(href)}
+                    onMouseEnter={() => {
+                      setHovered(href);
+                      try { router.prefetch(href); } catch {}
+                    }}
+                    onFocus={() => {
+                      setHovered(href);
+                      try { router.prefetch(href); } catch {}
+                    }}
                     onBlur={() => setHovered(null)}
                     className={`relative inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-3 text-[0.875rem] font-medium transition-colors hover:text-[#141414] ${
                       current ? "font-semibold text-[#141414]" : "text-[#141414]/80"
@@ -177,10 +216,12 @@ export function SiteNav() {
         <span aria-hidden className="ml-auto hidden h-[1.5px] w-12 shrink-0 bg-[#141414]/65 xl:block" />
         <div className="ml-auto flex items-center gap-2 xl:ml-0">
           <TourTriggerButton onClick={() => setTourOpen(true)} label="Tour guide" />
-          {/* prefetch={false}: a prefetch would download the app's chunks (sign-in and Supabase client) to a visitor who never clicks. */}
           <Link
             href="/login"
-            prefetch={false}
+            prefetch={true}
+            onMouseEnter={() => {
+              try { router.prefetch("/login"); } catch {}
+            }}
             className="hidden h-9 items-center whitespace-nowrap rounded-full px-3 text-[0.875rem] font-medium text-[#141414] transition-colors hover:bg-[#FAF9F5]/70 xl:inline-flex"
           >
             Sign in
@@ -188,7 +229,10 @@ export function SiteNav() {
           <Magnetic strength={0.2}>
             <Link
               href="/dashboard"
-              prefetch={false}
+              prefetch={true}
+              onMouseEnter={() => {
+                try { router.prefetch("/dashboard"); } catch {}
+              }}
               className="group inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] pl-4 pr-3.5 text-[0.875rem] font-semibold text-[#141414] transition-all hover:-translate-y-0.5 hover:bg-[#eef17a] hover:shadow-[0_3px_0_#141414]"
             >
               Open studio
@@ -226,6 +270,7 @@ export function SiteNav() {
             <li key={href} className="border-b border-[var(--s-line)]">
               <Link
                 href={href}
+                prefetch={true}
                 onClick={() => close()}
                 aria-current={isCurrent(href) ? "page" : undefined}
                 className="flex min-h-14 items-center justify-between s-h3 py-2 text-[var(--s-ink)] aria-[current=page]:text-[var(--s-bronze)]"
@@ -237,10 +282,10 @@ export function SiteNav() {
           ))}
         </ul>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link href="/dashboard" prefetch={false} onClick={() => close()} className="s-btn s-btn--primary">
+          <Link href="/dashboard" prefetch={true} onClick={() => close()} className="s-btn s-btn--primary">
             Open studio
           </Link>
-          <Link href="/login" prefetch={false} onClick={() => close()} className="s-btn s-btn--secondary">
+          <Link href="/login" prefetch={true} onClick={() => close()} className="s-btn s-btn--secondary">
             Sign in
           </Link>
         </div>

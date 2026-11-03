@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ComponentType } from "react";
 import useSWR from "swr";
 import { AnimatePresence, motion } from "motion/react";
@@ -209,6 +209,7 @@ interface Props {
 
 export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
   const { area, known, switchTo } = useArea();
   const { user, signOut } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -247,6 +248,45 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
     shouldRetryOnError: false,
   });
   const pending = area === "agents" ? (approvals.data ?? 0) : 0;
+
+  // Proactively prefetch common destinations when idle so all option clicks are instantaneous
+  useEffect(() => {
+    const routesToWarm = [
+      "/dashboard",
+      "/dashboard/studio/home",
+      "/dashboard/studio",
+      "/dashboard/say-it-once",
+      "/dashboard/voices",
+      "/dashboard/studio/agents",
+      "/dashboard/knowledge",
+      "/dashboard/playground",
+      "/dashboard/calls",
+      "/dashboard/approvals",
+      "/dashboard/analytics",
+      "/dashboard/eval",
+      "/dashboard/keys",
+      "/verify",
+    ];
+    const warm = () => {
+      routesToWarm.forEach((r) => {
+        try {
+          router.prefetch(r);
+        } catch {
+          // ignore
+        }
+      });
+    };
+    if (typeof window !== "undefined") {
+      const win = window as unknown as { requestIdleCallback?: (cb: () => void) => number; cancelIdleCallback?: (id: number) => void };
+      if (typeof win.requestIdleCallback === "function") {
+        const id = win.requestIdleCallback(warm);
+        return () => win.cancelIdleCallback?.(id);
+      } else {
+        const t = setTimeout(warm, 1000);
+        return () => clearTimeout(t);
+      }
+    }
+  }, [router]);
 
   useEffect(() => {
     const read = () => {
@@ -305,6 +345,21 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
       <Link
         key={href}
         href={href}
+        prefetch={true}
+        onMouseEnter={() => {
+          try {
+            router.prefetch(href);
+          } catch {
+            // ignore
+          }
+        }}
+        onPointerDown={() => {
+          try {
+            router.prefetch(href);
+          } catch {
+            // ignore
+          }
+        }}
         title={compact ? (count ? `${label}: ${waiting}` : label) : undefined}
         aria-current={active ? "page" : undefined}
         className={cn(
@@ -344,7 +399,15 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
   const content = (compact: boolean, inDrawer: boolean) => (
     <div data-area={area} className={cn("flex h-full flex-col", inDrawer && "overflow-y-auto")}>
       <div className={cn("flex h-14 shrink-0 items-center border-b border-border", compact ? "justify-center" : "justify-between px-4")}>
-        <Link href="/" aria-label="BonClay home" className="flex items-center">
+        <Link
+          href="/"
+          aria-label="BonClay home"
+          prefetch={true}
+          onMouseEnter={() => {
+            try { router.prefetch("/"); } catch {}
+          }}
+          className="flex items-center"
+        >
           {compact ? <LogoMark size={28} /> : <Logo size={26} />}
         </Link>
         {inDrawer ? (
@@ -428,7 +491,16 @@ export function BonClaySidebar({ collapsed = false, onToggleCollapsed }: Props) 
               <LogOut className="size-4" />
             </button>
           ) : localMode ? null : (
-            <Link href="/login" className="text-xs font-medium text-accent-secondary">Sign in</Link>
+            <Link
+              href="/login"
+              prefetch={true}
+              onMouseEnter={() => {
+                try { router.prefetch("/login"); } catch {}
+              }}
+              className="text-xs font-medium text-accent-secondary"
+            >
+              Sign in
+            </Link>
           )}
         </div>
       </div>

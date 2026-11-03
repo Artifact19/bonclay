@@ -340,7 +340,7 @@ export function FinalCta() {
             It all runs on your laptop.
           </Reveal>
           <Reveal delay={0.2} className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Magnetic><Link href="/dashboard" prefetch={false} className={`${ctaBase} bg-[var(--s-marigold)] text-[var(--s-marigold-ink)] hover:bg-[#F5B358]`}>
+            <Magnetic><Link href="/dashboard" prefetch={true} className={`${ctaBase} bg-[var(--s-marigold)] text-[var(--s-marigold-ink)] hover:bg-[#F5B358]`}>
               Open studio
               <ArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
             </Link></Magnetic>
@@ -438,7 +438,7 @@ export function Footer() {
                         {l.label}
                       </a>
                     ) : (
-                      <Link href={l.href} prefetch={l.href.startsWith("/dashboard") ? false : undefined} className={footLink}>
+                      <Link href={l.href} prefetch={true} className={footLink}>
                         {l.label}
                       </Link>
                     )}

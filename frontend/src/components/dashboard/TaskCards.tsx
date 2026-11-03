@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 
 export interface Task {
@@ -15,11 +16,19 @@ export interface Task {
 
 /** A grid of big "do this" cards: the whole card is one link, with an optional second link above it. */
 export function TaskCards({ tasks, label }: { tasks: Task[]; label: string }) {
+  const router = useRouter();
+
   return (
     <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4" aria-label={label}>
       {tasks.map(({ id, href, label: title, hint, Icon, more }) => (
         <li
           key={id}
+          onMouseEnter={() => {
+            try {
+              router.prefetch(href);
+              if (more?.href) router.prefetch(more.href);
+            } catch {}
+          }}
           className="group relative flex min-h-[112px] flex-col gap-2 rounded-xl border border-border bg-bg-surface p-4 transition-[border-color,background-color] duration-200 focus-within:border-[var(--area-accent)] hover:border-[var(--area-accent)] hover:bg-bg-elevated motion-reduce:transition-none"
         >
           <span className="flex size-9 items-center justify-center rounded-lg bg-[color-mix(in_srgb,var(--area-accent)_16%,transparent)] text-[var(--area-accent)]">
@@ -28,6 +37,7 @@ export function TaskCards({ tasks, label }: { tasks: Task[]; label: string }) {
           <span className="min-w-0">
             <Link
               href={href}
+              prefetch={true}
               className="block text-sm font-semibold leading-snug text-text-primary after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-[var(--area-accent)]"
             >
               {title}
@@ -37,6 +47,7 @@ export function TaskCards({ tasks, label }: { tasks: Task[]; label: string }) {
           {more && (
             <Link
               href={more.href}
+              prefetch={true}
               className="relative z-10 -mb-1 mt-auto inline-flex min-h-8 items-center text-xs font-medium text-[var(--area-accent)] underline-offset-2 hover:underline"
             >
               {more.label}

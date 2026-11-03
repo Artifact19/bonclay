@@ -264,7 +264,7 @@ export function Hero() {
                   <Magnetic>
                     <Link
                       href="/dashboard"
-                      prefetch={false}
+                      prefetch={true}
                       className="group inline-flex h-12.5 items-center gap-3 rounded-full border-[1.5px] border-[#141414] bg-[#141414] px-7 text-[0.9375rem] font-medium text-[#FAF9F5] transition-transform hover:-translate-y-0.5"
                     >
                       <span>Open studio</span>
