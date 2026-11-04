@@ -45,7 +45,7 @@ VALUE = {
     "te": {"పది": "10", "ఐదు": "5", "నాలుగు వందల": "400"},
 }
 NATIVE = {"hi": "०१२३४५६७८९", "mr": "०१२३४५६७८९"}
-LOCK_NOTES = "/Users/ayushchougula/Library/Application Support/Claude/side-session-notes/local_6e55bbb9-b8fe-413f-a039-b3201b264e3f"
+LOCK_NOTES = os.path.expanduser("~/Library/Application Support/Claude/side-session-notes/local_6e55bbb9-b8fe-413f-a039-b3201b264e3f")
 
 
 def to_ascii(s):

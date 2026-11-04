@@ -14,7 +14,7 @@ Everything was built and tuned on an Apple-Silicon Mac (MLX). The only Windows p
 
 | Item | Detail |
 | --- | --- |
-| Owner | Ayush Chougula (they/them), CSE student, builds BonClay alone with Claude sessions |
+| Owner | BonClay Core Team |
 | Goal now | Showcase to the HOD of CSE and pitch for the college Best Project award; later pilots with clinics and colleges |
 | Demo audience | Jayashri Prasad ma'am, HOD of the AI department; the HOD-office agent books her time |
 | Preferences | Wants things done, not explained; runs agents in parallel; wants tables; wants honest scores; wants the cloned voice kept on phone calls (speed it up, do not switch to a preset) |

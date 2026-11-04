@@ -348,7 +348,7 @@ class FakeDhvaani:
 
 def stored_voice(tmp_path, audio, transcript="good morning", language="en", voice_id="v-dh"):
     (tmp_path / f"{voice_id}.wav").write_bytes(wav_bytes(audio))
-    return {"id": voice_id, "engine": "qwen3_0_6b", "language": language, "display_name": "Ayush",
+    return {"id": voice_id, "engine": "qwen3_0_6b", "language": language, "display_name": "Speaker",
             "reference_audio_path": f"local:{voice_id}", "transcript": transcript, "user_id": "local-user"}
 
 

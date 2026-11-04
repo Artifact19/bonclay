@@ -142,7 +142,7 @@ def test_a_cloned_voice_speaks_each_sentence_through_the_clone_engine(rig, backe
             return [np.full(CLIP, 0.05, dtype=np.float32)], 24000
 
     async def lookup(voice_id, storage_mode, user_id=None):
-        return {"id": voice_id, "display_name": "Ayush", "transcript": "good morning", "engine": "qwen3_0_6b"}
+        return {"id": voice_id, "display_name": "Speaker", "transcript": "good morning", "engine": "qwen3_0_6b"}
 
     async def prompt(voice_id, user_id, storage_mode, row, model):
         return {"prompt": voice_id}
@@ -158,4 +158,4 @@ def test_a_cloned_voice_speaks_each_sentence_through_the_clone_engine(rig, backe
     assert [c[0] for c in calls] == [d["text"] for e, d in events if e == "sentence"]
     assert all(c[2] == {"prompt": "v-1"} for c in calls)
     done = events[-1][1]
-    assert done["engine"] == backend_mod.CLONE_ENGINE and done["voice_name"] == "Ayush"
+    assert done["engine"] == backend_mod.CLONE_ENGINE and done["voice_name"] == "Speaker"

@@ -94,7 +94,7 @@ def test_create_list_with_defaults_and_a_private_store(rig, env):
 
     path = web_call.store.path()                                   # next to the local database, owner-only
     assert os.path.dirname(path) == os.path.dirname(env.local_db.root)
-    assert stat.S_IMODE(os.stat(path).st_mode) == 0o600
+    assert os.name == "nt" or stat.S_IMODE(os.stat(path).st_mode) == 0o600
     stored = json.load(open(path))["links"][link["id"]]
     assert set(stored) == {"agent_id", "user_id", "mode", "label", "created", "expires", "revoked",
                            "max_session_minutes", "max_minutes_per_day", "max_minutes_per_visitor", "sessions",
@@ -183,13 +183,13 @@ def test_the_page_is_self_contained_branded_and_safe(rig, env):
     for needle in ("BonClay", "AI voice agent", "You are talking to an AI, not a person", "Start talking",
                    "End call", "Mute microphone", 'role="log"', 'aria-live="polite"', "up to 7 minutes",
                    "Voice is AI-generated, watermarked and signed; check a clip at",
-                   "bonclay.ayushchougula.in/verify"):
+                   "bonclay.app/verify"):
         assert needle in page, needle
     assert "{{" not in page
     # no inline script or style: everything is a same-origin file
     assert not re.search(r"<script(?![^>]*\bsrc=)", page) and " style=" not in page and "onclick" not in page
     assert re.findall(r'(?:src|href)="([^"]+)"', page) == [
-        "data:,", "/call/assets/call.css", "https://bonclay.ayushchougula.in/verify", "/call/assets/call.js"]
+        "data:,", "/call/assets/call.css", "https://bonclay.app/verify", "/call/assets/call.js"]
     h = r.headers
     assert h["cache-control"] == "no-store" and h["x-content-type-options"] == "nosniff"
     assert h["referrer-policy"] == "no-referrer" and h["x-frame-options"] == "DENY"

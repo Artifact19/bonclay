@@ -899,7 +899,7 @@ export function CallDialog({ agent, open, onClose }: Props) {
                       <input
                         id="add-number-label"
                         maxLength={40}
-                        placeholder="Ayush"
+                        placeholder="Arnav"
                         value={addLabel}
                         onChange={(e) => setAddLabel(e.target.value)}
                         disabled={locked}

@@ -1,6 +1,6 @@
 # Decision: removing old voice files from git history
 
-**Date:** 19 October 2026 · **Status:** prepared, NOT executed · **Owner decides:** Ayush Chougula
+**Date:** 19 October 2026 · **Status:** prepared, NOT executed · **Owner decides:** Project Maintainer
 
 Nothing in the real repository was rewritten, pushed, deleted or re-tagged while preparing this. The dry run below
 ran in throwaway clones outside the project.
@@ -112,7 +112,7 @@ git push --force --mirror origin    # pushes branches and tags; GitHub refuses r
 #    gh release view v1.0-demo ; (edit or recreate) gh release create v1.0-demo --target main ...
 
 # 5. Your working checkout: do NOT pull. Keep your untracked files, then re-clone and copy them in.
-cd ~/Desktop/Ayush/Projects && mv BonClay BonClay-old && git clone https://github.com/Artifact19/bonclay.git BonClay
+cd ~/Projects && mv BonClay BonClay-old && git clone https://github.com/Artifact19/bonclay.git BonClay
 cp -R BonClay-old/backend/data BonClay/backend/data     # local-only state (voices, keys, receipts) and video/, .env files
 cp -R BonClay-old/video BonClay/video
 cp BonClay-old/backend/.env BonClay/backend/.env 2>/dev/null; cp BonClay-old/frontend/.env.local BonClay/frontend/ 2>/dev/null

@@ -477,7 +477,7 @@ def test_a_hello_while_the_agent_is_still_thinking_does_not_cancel_its_answer(ri
 
 # ------------------------------------------------------------------------------------- numbers saved in the app
 
-def add(rig, label="Ayush", number="+91 98765 43210", agreed=True):
+def add(rig, label="Arnav", number="+91 98765 43210", agreed=True):
     return rig.client.post("/api/phone/exotel/numbers", headers=LOCAL, json={"label": label, "number": number, "agreed": agreed})
 
 
@@ -485,10 +485,10 @@ def test_a_saved_number_is_listed_normalised_and_masked(rig):
     r = add(rig)
     assert r.status_code == 200, r.text
     body = r.json()
-    assert body["number"] == "+919876543210" and body["label"] == "Ayush" and body["source"] == "saved" and "98765" not in body["masked"]
+    assert body["number"] == "+919876543210" and body["label"] == "Arnav" and body["source"] == "saved" and "98765" not in body["masked"]
     status = rig.client.get("/api/phone/exotel/status", headers=LOCAL).json()
     [entry] = status["allowed_numbers"]
-    assert entry["number"] == "+919876543210" and entry["source"] == "saved" and entry["id"] == body["id"] and entry["label"] == "Ayush"
+    assert entry["number"] == "+919876543210" and entry["source"] == "saved" and entry["id"] == body["id"] and entry["label"] == "Arnav"
     assert status["allowed_numbers_set"] is True
     assert rig.client.get("/api/phone/exotel/numbers", headers=LOCAL).json()["numbers"][0]["id"] == body["id"]
 

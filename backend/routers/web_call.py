@@ -94,7 +94,7 @@ TURNS_PER_VISITOR_MINUTE = 20
 TURNS_PER_IP_HOUR = 300
 MAX_UPLOAD_BYTES = widget.MAX_UPLOAD_BYTES
 ASSET_DIR = Path(__file__).resolve().parent.parent / "webcall" / "v1"
-FOOTER_VERIFY = "bonclay.ayushchougula.in/verify"
+FOOTER_VERIFY = "bonclay.app/verify"
 SAFE_ERRORS = widget._SAFE_ERRORS
 
 CSP = ("default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob: data:; "

@@ -32,7 +32,7 @@ const blob = api.blob as jest.Mock;
 
 const VOICES = [
   { id: "v-old", display_name: "Old clone", created_at: "2026-01-01" },
-  { id: "v-ayush", display_name: "Ayush Chougula", consent_id: "c1", consent_verified: true, created_at: "2026-10-14" },
+  { id: "v-user", display_name: "Studio Speaker", consent_id: "c1", consent_verified: true, created_at: "2026-10-14" },
 ];
 
 const route = (voice_kind: string | null, engine: string | null, available = true, reason: string | null = null) => ({
@@ -42,7 +42,7 @@ const cap = (language: string, language_name: string, own: ReturnType<typeof rou
   language, language_name, ...own, fast,
 });
 const CAPS = {
-  voice_id: "v-ayush",
+  voice_id: "v-user",
   languages: [
     cap("hi", "Hindi", route("your_voice", "chatterbox_ml"), route("preset_voice", "kokoro")),
     cap("mr", "Marathi", route("preset_voice", "indic_speak"), route("preset_voice", "indic_speak")),
@@ -139,12 +139,12 @@ describe("Say it once page: the form", () => {
   it("offers only consented voices, labels each language chip and starts in review-free, your-voice mode", async () => {
     render(<SayItOnce pollMs={5} estimateDebounceMs={1} />);
     const select = screen.getByLabelText("Voice") as HTMLSelectElement;
-    expect([...select.options].map((o) => o.text)).toEqual(["Ayush Chougula"]);
+    expect([...select.options].map((o) => o.text)).toEqual(["Studio Speaker"]);
     expect((screen.getByLabelText(/Sentence/) as HTMLTextAreaElement).value).toBe(
       "Your appointment is confirmed for Thursday at four."
     );
     await waitFor(() => expect(screen.getByTestId("chip-kind-hi").textContent).toBe("your voice"));
-    expect(get).toHaveBeenCalledWith("/api/say-it-once/capabilities?voice_id=v-ayush", { retries: 0 });
+    expect(get).toHaveBeenCalledWith("/api/say-it-once/capabilities?voice_id=v-user", { retries: 0 });
     expect(screen.getByTestId("chip-kind-mr").textContent).toBe("preset voice");
     expect(screen.getByTestId("chip-kind-ta").textContent).toBe("not available");
     expect((screen.getByRole("button", { name: /Tamil/ }) as HTMLButtonElement).disabled).toBe(true);
@@ -163,7 +163,7 @@ describe("Say it once page: the form", () => {
     expect(box.textContent).toContain("All together about 60 s, one language at a time.");
     expect(post).toHaveBeenCalledWith(
       "/api/say-it-once/estimate",
-      { voice_id: "v-ayush", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi", "fr"], source_language: "en", speed: "own" },
+      { voice_id: "v-user", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi", "fr"], source_language: "en", speed: "own" },
       { retries: 0 }
     );
   });
@@ -202,7 +202,7 @@ describe("Say it once page: the form", () => {
 describe("Say it once page: DhVaani speaks the Indian languages in your voice", () => {
   const CREDIT = "Voice cloning in Indian languages by DhVaani from ARTPARK-IISc.";
   const DHVAANI_CAPS = {
-    voice_id: "v-ayush",
+    voice_id: "v-user",
     languages: CAPS.languages.map((c) =>
       ["hi", "mr", "bn", "te", "gu"].includes(c.language)
         ? { ...c, ...route("your_voice", "dhvaani"), engine_name: "DhVaani-0.5 (ARTPARK-IISc)", attribution: CREDIT }
@@ -250,7 +250,7 @@ describe("Say it once page: one click, one card per language", () => {
     await waitFor(() => expect(startCalls()).toHaveLength(1));
     expect(startCalls()[0]).toEqual([
       "/api/say-it-once",
-      { voice_id: "v-ayush", text: "Your appointment is confirmed for Thursday at four.", languages: ["fr", "mr"], source_language: "en", speed: "own" },
+      { voice_id: "v-user", text: "Your appointment is confirmed for Thursday at four.", languages: ["fr", "mr"], source_language: "en", speed: "own" },
       { retries: 0 },
     ]);
     expect(post.mock.calls.some(([p]) => p === "/api/say-it-once/translate")).toBe(false);
@@ -390,7 +390,7 @@ describe("Say it once page: one click, one card per language", () => {
     await waitFor(() => expect(startCalls()).toHaveLength(2));
     expect(startCalls()[1]).toEqual([
       "/api/say-it-once",
-      { voice_id: "v-ayush", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi"], source_language: "en", speed: "own" },
+      { voice_id: "v-user", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi"], source_language: "en", speed: "own" },
       { retries: 0 },
     ]); // nothing was translated yet, so no text is sent and the model translates again
     expect(within(hi).queryByRole("alert")).toBeNull();
@@ -430,7 +430,7 @@ describe("Say it once page: one click, one card per language", () => {
     await waitFor(() => expect(startCalls()).toHaveLength(2));
     expect(startCalls()[1]).toEqual([
       "/api/say-it-once",
-      { voice_id: "v-ayush", text: "Your appointment is confirmed for Thursday at four.", languages: ["fr"], source_language: "en", speed: "own", translations: { fr: edited } },
+      { voice_id: "v-user", text: "Your appointment is confirmed for Thursday at four.", languages: ["fr"], source_language: "en", speed: "own", translations: { fr: edited } },
       { retries: 0 },
     ]);
     // only French is busy again; Marathi keeps its audio
@@ -547,7 +547,7 @@ describe("Say it once page: the optional review step", () => {
     const hi = await screen.findByTestId("review-hi");
     expect(post).toHaveBeenCalledWith(
       "/api/say-it-once/translate",
-      { voice_id: "v-ayush", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi", "fr"], source_language: "en", speed: "own" },
+      { voice_id: "v-user", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi", "fr"], source_language: "en", speed: "own" },
       { retries: 0 }
     );
     expect(within(hi).getByTestId("warning-hi").textContent).toContain("names a different day");
@@ -558,7 +558,7 @@ describe("Say it once page: the optional review step", () => {
     fireEvent.click(screen.getByRole("button", { name: "Speak all" }));
     await waitFor(() => expect(startCalls()).toHaveLength(1));
     expect(startCalls()[0][1]).toEqual({
-      voice_id: "v-ayush", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi", "fr"],
+      voice_id: "v-user", text: "Your appointment is confirmed for Thursday at four.", languages: ["hi", "fr"],
       source_language: "en", speed: "own", translations: { hi: edited, fr: FR_TEXT },
     });
     const result = await screen.findByTestId("result-hi");

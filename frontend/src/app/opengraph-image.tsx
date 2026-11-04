@@ -39,7 +39,7 @@ export default function OpengraphImage() {
             <div style={{ display: "flex", width: 16, height: 16, borderRadius: 8, background: MARIGOLD, marginRight: 14 }} />
             BonClay
           </div>
-          <div style={{ display: "flex", fontSize: 24, opacity: 0.6 }}>bonclay.ayushchougula.in</div>
+          <div style={{ display: "flex", fontSize: 24, opacity: 0.6 }}>bonclay.app</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>

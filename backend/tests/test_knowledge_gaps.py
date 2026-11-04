@@ -63,7 +63,7 @@ def test_llm_outage_fallback_is_not_a_gap_and_not_counted():
     ("+91-9876543210 is mine", "9876543210"),
     ("Aadhaar 1234 5678 9012 is linked", "5678"),
     ("aadhaar 123456789012 hai", "123456789012"),
-    ("mail ayush.c@example.co.in now", "example"),
+    ("mail contact.user@example.co.in now", "example"),
     ("card 4111 1111 1111 1111 declined", "4111"),
     ("order 55512345 status", "55512345"),
 ])
@@ -78,7 +78,7 @@ def test_redact_keeps_ordinary_numbers_and_truncates():
 
 
 def test_gap_questions_are_redacted_before_clustering():
-    gaps, _ = kg.find_gaps([pair("Is 9876543210 registered? Also ayush@x.com")])
+    gaps, _ = kg.find_gaps([pair("Is 9876543210 registered? Also user@x.com")])
     assert "9876543210" not in gaps[0]["question"] and "@" not in gaps[0]["question"]
 
 

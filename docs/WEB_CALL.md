@@ -1,7 +1,7 @@
 # Web call link
 
 A link anyone can open to talk to one BonClay agent by voice, in their browser. No phone network, no KYC, no login,
-nothing to install. Share it on WhatsApp, in an email, or on a slide: `https://phone.ayushchougula.in/call/awc_...`.
+nothing to install. Share it on WhatsApp, in an email, or on a slide: `https://phone.example.in/call/awc_...`.
 
 The page is served by the phone-only public app (`backend/phone_public.py`, the port your tunnel already points at),
 so the main API (voices, cloning, keys, calls, system) stays unreachable from the internet.
@@ -28,7 +28,7 @@ card shows `http://localhost:8411`-style links that only open on this computer, 
   the agent cuts it off. The microphone has echo cancellation on; headphones help.
 * Live captions of both sides (one line per finished sentence, in an `aria-live` log so a screen reader reads each line
   once), a status line, **Mute microphone**, **End call** and a countdown. One minute before the limit a line says so.
-* A footer: "Voice is AI-generated, watermarked and signed; check a clip at bonclay.ayushchougula.in/verify".
+* A footer: "Voice is AI-generated, watermarked and signed; check a clip at bonclay.app/verify".
 * It works on phones (no horizontal scroll, large touch targets), follows the light or dark setting, and stops
   decorative motion when the visitor prefers reduced motion.
 * Friendly messages for a blocked or missing microphone, a link that is switched off or expired, "too many people right

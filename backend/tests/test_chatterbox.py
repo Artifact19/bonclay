@@ -197,7 +197,7 @@ def qwen_voice(env, tmp_path, ref_wav, voice_id="v-qwen"):
 
     (tmp_path / f"{voice_id}.wav").write_bytes(ref_wav.read_bytes())
     torch.save({"backend": "qwen-fake", "marker": 1}, tmp_path / f"{voice_id}.pt")
-    return {"id": voice_id, "engine": "qwen3_0_6b", "language": "en", "display_name": "Ayush",
+    return {"id": voice_id, "engine": "qwen3_0_6b", "language": "en", "display_name": "Speaker",
             "reference_audio_path": f"local:{voice_id}", "transcript": None, "user_id": "local-user"}
 
 

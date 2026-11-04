@@ -26,7 +26,7 @@ const READY: ExotelStatus = {
   configured: true,
   missing: [],
   allowed_numbers: [
-    { number: "+919876543210", masked: "+91•••••43210", label: "Ayush", source: "saved", id: "n1" },
+    { number: "+919876543210", masked: "+91•••••43210", label: "Arnav", source: "saved", id: "n1" },
     { number: "+919000000000", masked: "+91•••••00000", label: "Allowed in backend/.env", source: "env", id: null },
   ],
   allowed_numbers_set: true,
@@ -162,7 +162,7 @@ describe("CallDialog setup", () => {
   it("offers the allowed numbers masked in a select, and keeps Call off until the person agreed", async () => {
     await openReady();
     const select = screen.getByLabelText("Number to call") as HTMLSelectElement;
-    expect(Array.from(select.options).map((o) => o.textContent)).toEqual(["Ayush, +91•••••43210", "Pre-approved number, +91•••••00000"]);
+    expect(Array.from(select.options).map((o) => o.textContent)).toEqual(["Arnav, +91•••••43210", "Pre-approved number, +91•••••00000"]);
     expect(select.value).toBe("+919876543210");
     expect(screen.queryByText("+919876543210")).not.toBeInTheDocument();
     expect(screen.queryByText(/Allowed in backend/)).not.toBeInTheDocument();
@@ -437,13 +437,13 @@ describe("CallDialog saved numbers", () => {
 
   it("removes a saved number after confirming", async () => {
     await openReady();
-    fireEvent.click(screen.getByRole("button", { name: "Remove Ayush" }));
-    expect(screen.getByText("Remove Ayush?")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Remove Arnav" }));
+    expect(screen.getByText("Remove Arnav?")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Keep" }));
-    expect(screen.queryByText("Remove Ayush?")).not.toBeInTheDocument();
+    expect(screen.queryByText("Remove Arnav?")).not.toBeInTheDocument();
     expect(del).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "Remove Ayush" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove Arnav" }));
     del.mockResolvedValue({ removed: true });
     mockGet({ ...READY, allowed_numbers: [READY.allowed_numbers[1]] });
     fireEvent.click(screen.getByRole("button", { name: "Remove" }));
@@ -452,7 +452,7 @@ describe("CallDialog saved numbers", () => {
     expect(del).toHaveBeenCalledWith("/api/phone/exotel/numbers/n1");
     const select = screen.getByLabelText("Number to call") as HTMLSelectElement;
     expect(Array.from(select.options).map((o) => o.textContent)).toEqual(["Pre-approved number, +91•••••00000"]);
-    expect(screen.getByTestId("numbers-status")).toHaveTextContent("Removed Ayush.");
+    expect(screen.getByTestId("numbers-status")).toHaveTextContent("Removed Arnav.");
   });
 
   it.each([
@@ -460,7 +460,7 @@ describe("CallDialog saved numbers", () => {
     ["NUMBER_FROM_ENV", "can only be removed there"],
   ])("explains %s when removing", async (code, words) => {
     await openReady();
-    fireEvent.click(screen.getByRole("button", { name: "Remove Ayush" }));
+    fireEvent.click(screen.getByRole("button", { name: "Remove Arnav" }));
     del.mockRejectedValue(new ApiError("x", 400, code));
     fireEvent.click(screen.getByRole("button", { name: "Remove" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(words);

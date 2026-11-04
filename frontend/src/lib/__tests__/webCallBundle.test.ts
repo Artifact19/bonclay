@@ -125,7 +125,7 @@ const bodyHtml = (name = "Ria") =>
     .replace(/\{\{NAME\}\}/g, name)
     .replace(/\{\{LINK\}\}/g, LINK)
     .replace(/\{\{MINUTES\}\}/g, "10")
-    .replace(/\{\{VERIFY\}\}/g, "bonclay.ayushchougula.in/verify")
+    .replace(/\{\{VERIFY\}\}/g, "bonclay.app/verify")
     .replace(/^[\s\S]*<body>/, "")
     .replace(/<script[\s\S]*$/, "");
 

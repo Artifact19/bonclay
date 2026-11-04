@@ -63,7 +63,7 @@ def env(app_client, monkeypatch, tmp_path):
     monkeypatch.setattr(sio, "ESTIMATOR", Estimator(path=str(tmp_path / "rtf.json")))  # never the real data file
     monkeypatch.setattr(sio, "_now", lambda: s.clock)
     voices = [
-        {"id": VOICE, "user_id": "local-user", "display_name": "Ayush", "engine": "qwen3_0_6b", "language": "en",
+        {"id": VOICE, "user_id": "local-user", "display_name": "Speaker", "engine": "qwen3_0_6b", "language": "en",
          "consent_id": "consent-1", "consent_verified": True},
         {"id": "voice-no-consent", "user_id": "local-user", "display_name": "Old clone", "engine": "qwen3_0_6b",
          "language": "en"},
