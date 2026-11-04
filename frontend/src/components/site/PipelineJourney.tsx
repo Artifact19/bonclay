@@ -13,7 +13,7 @@
  * timeline played at timeScale 1. The picture windows do not overlap; the markers on the ruler are the true times. */
 
 import Link from "next/link";
-import { Fragment, useCallback, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AudioLines, FileText, Mic, Phone, Play, Square } from "lucide-react";
@@ -484,7 +484,7 @@ export function PipelineJourney() {
   const [input, setInput] = useState<InputKind>("browser");
   const [status, setStatus] = useState<Status>("idle");
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (mode === "static") return;
     const root = pjRef.current;
     const track = trackRef.current;

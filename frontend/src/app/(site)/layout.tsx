@@ -1,6 +1,6 @@
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { SiteNav } from "@/components/site/SiteNav";
-import { Footer } from "@/components/site/Ending";
+import { Footer } from "@/components/site/Footer";
 import { siteFont, siteSerif } from "@/components/site/siteFont";
 import { PublicMain } from "@/components/PublicMain";
 import { manrope } from "@/lib/brandFont";

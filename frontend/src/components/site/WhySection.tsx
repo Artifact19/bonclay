@@ -67,7 +67,7 @@ function BeatLinks({ links, night }: { links?: Beat["links"]; night: boolean }) 
             {l.label}
           </a>
         ) : (
-          <Link key={l.href} href={l.href} className={cls}>
+          <Link key={l.href} href={l.href} prefetch={false} className={cls}>
             {l.label}
           </Link>
         );
@@ -224,7 +224,7 @@ export function WhySection({ compact = false, id = "why" }: { compact?: boolean;
                       {body}
                     </a>
                   ) : (
-                    <Link href={u.href} prefetch={true} className={cls}>
+                    <Link href={u.href} prefetch={false} className={cls}>
                       {body}
                     </Link>
                   )}

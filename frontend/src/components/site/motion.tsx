@@ -61,6 +61,20 @@ type SplitHeadingProps = {
 /** A heading whose words rise one by one out of a clipped line. Server-rendered text is complete in the DOM. */
 export function SplitHeading({ text, accent, break: br, immediate, delay = 0, as = "h2", id, className = "" }: SplitHeadingProps) {
   const still = useStill();
+  if (still || immediate) {
+    const Tag = as;
+    return (
+      <Tag id={id} className={className}>
+        {text}
+        {accent && (
+          <>
+            {br ? <br /> : " "}
+            <span className="accent">{accent}</span>
+          </>
+        )}
+      </Tag>
+    );
+  }
   const Tag = motion[as];
   const words = (s: string, accentWord: boolean) =>
     s.split(" ").filter(Boolean).map((w, i, arr) => (
@@ -77,7 +91,8 @@ export function SplitHeading({ text, accent, break: br, immediate, delay = 0, as
       className={className}
       variants={still ? undefined : lineVariants}
       initial={still ? false : "hidden"}
-      {...(immediate ? { animate: "show" } : { whileInView: "show", viewport: { once: true, amount: 0.35 } })}
+      whileInView="show"
+      viewport={{ once: true, amount: 0.35 }}
       transition={{ delayChildren: delay }}
     >
       {words(text, false)}
@@ -113,8 +128,7 @@ type RevealProps = {
 /** Fades and lifts its content the first time it scrolls into view (GPU compositor only, no blur filter). */
 export function Reveal({ children, delay = 0, y = 20, scale, immediate, as = "div", className, style, ...rest }: RevealProps) {
   const still = useStill();
-  const Tag = motion[as];
-  if (still) {
+  if (still || immediate) {
     const Plain = as;
     return (
       <Plain className={className} style={style} {...rest}>
@@ -122,14 +136,14 @@ export function Reveal({ children, delay = 0, y = 20, scale, immediate, as = "di
       </Plain>
     );
   }
+  const Tag = motion[as];
   return (
     <Tag
       className={className}
       style={style}
       initial={{ opacity: 0, y, scale: scale ? 0.98 : 1 }}
-      {...(immediate
-        ? { animate: { opacity: 1, y: 0, scale: 1 } }
-        : { whileInView: { opacity: 1, y: 0, scale: 1 }, viewport: { once: true, margin: "0px 0px -10% 0px" } })}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
       transition={{ duration: 0.55, ease: EASE, delay }}
       {...rest}
     >

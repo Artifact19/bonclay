@@ -26,6 +26,8 @@ backend/.pytest_temp/
 Thumbs.db
 *.tsbuildinfo
 .impeccable/
+.lighthouseci/
+frontend/.lighthouseci/
 trial-audio/
 .pytest_temp/
 __pycache__/

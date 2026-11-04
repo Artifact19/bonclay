@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -9,7 +10,9 @@ import { Magnetic, motion } from "./motion";
 import { useLenis } from "./SmoothScroll";
 import { Logo } from "@/components/Logo";
 import { SITE_PAGES } from "./routes";
-import { TourGuide, TourTriggerButton } from "@/components/TourGuide";
+import { TourTriggerButton } from "@/components/TourGuide";
+
+const TourGuide = dynamic(() => import("@/components/TourGuide").then((m) => m.TourGuide), { ssr: false });
 
 /** One link per page after Home (Home is the logo). The active page gets aria-current="page". */
 const LINKS = SITE_PAGES.map((p) => [p.href, p.nav] as const);
@@ -55,28 +58,6 @@ export function SiteNav() {
   }
   const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
-
-  // Proactively warm marketing and entry routes when idle
-  useEffect(() => {
-    const routesToWarm = ["/dashboard", "/login", "/how-it-works", "/channels", "/proof", "/run-it", "/faq", "/verify"];
-    const warm = () => {
-      routesToWarm.forEach((r) => {
-        try {
-          router.prefetch(r);
-        } catch {}
-      });
-    };
-    if (typeof window !== "undefined") {
-      const win = window as unknown as { requestIdleCallback?: (cb: () => void) => number; cancelIdleCallback?: (id: number) => void };
-      if (typeof win.requestIdleCallback === "function") {
-        const id = win.requestIdleCallback(warm);
-        return () => win.cancelIdleCallback?.(id);
-      } else {
-        const t = setTimeout(warm, 1000);
-        return () => clearTimeout(t);
-      }
-    }
-  }, [router]);
 
   const close = useCallback((restoreFocus = false) => {
     setOpen(false);
@@ -163,10 +144,7 @@ export function SiteNav() {
       >
         <Link
           href="/"
-          prefetch={true}
-          onMouseEnter={() => {
-            try { router.prefetch("/"); } catch {}
-          }}
+          prefetch={false}
           className="flex items-center pl-1"
           aria-label="BonClay home"
           aria-current={pathname === "/" ? "page" : undefined}
@@ -191,16 +169,10 @@ export function SiteNav() {
                   )}
                   <Link
                     href={href}
-                    prefetch={true}
+                    prefetch={false}
                     aria-current={current ? "page" : undefined}
-                    onMouseEnter={() => {
-                      setHovered(href);
-                      try { router.prefetch(href); } catch {}
-                    }}
-                    onFocus={() => {
-                      setHovered(href);
-                      try { router.prefetch(href); } catch {}
-                    }}
+                    onMouseEnter={() => setHovered(href)}
+                    onFocus={() => setHovered(href)}
                     onBlur={() => setHovered(null)}
                     className={`relative inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-3 text-[0.875rem] font-medium transition-colors hover:text-[#141414] ${
                       current ? "font-semibold text-[#141414]" : "text-[#141414]/80"
@@ -216,12 +188,10 @@ export function SiteNav() {
         <span aria-hidden className="ml-auto hidden h-[1.5px] w-12 shrink-0 bg-[#141414]/65 xl:block" />
         <div className="ml-auto flex items-center gap-2 xl:ml-0">
           <TourTriggerButton onClick={() => setTourOpen(true)} label="Tour guide" />
+          {/* prefetch={false}: a prefetch would download the app's chunks (sign-in and Supabase client) to a visitor who never clicks. */}
           <Link
             href="/login"
-            prefetch={true}
-            onMouseEnter={() => {
-              try { router.prefetch("/login"); } catch {}
-            }}
+            prefetch={false}
             className="hidden h-9 items-center whitespace-nowrap rounded-full px-3 text-[0.875rem] font-medium text-[#141414] transition-colors hover:bg-[#FAF9F5]/70 xl:inline-flex"
           >
             Sign in
@@ -229,10 +199,7 @@ export function SiteNav() {
           <Magnetic strength={0.2}>
             <Link
               href="/dashboard"
-              prefetch={true}
-              onMouseEnter={() => {
-                try { router.prefetch("/dashboard"); } catch {}
-              }}
+              prefetch={false}
               className="group inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] pl-4 pr-3.5 text-[0.875rem] font-semibold text-[#141414] transition-all hover:-translate-y-0.5 hover:bg-[#eef17a] hover:shadow-[0_3px_0_#141414]"
             >
               Open studio
@@ -270,7 +237,7 @@ export function SiteNav() {
             <li key={href} className="border-b border-[var(--s-line)]">
               <Link
                 href={href}
-                prefetch={true}
+                prefetch={false}
                 onClick={() => close()}
                 aria-current={isCurrent(href) ? "page" : undefined}
                 className="flex min-h-14 items-center justify-between s-h3 py-2 text-[var(--s-ink)] aria-[current=page]:text-[var(--s-bronze)]"
@@ -282,10 +249,10 @@ export function SiteNav() {
           ))}
         </ul>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Link href="/dashboard" prefetch={true} onClick={() => close()} className="s-btn s-btn--primary">
+          <Link href="/dashboard" prefetch={false} onClick={() => close()} className="s-btn s-btn--primary">
             Open studio
           </Link>
-          <Link href="/login" prefetch={true} onClick={() => close()} className="s-btn s-btn--secondary">
+          <Link href="/login" prefetch={false} onClick={() => close()} className="s-btn s-btn--secondary">
             Sign in
           </Link>
         </div>

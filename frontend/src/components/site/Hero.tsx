@@ -54,6 +54,7 @@ export function Hero() {
                   </div>
                   <Link
                     href="/how-it-works"
+                    prefetch={false}
                     aria-label="Explore how 22 Indian languages work"
                     className="grid size-10 shrink-0 place-items-center rounded-full border-[1.5px] border-[#141414] bg-[#F3F59E] text-[#141414] transition-transform hover:-translate-y-0.5 hover:bg-[#eef17a]"
                   >
@@ -95,7 +96,7 @@ export function Hero() {
                     </p>
                     <div className="text-right">
                       <p className="font-sans text-[1.2rem] font-semibold leading-none text-[#141414]">15s</p>
-                      <p className="mt-0.5 text-[0.75rem] text-[#141414]/55 line-through">60s</p>
+                      <p className="mt-0.5 text-[0.75rem] text-[#141414]/75 line-through">60s</p>
                     </div>
                   </div>
                 </div>
@@ -146,7 +147,7 @@ export function Hero() {
             <div className="flex flex-col gap-4">
               {/* Top-Right Rating Pill */}
               <Reveal immediate delay={0.1} y={12} className="flex items-center justify-between rounded-full border-[1.5px] border-[#141414] bg-white px-4 py-2.5">
-                <div className="flex items-center gap-1" aria-label="5 star architecture rating">
+                <div className="flex items-center gap-1" role="img" aria-label="5 star architecture rating">
                   <StarDiamond className="size-4.5" />
                   <StarDiamond className="size-4.5" />
                   <StarDiamond className="size-4.5" />
@@ -264,7 +265,7 @@ export function Hero() {
                   <Magnetic>
                     <Link
                       href="/dashboard"
-                      prefetch={true}
+                      prefetch={false}
                       className="group inline-flex h-12.5 items-center gap-3 rounded-full border-[1.5px] border-[#141414] bg-[#141414] px-7 text-[0.9375rem] font-medium text-[#FAF9F5] transition-transform hover:-translate-y-0.5"
                     >
                       <span>Open studio</span>
@@ -293,6 +294,7 @@ export function Hero() {
                     <li key={f.href}>
                       <Link
                         href={f.href}
+                        prefetch={false}
                         className="inline-flex min-h-8.5 items-center gap-1.5 rounded-full border border-[#141414]/35 bg-white px-3 py-1 text-[0.8125rem] font-medium text-[#141414]/85 transition-colors hover:border-[#141414] hover:bg-[#E2DDD3]"
                       >
                         <f.icon className="size-3.5 shrink-0 text-[#E8632B]" aria-hidden />

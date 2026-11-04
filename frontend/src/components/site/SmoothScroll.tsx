@@ -73,7 +73,7 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const lastPath = useRef<string | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const root = document.documentElement;
     // A real page change (not the first mount, where the browser may be restoring a scroll position): start at the top,
     // before Lenis reads the position. A hash is honoured below once fonts have settled.
