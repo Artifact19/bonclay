@@ -742,7 +742,7 @@ export function SpeechPanel() {
               className="mx-4 mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-[#F0A23A]/40 bg-[#F0A23A]/10 px-3 py-2 text-xs text-[var(--color-text-primary)]"
             >
               <span>
-                Looks like Hinglish — convert to Devanagari so the Hindi voice
+                Looks like Hinglish - convert to Devanagari so the Hindi voice
                 reads it right.
               </span>
               <Button

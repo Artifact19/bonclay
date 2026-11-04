@@ -98,7 +98,7 @@ function Wave({ bars, className }: { bars: number[]; className: string }) {
 const CALL = [
   { who: "AI agent", text: "नमस्ते! मैं डेमो क्लिनिक की AI सहायक हूँ। बताइए, कैसे मदद करूँ?", gloss: "Hello! I'm Demo Clinic's AI assistant. How can I help?", tag: "AI disclosure, spoken first" },
   { who: "Riya", text: "कल शाम को डॉक्टर से मिलना है, appointment मिलेगा?", gloss: "I'd like to see the doctor tomorrow evening. Is there a slot?" },
-  { who: "AI agent", text: "जी, कल शाम 5:30 बजे का समय खाली है, और 6 बजे भी—", gloss: "Yes, 5:30 pm tomorrow is free, and 6 pm too—" },
+  { who: "AI agent", text: "जी, कल शाम 5:30 बजे का समय खाली है, और 6 बजे भी - ", gloss: "Yes, 5:30 pm tomorrow is free, and 6 pm too - " },
   { who: "Riya", text: "5:30 ठीक है।", gloss: "5:30 is fine.", tag: "Talked over: the agent stops" },
   { who: "AI agent", text: "बुक कर दिया, कल शाम 5:30 बजे। और कुछ?", gloss: "Booked for 5:30 pm tomorrow. Anything else?", tag: "Appointment booked" },
 ] as const;

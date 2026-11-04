@@ -36,7 +36,7 @@ pessimistic. The ratios between variants are the reliable part.
    The server keeps up to 10 KV caches (`--prompt-cache-size` default). For Llama-3.2-3B, KV costs 28 layers × 8 KV heads ×
    128 × 2 (K, V) × 2 bytes = **114,688 B per token** [verified config]. A 3,800-token RAG prompt is therefore about 436 MB,
    and the worst case for 10 entries is about 4.3 GB of hidden memory.
-4. **Whisper encodes 30 s of audio for a 3–6 s question.** The Hindi path runs the whisper-small encoder for language
+4. **Whisper encodes 30 s of audio for a 3-6 s question.** The Hindi path runs the whisper-small encoder for language
    detection and then the large-v3-turbo encoder, both on audio padded to 30 s.
 5. **Kokoro's memory peak grows with sentence length:** about 190 MB per second of audio [measured]. `sentences.MAX_CHARS
    = 220` allows sentences of about 15 s, which puts the transient peak around 3.3 GB on a 16 GB machine that is already
@@ -44,7 +44,7 @@ pessimistic. The ratios between variants are the reliable part.
 6. **Hinglish replies make an extra LLM call per sentence before speech.** `_turn_spoken` calls
    `hinglish.to_devanagari`, which calls the LLM, whenever the provider is not holding the local lock: always on Groq,
    and after the local reply has finished. That adds a network round trip per sentence on the critical path and uses
-   more of Groq's free-tier quota. [estimate: +0.3–0.7 s per Hinglish sentence on Groq; not measured]
+   more of Groq's free-tier quota. [estimate: +0.3-0.7 s per Hinglish sentence on Groq; not measured]
 
 ---
 
@@ -59,33 +59,33 @@ the upload even starts (`frontend/src/lib/vad.ts`).
 
 | # | Idea | Expected gain | Conf. | Effort |
 |---|---|---|---|---|
-| 1 | **Prompt layout and small chunks**: CONTEXT moves into the last user message, static rules and tools sit first, the minute-resolution clock leaves the system prompt; ~120-word chunks with top-3; `--prompt-cache-bytes` cap | Measured: TTFT **7.5 s → 0.75–0.95 s** on a 3-document agent. Up to ~4 GB of KV memory bounded | High | S, 5 h |
+| 1 | **Prompt layout and small chunks**: CONTEXT moves into the last user message, static rules and tools sit first, the minute-resolution clock leaves the system prompt; ~120-word chunks with top-3; `--prompt-cache-bytes` cap | Measured: TTFT **7.5 s → 0.75-0.95 s** on a 3-document agent. Up to ~4 GB of KV memory bounded | High | S, 5 h |
 | 2 | **BGE-M3 in fp16** (it currently loads fp32) | **−1.1 GB RAM**; query encode 35 ms vs 94 ms; same hit@1/@3 on the 45-question set | High | S, 1.5 h |
-| 3 | **One Whisper (turbo) with a trimmed encoder context (8–10 s buckets) and one-pass language ID**; whisper-small dropped | Measured: hi ASR **1.38 s → ~0.55 s**, en **0.43 s → ~0.31 s**, about −0.5 GB | Medium (2 clips; needs a WER check) | M, 10 h |
+| 3 | **One Whisper (turbo) with a trimmed encoder context (8-10 s buckets) and one-pass language ID**; whisper-small dropped | Measured: hi ASR **1.38 s → ~0.55 s**, en **0.43 s → ~0.31 s**, about −0.5 GB | Medium (2 clips; needs a WER check) | M, 10 h |
 | 4 | **Stream the reply on tool agents** (sniff for `{`), **first phrase first**, cap chunks at ~100 chars | First answer: hi −0.5 to −0.9 s, en −0.2 to −0.4 s; p95 −2 to −4 s; Kokoro peak −0.6 to −1.3 GB | High | M, 8 h |
 | 5 | **Pre-warm at speech start**: the browser's `onSpeechStart` pings the server, which prefills the static prefix and history on the idle LLM (max_tokens=1) and touches the workers | −0.1 to −0.3 s TTFT; removes swap page-in stalls on the first token | Medium | S, 4 h |
-| 6 | **Speculative endpointing with Smart Turn v3.2** (8 MB, BSD-2, Hindi supported): upload at ~250 ms of silence, start ASR and retrieval, commit when Smart Turn says the turn is complete, cancel if speech resumes | −0.35 to −0.45 s on every turn (outside today's measurement window) | Medium | M–L, 16 h |
+| 6 | **Speculative endpointing with Smart Turn v3.2** (8 MB, BSD-2, Hindi supported): upload at ~250 ms of silence, start ASR and retrieval, commit when Smart Turn says the turn is complete, cancel if speech resumes | −0.35 to −0.45 s on every turn (outside today's measurement window) | Medium | M-L, 16 h |
 | 7 | **Hinglish transliteration off the critical path**: dictionary first for the sentence being spoken, the model call pipelined one sentence ahead | −0.3 to −0.7 s per Hinglish sentence on Groq [estimate] | Medium | S, 4 h |
-| 8 | **Owner-approved answer cache** with pre-synthesised audio, plus static intents (hello, thanks, bye, "phir se boliye" replays the last clip) | On a hit, first answer = ASR + ~0.15 s (en ~0.45 s, hi ~0.7 s after idea 3) | Medium-low (unknown hit rate; Hinglish precision risk measured) | M–L, 18 h |
+| 8 | **Owner-approved answer cache** with pre-synthesised audio, plus static intents (hello, thanks, bye, "phir se boliye" replays the last clip) | On a hit, first answer = ASR + ~0.15 s (en ~0.45 s, hi ~0.7 s after idea 3) | Medium-low (unknown hit rate; Hinglish precision risk measured) | M-L, 18 h |
 | 9 | **Whisper turbo 4-bit** (already in the HF cache, but its file layout does not load in mlx-whisper 0.4.3) | about −1 GB [estimate] | Low-medium | S, 3 h + validation |
-| 10 | **Nemotron 3.5 ASR Streaming 0.6B** spike (Hindi in the top tier, cache-aware streaming, OpenMDW) | Transcript about 0.2–0.6 s after end of speech, with partials for early retrieval | Low (no Mac runtime confirmed) | L, 20 h |
+| 10 | **Nemotron 3.5 ASR Streaming 0.6B** spike (Hindi in the top tier, cache-aware streaming, OpenMDW) | Transcript about 0.2-0.6 s after end of speech, with partials for early retrieval | Low (no Mac runtime confirmed) | L, 20 h |
 
-Together, ideas 1–5 should bring first answer p50 to about **1.5 s en / 2.3 s hi**. Idea 6 then saves about another
-0.4 s of perceived wait. The memory items (1, 2, 3, 4, 9) add up to roughly 3–5 GB, which is about the size of today's
+Together, ideas 1-5 should bring first answer p50 to about **1.5 s en / 2.3 s hi**. Idea 6 then saves about another
+0.4 s of perceived wait. The memory items (1, 2, 3, 4, 9) add up to roughly 3-5 GB, which is about the size of today's
 swap.
 
 ### B. RTX 3050 Ti Laptop (4 GB) + 16 GB RAM, Windows 11
 
 | # | Idea | Expected gain | Conf. | Effort |
 |---|---|---|---|---|
-| 1 | **VRAM budget discipline**: llama.cpp `-np 1 -c 4096 -fa on -ctk q8_0 -ctv q8_0`; as few CUDA processes as possible; NVIDIA "CUDA – Sysmem Fallback Policy = Prefer No Sysmem Fallback" for `python.exe` and `llama-server.exe` | KV 0.46 → 0.23 GB; avoids the silent driver fallback to shared memory | High (mechanism) / Medium (size) | S, 4 h |
-| 2 | **Page Whisper into VRAM on demand**: keep turbo int8 in pinned RAM, upload at speech start, release after ASR (the LLM stays resident) | Lets turbo and a 3B LLM share 4 GB; upload ~60–130 ms hidden behind speech [estimate] | Medium-low | M, 10 h |
+| 1 | **VRAM budget discipline**: llama.cpp `-np 1 -c 4096 -fa on -ctk q8_0 -ctv q8_0`; as few CUDA processes as possible; NVIDIA "CUDA - Sysmem Fallback Policy = Prefer No Sysmem Fallback" for `python.exe` and `llama-server.exe` | KV 0.46 → 0.23 GB; avoids the silent driver fallback to shared memory | High (mechanism) / Medium (size) | S, 4 h |
+| 2 | **Page Whisper into VRAM on demand**: keep turbo int8 in pinned RAM, upload at speech start, release after ASR (the LLM stays resident) | Lets turbo and a 3B LLM share 4 GB; upload ~60-130 ms hidden behind speech [estimate] | Medium-low | M, 10 h |
 | 3 | Prompt layout and small chunks (shared code with A1) | Smaller than on the Mac (CUDA prefill is faster), but less KV VRAM and Groq TPM headroom | High | S (shared) |
 | 4 | Stream tool-agent replies and first phrase first (shared with A4) | Same as on the Mac | High | shared |
 | 5 | Speculative endpointing and Smart Turn (shared with A6; Smart Turn has a CPU int8 build) | −0.35 to −0.45 s | Medium | shared |
 | 6 | **Kokoro ONNX fp16 on CUDA EP in fixed-length buckets, then try the TensorRT EP** | Third-party GTX 1650 run: CUDA EP 482 ms → TRT 101 ms [secondary] | Low-medium | M, 8 h |
 | 7 | Owner-approved answer cache (shared with A8) | Same | Medium-low | shared |
-| 8 | **Nemotron 3.5 streaming ASR on CUDA** (NeMo or NeMo-Speech.cpp GGUF): first-class Hindi, streaming | Removes post-speech ASR time; FLEURS hi WER 7.1–8.1 % with a language ID [verified] | Low-medium | L, 20 h |
+| 8 | **Nemotron 3.5 streaming ASR on CUDA** (NeMo or NeMo-Speech.cpp GGUF): first-class Hindi, streaming | Removes post-speech ASR time; FLEURS hi WER 7.1-8.1 % with a language ID [verified] | Low-medium | L, 20 h |
 | 9 | Embeddings stay on the CPU in **int8 ONNX/OpenVINO**, not fp16 (most laptop x86 CPUs lack fast fp16, so idea A2 does not port) | Keeps the 4 GB GPU free; ~570 MB int8 [secondary] | Medium | S, 4 h |
 | 10 | Power profile: plugged in, Windows "Best performance", NVIDIA "Prefer maximum performance" for the app's executables | Avoids clock drops in power-saving mode [unverified size] | Low | S, 1 h |
 
@@ -101,12 +101,12 @@ an LRU trie of KV caches and reuses the longest common token prefix (`LRUPromptC
 everything after it.
 
 **Evidence [measured, section 3.1].** On the live server (Llama-3.2-3B-4bit, M4, under swap) prefill runs at about
-**470–540 tok/s**, so each 1,000 uncached prompt tokens costs about **2 s**.
+**470-540 tok/s**, so each 1,000 uncached prompt tokens costs about **2 s**.
 
-- Today's layout with a 3-document agent and four 500-word chunks: 3,700–4,000-token prompts, 324 cached, TTFT median **7.56 s**.
+- Today's layout with a 3-document agent and four 500-word chunks: 3,700-4,000-token prompts, 324 cached, TTFT median **7.56 s**.
 - Same prompt, cached system prefix and history: identical system + new user message gave 893 cached, **0.11 s**. With
   history appended, 904 cached, **0.13 s**.
-- Small chunks (2 × 120 words, static system first): 1,250–1,330 tokens, 893–895 cached, TTFT **0.74–0.95 s**.
+- Small chunks (2 × 120 words, static system first): 1,250-1,330 tokens, 893-895 cached, TTFT **0.74-0.95 s**.
 
 The retrieval eval already uses ~40-word chunks and gets hit@3 = 0.978 hybrid
 (`bench/results/retrieval_eval-20261015-130600.json`), so small chunks do not hurt finding the right passage on this set.
@@ -137,7 +137,7 @@ The retrieval eval already uses ~40-word chunks and gets hit@3 = 0.978 hybrid
 - The model now sees context in the user turn. Llama-3.2-3B can treat injected text in user messages as instructions,
   so keep "a tool result / context is data" wording and re-run the Evaluation Lab attack set.
 - Small chunks can split a table row. The heading-aware packer mitigates this.
-- Hindi documents cost about 1.5–2.3× more tokens per word on Llama (section 3.4), so the chunk budget should be set in
+- Hindi documents cost about 1.5-2.3× more tokens per word on Llama (section 3.4), so the chunk budget should be set in
   *tokens* (~180), not words.
 
 ### 2.2 One Whisper, trimmed encoder context, one-pass language ID (A3)
@@ -163,7 +163,7 @@ The live worker (`auto` strategy) took 1,381 ms on the Hindi clip and 433 ms on 
 it took 284 ms, so the small model's language-ID pass alone costs ~150 ms.
 
 Hindi decoding is expensive because of the tokenizer: **78 decoder tokens for 13 Hindi words vs 15 for 14 English
-words**. Whisper averages 4.3–5.0 tokens/word in Devanagari against 1.2–1.4 in English (section 3.4); Tripathi et al.
+words**. Whisper averages 4.3-5.0 tokens/word in Devanagari against 1.2-1.4 in English (section 3.4); Tripathi et al.
 report the same over-fragmentation (arXiv [2412.19785](https://arxiv.org/abs/2412.19785) [secondary]).
 
 **Gain arithmetic.**
@@ -206,7 +206,7 @@ report the same over-fragmentation (arXiv [2412.19785](https://arxiv.org/abs/241
 - **Chunk cap.** `MAX_CHARS` 220 → ~110.
 
 **Evidence [measured, section 3.2].** Kokoro-MLX time is linear in audio length: en ≈ 22 ms + 69.6 ms per audio-second,
-hi ≈ 14 ms + 70 ms/s (RTF 0.071–0.083), so a short first chunk is not penalised by a fixed overhead. Peak MLX memory ≈
+hi ≈ 14 ms + 70 ms/s (RTF 0.071-0.083), so a short first chunk is not penalised by a fixed overhead. Peak MLX memory ≈
 441 MB + 188 MB per audio-second: 761 MB at 1.7 s, 2,024 MB at 8.4 s. The LLM decodes at ~45 tok/s with 1.62
 tokens/word (en) and 2.4 (hi) on Llama-3.2 [measured, section 3.1/3.4]. Kokoro-FastAPI warns that small chunks cause
 intonation artifacts ([remsky/Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) [secondary]); that is why only
@@ -216,11 +216,11 @@ the first chunk is cut short.
 - Hindi, first answer sentence of 15 words:
   - today: the full reply (~40 words × 2.3 = 92 tokens ≈ 2.0 s) must finish, then the 15-word TTS takes ~455 ms.
   - after: a 5-word phrase (≈12 tokens ≈ 0.27 s), then TTS ≈ 14 + 70 × 2.0 s ≈ 155 ms.
-  - Saving ≈ (2.0 − 0.27) + (0.455 − 0.155) ≈ **2.0 s for long replies, ~0.6–0.9 s at the p50** (the p50 Hindi reply is
+  - Saving ≈ (2.0 − 0.27) + (0.455 − 0.155) ≈ **2.0 s for long replies, ~0.6-0.9 s at the p50** (the p50 Hindi reply is
     only ~20 words).
 - English p50: the reply is ~1 sentence of 13 words (≈21 tokens, 0.47 s). The phrase arrives ~0.25 s earlier and its
   TTS is ~0.18 s shorter: **≈ −0.3 s**.
-- Bench p95 rows of 5–9 s (multi-sentence or tool replies) drop by 2–4 s.
+- Bench p95 rows of 5-9 s (multi-sentence or tool replies) drop by 2-4 s.
 - Memory: a 110-char cap keeps Kokoro's peak at about 1.8 GB or less (vs up to ~3.3 GB); first phrases at ~1.1 GB.
 
 **Implementation sketch.**
@@ -254,18 +254,18 @@ the first chunk is cut short.
 - Smart Turn v3.2: BSD-2-Clause, ~8M parameters, 8 MB int8 CPU ONNX
   ([pipecat-ai/smart-turn](https://github.com/pipecat-ai/smart-turn), files on
   [HF](https://huggingface.co/pipecat-ai/smart-turn-v3/tree/main) [verified]); 23 languages including Hindi, Marathi
-  and Bengali [verified]. Hindi accuracy 93.4 % on 1,295 samples and 12.6–95 ms CPU latency (Daily blog [secondary]).
+  and Bengali [verified]. Hindi accuracy 93.4 % on 1,295 samples and 12.6-95 ms CPU latency (Daily blog [secondary]).
 - LiveKit's turn detector also covers Hindi, but it is a 396 MB Qwen2.5-0.5B under its own licence
   ([docs](https://docs.livekit.io/agents/logic/turns/turn-detector) [secondary]).
 - Deepgram's Flux "eager end of turn" reports ~150 ms median savings (Telnyx [secondary]). PredGen (arXiv 2506.15556)
   reports roughly 2× lower audio latency by speculating before the user finishes [secondary].
-- Not found anywhere: a validated 200–300 ms silence floor for Hindi or Hinglish.
+- Not found anywhere: a validated 200-300 ms silence floor for Hindi or Hinglish.
 
 **Gain arithmetic.**
 - Commit at 250 ms + 30 ms (Smart Turn) instead of 700 ms: **−0.42 s** on turns judged complete.
-- Even when the turn only commits at 700 ms, the ASR and retrieval (~0.4–0.65 s after idea 3) started 450 ms earlier,
+- Even when the turn only commits at 700 ms, the ASR and retrieval (~0.4-0.65 s after idea 3) started 450 ms earlier,
   so **≈ −0.45 s** either way.
-- Wasted work on false starts costs one ASR run (~0.3–0.55 s of GPU) each.
+- Wasted work on false starts costs one ASR run (~0.3-0.55 s of GPU) each.
 
 **Implementation sketch.**
 - `frontend/src/hooks/useHandsFree.ts`: add a `tentativeMs = 250` timer in the Silero frame callback; on expiry, POST
@@ -285,7 +285,7 @@ the first chunk is cut short.
 ### 2.5 Owner-approved answer cache with pre-synthesised audio, plus static intents (A8, B7)
 
 **How it works.**
-- At ingest, the LLM proposes 20–60 likely questions per agent from the documents (doc2query style), each with a short
+- At ingest, the LLM proposes 20-60 likely questions per agent from the documents (doc2query style), each with a short
   answer. They are generated **in English, Hindi (Devanagari) and Hinglish (Roman) as separate keys** and stored in
   `services/answer_cache.py`.
 - The owner approves or edits each answer in the Knowledge tab; `services/knowledge_gaps.py` already clusters real
@@ -302,13 +302,13 @@ the first chunk is cut short.
   with zero synthesis.
 
 **Evidence.**
-- vCache (arXiv [2502.03771](https://arxiv.org/abs/2502.03771), ICLR 2026): static thresholds at 0.97–0.99 gave
-  37–67 % hits with 2.5–5.2 % wrong answers on open-domain traffic; per-prompt learned thresholds reach 0.5 % error at
+- vCache (arXiv [2502.03771](https://arxiv.org/abs/2502.03771), ICLR 2026): static thresholds at 0.97-0.99 gave
+  37-67 % hits with 2.5-5.2 % wrong answers on open-domain traffic; per-prompt learned thresholds reach 0.5 % error at
   41 % hits [secondary].
 - Sierra says pre-computed phrases bring playback latency "to zero"
   ([sierra.ai/blog/voice-latency](https://sierra.ai/blog/voice-latency) [secondary]).
 - **My cross-lingual test [measured, section 3.6]** (BGE-M3, English keys, Hindi/Hinglish queries): correct matches
-  scored 0.57–0.90, wrong top-1 matches up to **0.685**. Devanagari Hindi matched at a median of 0.86; **Hinglish
+  scored 0.57-0.90, wrong top-1 matches up to **0.685**. Devanagari Hindi matched at a median of 0.86; **Hinglish
   matched at a median of 0.64**, which sits *below* the worst wrong match. One global threshold cannot be safe for
   Hinglish, which is why keys must be stored per script.
 
@@ -326,7 +326,7 @@ the first chunk is cut short.
 
 ### 2.6 Memory: bring the Mac out of swap (A2, A1-cap, A3, A4-cap, A9)
 
-The **swap of 3–5 GB** comes from the components below. The items are cheap and independent.
+The **swap of 3-5 GB** comes from the components below. The items are cheap and independent.
 
 | Component | Today | After | How | Evidence |
 |---|---|---|---|---|
@@ -353,13 +353,13 @@ Setup: the clinic agent's real rules text and `tools.tools_prompt()` with the 4 
 template documents chunked like `backend.chunk_text` (500 words, 450 step). Six questions, history growing,
 `max_tokens=1`.
 
-| Layout | prompt tokens | cached | TTFT (median of turns 2–6) |
+| Layout | prompt tokens | cached | TTFT (median of turns 2-6) |
 |---|---|---|---|
-| A: today (CONTEXT + tools in system, 4 × 500 words) | 3,679–4,019 | 0 then 324 | **7.56 s** |
+| A: today (CONTEXT + tools in system, 4 × 500 words) | 3,679-4,019 | 0 then 324 | **7.56 s** |
 | B: static system, CONTEXT in user msg, 4 × 500 words | same | 324* | 7.51 s |
 | Probe: identical system (rules + tools), new question | 904 | 893 | **0.11 s** |
 | Probe: + history turn | 923 | 904 | 0.13 s |
-| C: static system + 2 × 120-word chunks in user msg | 1,248–1,329 | 893–895 | **0.74–0.95 s** |
+| C: static system + 2 × 120-word chunks in user msg | 1,248-1,329 | 893-895 | **0.74-0.95 s** |
 
 \*In run B the trie matched the interleaved A entries instead of the previous B entry: A and B were sent alternately to
 one server, so this row is an artefact of my test, not of layout B. The probes confirm the cache works when the system
@@ -375,13 +375,13 @@ Separate scratch process, same `synthesize()` as the worker, warm, 3 repeats (p5
 | text | audio | synth | RTF | MLX peak |
 |---|---|---|---|---|
 | en 3 words | 1.68 s | 139 ms | 0.083 | 761 MB |
-| en 5 words | 1.95 s | 161 ms | 0.082 | – |
+| en 5 words | 1.95 s | 161 ms | 0.082 | - |
 | en 13 words | 4.62 s | 350 ms | 0.076 | 1,393 MB |
 | en 23 words | 8.43 s | 609 ms | 0.072 | 2,024 MB |
-| hi 3 words | 1.98 s | 153 ms | 0.078 | – |
-| hi 5 words | 2.67 s | 203 ms | 0.076 | – |
-| hi 15 words | 6.28 s | 455 ms | 0.073 | – |
-| hi 25 words | 9.90 s | 707 ms | 0.071 | – |
+| hi 3 words | 1.98 s | 153 ms | 0.078 | - |
+| hi 5 words | 2.67 s | 203 ms | 0.076 | - |
+| hi 15 words | 6.28 s | 455 ms | 0.073 | - |
+| hi 25 words | 9.90 s | 707 ms | 0.071 | - |
 
 Fit: en 22 ms + 69.6 ms per audio-second; hi 14 ms + 70.0 ms/s. Memory: 441 MB + 188 MB per audio-second (weights
 328 MB). Conclusion: no meaningful fixed overhead, so first-phrase chunking helps almost in proportion, and short chunks
@@ -409,10 +409,10 @@ Tokens per whitespace word on the bench's real questions and replies:
 | Hinglish (Roman) | 1.79 | 1.50 | 1.82 | 1.44 | 1.82 |
 
 Implications:
-- Hindi costs Llama-3.2 **1.7–2.3×** the tokens of English, in both prefill and decode. This explains much of the
+- Hindi costs Llama-3.2 **1.7-2.3×** the tokens of English, in both prefill and decode. This explains much of the
   hi/en LLM gap.
 - Whisper decodes **3.5×** more tokens for Hindi. This is the case for CTC/RNNT Hindi ASR (Nemotron, IndicConformer).
-- Gemma-4's tokenizer is 1.5–1.7× more efficient on Hindi than Llama's. The model is larger, so the net speed is
+- Gemma-4's tokenizer is 1.5-1.7× more efficient on Hindi than Llama's. The model is larger, so the net speed is
   unknown; test it with the Gemma 4 E4B spike already proposed in `IMPROVEMENTS_RESEARCH.md`.
 - If Groq's `qwen/qwen3.8-27b` uses the 151k Qwen vocabulary (unverified), Hindi replies cost ~3× the tokens against
   the free-tier TPM.
@@ -452,7 +452,7 @@ Setup: BGE-M3 **fp16** on CPU, the bench's 45 questions and 40-word chunks, `ser
 | int8 docs | 0.689 / 0.933 | 0.756 / 0.978 |
 | binary (sign) | 0.756 / 0.978 | 0.800 / 0.978 |
 
-On 45 questions the differences of ±1–2 questions are noise. The conclusions: **fp16 weights lose nothing**; 512/256-d
+On 45 questions the differences of ±1-2 questions are noise. The conclusions: **fp16 weights lose nothing**; 512/256-d
 and binary vectors are safe; 128-d is not.
 
 Semantic cache (English questions as keys, 32 Hindi/Hinglish queries, only 5 of which have an English twin with the
@@ -481,10 +481,10 @@ Correct-match similarities: 0.574, 0.713, 0.78, 0.859, 0.895. Highest wrong: 0.6
 
 | Idea | Verdict | Reason |
 |---|---|---|
-| Matryoshka/truncated or binary BGE-M3 vectors | Parked | Safe to 256-d (3.6), but the index is KB-scale (15–200 chunks per agent). The memory is in the 2.2 GB of *weights*, not the vectors. Revisit above ~100k chunks. |
-| Zero-copy shared memory between workers | Reject | A 5 s 24 kHz clip is ~240 KB over loopback HTTP, about 1–3 ms, which is noise against 350 ms of synthesis. ASR already passes a file path. |
+| Matryoshka/truncated or binary BGE-M3 vectors | Parked | Safe to 256-d (3.6), but the index is KB-scale (15-200 chunks per agent). The memory is in the 2.2 GB of *weights*, not the vectors. Revisit above ~100k chunks. |
+| Zero-copy shared memory between workers | Reject | A 5 s 24 kHz clip is ~240 KB over loopback HTTP, about 1-3 ms, which is noise against 350 ms of synthesis. ASR already passes a file path. |
 | AudioSeal on GPU or fused | Reject | MPS is only 1.5× faster (3.3) and would compete with MLX; shorter first chunks give the same saving. |
-| Speculative decoding (1B draft) | Agree it is low value | At ~45 tok/s decode with 20–90-token replies, prefill and endpointing dominate. |
+| Speculative decoding (1B draft) | Agree it is low value | At ~45 tok/s decode with 20-90-token replies, prefill and endpointing dominate. |
 | `--kv-bits` on the Mac | Agree it is low value | Short prompts. **But** on the 4 GB GPU, q8_0 KV is a VRAM win (B1). |
 | KV precompute per chunk (CacheBlend, TurboRAG, APE, Block-Attention) | Reject for now | Needs vLLM/LMCache or fine-tuning; no MLX implementation found [secondary]. With small chunks the remaining prefill is ~0.5 s. |
 | Grammar-constrained JSON for tools (xgrammar/llguidance/outlines) | Parked | No native mlx-lm support [secondary]. Small models show a "constraint tax" in recent work (arXiv 2605.26128, 2609.23742 [secondary]). Stream sniffing (2.3) removes most of the latency cost. |
@@ -493,7 +493,7 @@ Correct-match similarities: 0.574, 0.713, 0.78, 0.859, 0.895. Highest wrong: 0.6
 | CUDA MPS / multi-stream overlap on the 3050 Ti | Reject | MPS is documented for Linux/QNX (NVIDIA [MPS docs](https://docs.nvidia.com/deploy/mps/); Windows not listed). In one turn ASR, LLM and TTS are mostly sequential, so there is little to overlap. |
 | fp8 / TensorRT-LLM on the 3050 Ti | Reject | No fp8 on Ampere. TensorRT-LLM's Windows support and 4 GB footprint are a poor fit next to llama.cpp Q4_K_M. |
 | ExLlamaV3 on 4 GB | Reject for now | Described as an early preview with Ampere performance issues ([repo](https://github.com/turboderp-org/exllamav3) [secondary]). |
-| Full-duplex models (Moshi, Human-1 Hindi Moshi) | Reject | 7.6–8B parameters; Moshi is English-only; Human-1 has no measured latency and does not fit 4 GB [secondary]. |
+| Full-duplex models (Moshi, Human-1 Hindi Moshi) | Reject | 7.6-8B parameters; Moshi is English-only; Human-1 has no measured latency and does not fit 4 GB [secondary]. |
 | Distilling the 3B into a per-agent model | Reject | Days of work per template, and it needs eval data that does not exist yet. The answer cache gets most of the gain for FAQ traffic. |
 | Per-chunk TTS prefix caching ("prefix tree of sentence starts") | Reject | Kokoro is non-autoregressive with sentence-level prosody, so concatenating a cached prefix with a new suffix gives audible seams. Cache whole approved answers instead (2.5). |
 | IndicXlit for Hinglish → Devanagari | Parked | MIT ([PyPI](https://pypi.org/project/ai4bharat-transliteration/) [secondary]), but it depends on fairseq, which is hard to install on Python 3.12. Pipelining the existing LLM call (A7) is simpler. |
@@ -509,16 +509,16 @@ Correct-match similarities: 0.574, 0.713, 0.78, 0.859, 0.895. Highest wrong: 0.6
 | Day | Work | Exit check |
 |---|---|---|
 | 1 | A2 BGE-M3 fp16 behind `EMBEDDING_DTYPE`; A1 `--prompt-cache-bytes` / `--prompt-cache-size` | `retrieval_eval.py` unchanged; RSS −1 GB; swap after a 30-turn soak lower than today |
-| 1–2 | A1 prompt layout + token-budgeted ~120-word chunks + top-3; re-ingest | `latency.py --stream` on the clinic template **and** a new 3-document agent; `cached_tokens` > 80 % of the prompt from turn 2; Evaluation Lab attack score not worse |
-| 3–4 | A4 streaming of tool-agent replies, booking-ID guard per sentence, first-phrase chunking, `MAX_CHARS` 110 | bench first answer p50 en ≤ 1.7 s, hi ≤ 3.0 s; `tests/` for the sniffing and splitter edge cases; 20-reply Hindi listening check |
+| 1-2 | A1 prompt layout + token-budgeted ~120-word chunks + top-3; re-ingest | `latency.py --stream` on the clinic template **and** a new 3-document agent; `cached_tokens` > 80 % of the prompt from turn 2; Evaluation Lab attack score not worse |
+| 3-4 | A4 streaming of tool-agent replies, booking-ID guard per sentence, first-phrase chunking, `MAX_CHARS` 110 | bench first answer p50 en ≤ 1.7 s, hi ≤ 3.0 s; `tests/` for the sniffing and splitter edge cases; 20-reply Hindi listening check |
 | 5 | A7 Hinglish transliteration pipelining; A5 speech-start pre-warm endpoint | Hinglish turn bench (add 10 Hinglish questions to `bench/latency.py`) |
 
 **Week 2: ASR, endpointing, the cache spike and the Windows bring-up**
 
 | Day | Work | Exit check |
 |---|---|---|
-| 6–7 | A3 turbo-only trimmed-context ASR with fallback guard; record 40 real clips (en/hi/Hinglish, quiet/noisy, one 8 kHz phone set) | WER (bucket) ≤ WER (30 s) + 0.5 pt per language; zero new hallucinations; hi ASR p50 ≤ 0.7 s |
-| 8–9 | A6 speculative endpointing (flagged), Smart Turn on the server (after you approve the model download); 100-clip Hindi/Hinglish false-cutoff set | False cutoffs ≤ 2 % at the chosen threshold; median commit time ≤ 350 ms after end of speech |
+| 6-7 | A3 turbo-only trimmed-context ASR with fallback guard; record 40 real clips (en/hi/Hinglish, quiet/noisy, one 8 kHz phone set) | WER (bucket) ≤ WER (30 s) + 0.5 pt per language; zero new hallucinations; hi ASR p50 ≤ 0.7 s |
+| 8-9 | A6 speculative endpointing (flagged), Smart Turn on the server (after you approve the model download); 100-clip Hindi/Hinglish false-cutoff set | False cutoffs ≤ 2 % at the chosen threshold; median commit time ≤ 350 ms after end of speech |
 | 9 | B1 Windows bring-up: llama.cpp `-np 1 -c 4096 -fa on -ctk q8_0 -ctv q8_0`; sysmem fallback off for the app executables; record `nvidia-smi` VRAM per component | Full turn without OOM or shared-memory use; per-stage timings recorded |
 | 10 | A8 spike only: measure the would-be hit rate on stored `conversation_turns` with per-script keys and the entity check (no serving yet) | If the projected hit rate is ≥ 20 % with zero wrong hits in the review, schedule the full feature (approval UI and pre-synthesis) |
 | Buffer | A9 turbo 4-bit conversion + Hindi WER; B6 Kokoro ONNX bucketed export on CUDA | Keep only if both quality and speed gates pass |
@@ -534,7 +534,7 @@ TensorRT-EP Kokoro.
 | First answer audio, en | 1.94 s | ~1.6 s | ~1.5 s |
 | First answer audio, hi | 3.79 s | ~2.9 s | ~2.2 s |
 | Caller's perceived wait after speaking, en (adds the 700 ms endpoint) | ~2.6 s | ~2.3 s | ~1.8 s |
-| RAM pressure (swap during the 30-turn bench) | 3–5 GB | ~1–2 GB | ~0–1 GB |
+| RAM pressure (swap during the 30-turn bench) | 3-5 GB | ~1-2 GB | ~0-1 GB |
 
 These are arithmetic projections from the stage measurements above, not measured end to end. Re-run
 `bench/latency.py --stream` after each step and update `docs/RESULTS.md`.

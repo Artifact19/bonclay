@@ -279,7 +279,7 @@ class HardwareModeRequest(BaseModel):
     mode: str
 
 
-# Engine registry — maps engine keys to human-readable names / HF IDs
+# Engine registry - maps engine keys to human-readable names / HF IDs
 ENGINE_REGISTRY = {
     "kokoro": {
         "name": "Kokoro-82M",
@@ -892,7 +892,7 @@ class AdvancedModelManager:
 
     def _instantiate_model_sync(self, model_key: str):
         """
-        Synchronous model instantiation — runs in a thread via asyncio.to_thread.
+        Synchronous model instantiation - runs in a thread via asyncio.to_thread.
         Each branch loads the model onto the appropriate device (CPU-safe: float32 when no GPU).
         """
         if model_key == "kokoro":
@@ -987,7 +987,7 @@ class AdvancedModelManager:
             raise ValueError(f"Unknown model key: {model_key}. Supported: {list(ENGINE_REGISTRY.keys())}")
 
 
-# Singleton instance — no eager loading; models load on first request
+# Singleton instance - no eager loading; models load on first request
 advanced_manager = AdvancedModelManager.get_instance()
 PLATFORM = platform_info()
 print(f"[BonClay] Platform: {PLATFORM['os']} {PLATFORM['os_version']} ({PLATFORM['arch']}) · {PLATFORM['accelerator_name']} · clone engine on {clone_backend()}")
@@ -1004,7 +1004,7 @@ elif DEVICE.startswith("cuda"):
 # ============================================================================
 
 app = FastAPI(
-    title="BonClay — Voice Intelligence Platform",
+    title="BonClay - Voice Intelligence Platform",
     description="Multi-engine TTS API with Kokoro, Qwen3-TTS, and IndicF5",
     version="2.0.0"
 )
@@ -3717,7 +3717,7 @@ async def _extract_knowledge_text(file: UploadFile) -> str:
             print(f"Error reading PDF: {e}")
             raise AppError("INVALID_PDF", "Failed to parse PDF.", 400)
         if not full_text:
-            raise AppError("NO_TEXT_FOUND", "No text found — OCR is not supported in this version.", 400)
+            raise AppError("NO_TEXT_FOUND", "No text found - OCR is not supported in this version.", 400)
     else:
         raise AppError("INVALID_FILE_TYPE", "Only PDF, TXT and MD files are supported.", 415,
                        {"allowed": [".pdf", ".txt", ".md"]})

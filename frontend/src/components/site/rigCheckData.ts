@@ -326,7 +326,7 @@ export const MACHINES: Machine[] = [
     id: "nv8",
     group: "Windows / Linux with an NVIDIA GPU",
     label: "NVIDIA GPU, 6 to 8 GB VRAM",
-    tableName: "NVIDIA 6–8 GB",
+    tableName: "NVIDIA 6-8 GB",
     hint: "RTX 3060, 4060, 3070 class",
     evidence: "untested",
     evidenceNote: "Untested on real hardware. Figures are inferred from the 4 GB estimates and model sizes.",

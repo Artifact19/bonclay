@@ -100,9 +100,9 @@ Every result file records the git commit, `git status`, the pins and the retriev
 
 | variant | hit@1 | hit@3 | hit@4 | hit@5 | MRR | notes |
 |---|---:|---:|---:|---:|---:|---|
-| **production**: 120-word passages, hybrid (the model gets the top 3) | 76.1% | **94.7%** | 98.2% | 98.2% | 0.903 | 7–11 passages per agent |
+| **production**: 120-word passages, hybrid (the model gets the top 3) | 76.1% | **94.7%** | 98.2% | 98.2% | 0.903 | 7-11 passages per agent |
 | dense only (`HYBRID_SEARCH=off`) | 72.6% | 92.9% | 97.3% | 97.3% | 0.877 | |
-| BM25 only | 60.2% | 76.1% | – | 77.9% | 0.715 | finds little for Hindi |
+| BM25 only | 60.2% | 76.1% | - | 77.9% | 0.715 | finds little for Hindi |
 | 80-word passages, hybrid | 77.0% | 96.5% | 99.1% | 99.1% | 0.909 | smaller prompt than production |
 | 200-word passages, hybrid | 78.8% | 97.3% | 99.1% | 99.1% | 0.906 | about 60% more prompt tokens per turn |
 | all four documents in ONE agent, hybrid | 61.9% | 91.2% | 91.2% | 92.0% | 0.806 | 35 passages: a multi-document agent |
@@ -138,7 +138,7 @@ What this shows:
   table. "Bone doctor" and "aankhon ke doctor" land at rank 4. The six production misses at top 3 are five
   paraphrases or leading questions about the PDF's OPD table or contacts and one college paraphrase ("lock my seat").
 - **Multi-document agents lose about 4 points at hit@3 and 14 at hit@1**, Hindi most of all (84% at hit@3).
-- Query encoding takes 46 ms at the median and 85 ms at p95 (BGE-M3 fp16 on the CPU); ranking 7–35 passages is under
+- Query encoding takes 46 ms at the median and 85 ms at p95 (BGE-M3 fp16 on the CPU); ranking 7-35 passages is under
   10 ms.
 
 ## End-to-end results (108 answered questions)
@@ -159,11 +159,11 @@ What this shows:
 | hospital PDF | 36 | 88.9% | 88.9% | 8.3% | | 4 / 5 |
 | clinic | 33 | 90.9% | 93.9% | 6.1% | | 4 / 5 |
 | college | 33 | 87.9% | 93.9% | 3.0% | | 5 / 5 |
-| HOD office | 6 | 100% | 100% | 0% | | – |
+| HOD office | 6 | 100% | 100% | 0% | | - |
 
 Correct and hallucination are the hand grades. Right language is my reading of all 108 replies; the app's own check
 agreed on 107 (see failure analysis). All 108 replies came from `qwen/qwen3.8-27b`; the two answers that a fallback
-model had touched were asked again and the qwen reply kept. The missing questions are HOD 7–31 (25), which were not
+model had touched were asked again and the qwen reply kept. The missing questions are HOD 7-31 (25), which were not
 answered by qwen because the daily quota ran out.
 
 **Latency per answer** (retrieval plus the language-model call or calls, measured inside the turn): median 426 ms,
@@ -228,7 +228,7 @@ carried the same phone number), declined twice and invented twice.
 
 - **The daily quota is small for this prompt size.** Qwen 3.8 27B on the free tier allows 8,000 tokens a minute and
   **200,000 tokens a day**. The 429 message gives the daily figure; the response headers only show the per-minute
-  one. At 1,900–2,600 prompt tokens per turn for an agent with tools, that is roughly 80–100 caller turns a day. This
+  one. At 1,900-2,600 prompt tokens per turn for an agent with tools, that is roughly 80-100 caller turns a day. This
   evaluation used about 0.2 M qwen tokens (about 120 calls over the runs and retries), which is the whole day's quota.
 - **When qwen is out, a tool agent breaks on the fallback.** For agents with tools (clinic, hospital, HOD), the JSON
   tool protocol puts tool descriptions in the prompt. `openai/gpt-oss-20b` then emits a native tool call, which Groq
@@ -248,7 +248,7 @@ Measurement only; nothing in the app was changed. Each item says how to test it 
 1. **Pass 4 passages instead of 3 (`RETRIEVAL_TOP_K = 4`).** All four top-3 misses sat at rank 4, so hit@3 goes from
    94.7% to 98.2% on this set. On today's answers that converts two hallucinations (hosp-02, hosp-17) and two lost
    answers into answerable turns: about +4 points of accuracy and −2 points of hallucination. Cost: one more passage,
-   about 170 tokens or +8–20% of the prompt, and no added latency. Test: `--answer-top-k 4` against this baseline.
+   about 170 tokens or +8-20% of the prompt, and no added latency. Test: `--answer-top-k 4` against this baseline.
 2. **Make "not in the passages" an explicit instruction for leading questions.** Add to the rules: *"If the caller
    assumes a day, time, price or service, check it against the context; if the context does not confirm it, say so.
    Never answer yes or no about something the context does not mention."* This targets clinic-15, hosp-17, hosp-18
@@ -260,15 +260,15 @@ Measurement only; nothing in the app was changed. Each item says how to test it 
    Check first that the Hindi voice reads Indian digit grouping well.
 4. **Add heading detection for PDF text.** A short line on its own followed by table rows ("Outpatient (OPD) timings",
    "Consultation fees") could be treated as a heading by `chunking.chunk_text`. The PDF scores 87% at hit@3 against
-   96–100% for the markdown documents. This is what `STRUCTURED_CHUNKING` appears to target, and this set measures it
+   96-100% for the markdown documents. This is what `STRUCTURED_CHUNKING` appears to target, and this set measures it
    directly (`--retrieval-only --no-baseline-pins --set STRUCTURED_CHUNKING=on`).
 5. **Skip the reranker for single-document agents.** It was not measured here, because bge-reranker-v2-m3 (about
    2.3 GB) is not downloaded and this run does not download models. The earlier measurement was about 945 ms per
-   question for 20 candidates on this Mac. With 7–11 passages per agent and every miss at rank 4, top-4 gets the same
+   question for 20 candidates on this Mac. With 7-11 passages per agent and every miss at rank 4, top-4 gets the same
    gain for no latency, while a reranker would roughly double the 0.43 s median turn time. Re-measure only for
    multi-document agents (the pooled variant, 91% at hit@3), after downloading the model with your OK
    (`--retrieval-only --variants prod,pooled,rerank`).
-6. **Leave chunk size at 120 words.** 80 and 200 words differ by 2–3 questions at hit@3 (within noise for 113
+6. **Leave chunk size at 120 words.** 80 and 200 words differ by 2-3 questions at hit@3 (within noise for 113
    questions), and 200 words costs about 60% more passage tokens. 80 words is worth a re-test together with top-4.
 7. **No Hinglish query normalisation is needed for retrieval.** Hinglish is already the best-retrieved language (97%
    at hit@3), helped by BM25 on its English words. The open item is hod-31-style mixed sentences that the language
@@ -317,7 +317,7 @@ Net prompt per turn, against the code before these fixes:
 ## Caveats
 
 - **Sample size.** 108 graded answers (113 for retrieval). A 95% interval on 90% correct is about ±6 points, and the
-  slices (11–41 questions) are wider still. The per-type and per-language differences above are indications, not
+  slices (11-41 questions) are wider still. The per-type and per-language differences above are indications, not
   proofs.
 - **Single run, temperature 0.3.** Answers vary between runs: clinic-30 was declined correctly on one attempt and
   answered with an invented "yes" on the next.

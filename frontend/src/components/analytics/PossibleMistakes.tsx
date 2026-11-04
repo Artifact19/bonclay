@@ -79,7 +79,7 @@ function Row({ item, onChanged }: { item: FlaggedAnswer; onChanged: () => void }
             className={btn}
             aria-label={`It was wrong, add a document: ${item.question}`}
           >
-            It was wrong — add a document
+            It was wrong - add a document
           </Link>
         )}
         {item.agent_id && (

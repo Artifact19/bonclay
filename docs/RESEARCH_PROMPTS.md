@@ -28,7 +28,7 @@ I need to connect BonClay agents to real phone calls through Exotel (India). I h
 ExoPhone, a verified trial number, 500 credits and a custom app flow. I want Exotel's Voicebot / AgentStream
 (bidirectional WebSocket media streaming) to stream the caller's audio to my server and play my agent's audio back.
 
-Research, using Exotel's official developer docs, support articles, GitHub samples and community posts (2024–2026):
+Research, using Exotel's official developer docs, support articles, GitHub samples and community posts (2024-2026):
 1. The exact WebSocket protocol: every event Exotel sends (connected, start, media, dtmf, mark, stop, clear…), all
    field names (stream_sid, call_sid, from, to, custom_parameters, sequence_number, chunk, timestamp, payload), and
    every event my server must send back (media, mark, clear) with exact JSON shapes. Include real example messages.
@@ -47,7 +47,7 @@ Research, using Exotel's official developer docs, support articles, GitHub sampl
 
 Output: a precise integration spec (tables of events/fields with examples), an audio-format spec, a step-by-step
 setup checklist for the flow builder, a list of trial limits and compliance requirements, and a list of open
-questions you could not verify — each claim with a source URL and date.
+questions you could not verify - each claim with a source URL and date.
 ```
 
 ### A2. DhVaani-0.5 licence lineage
@@ -57,7 +57,7 @@ Context: [paste the shared context above]
 
 I want to use ARTPARK-IISc's DhVaani-0.5 (Hugging Face: ARTPARK-IISc/DhVaani-0.5) for voice cloning in Marathi,
 Tamil, Bengali, Telugu and other Indian languages, in a product that may be commercial. In my tests it works well
-(0 failures in 50 renders; read-back error 4–18%). The model card says Apache-2.0, but it is fine-tuned from
+(0 failures in 50 renders; read-back error 4-18%). The model card says Apache-2.0, but it is fine-tuned from
 k2-fsa/ZipVoice, whose pre-trained weights are released under CC-BY-NC due to the Emilia training data, and it was
 trained on IndicTTS (IIT Madras licence), Rasa and IISc SYSPIN corpora.
 
@@ -65,12 +65,12 @@ Research:
 1. The exact licence of every component: ZipVoice code vs weights (quote the text), the Emilia dataset licence, the
    IndicTTS corpus licence terms (find the IIT Madras licence PDF or text), Rasa and SYSPIN (CC-BY-4.0?), the Vocos
    vocoder. Quote the relevant clauses.
-2. Whether a model fine-tuned from CC-BY-NC weights can be released under Apache-2.0 — what legal commentators,
+2. Whether a model fine-tuned from CC-BY-NC weights can be released under Apache-2.0 - what legal commentators,
    Hugging Face policy, and similar cases (e.g. derivatives of NC models) say. Does re-initialising the text embedding
    change anything?
 3. Any public statement by ARTPARK/IISc about commercial use, a contact for licensing, and whether they offer
    commercial licences.
-4. Equivalent alternatives with a clean commercial licence for Indian-language voice cloning (2025–2026), with their
+4. Equivalent alternatives with a clean commercial licence for Indian-language voice cloning (2025-2026), with their
    licence lineage verified the same way.
 5. A draft, polite email to ARTPARK-IISc asking for written clarification (what to ask precisely).
 
@@ -87,23 +87,23 @@ All my speech-recognition tests used synthetic voices. I need to know how ASR op
 especially Hindi and Hinglish (code-mixed), on an Apple M4 (16 GB) and on an RTX 3050 Ti (4 GB VRAM).
 
 Research:
-1. Public benchmark results (WER/CER) on real Indian speech — IndicVoices, Kathbath, Vistaar, Svarah, MUCS
-   Hindi-English code-switching, Lahaja, Voice of India (2026) — for: Whisper small, large-v3, large-v3-turbo,
+1. Public benchmark results (WER/CER) on real Indian speech - IndicVoices, Kathbath, Vistaar, Svarah, MUCS
+   Hindi-English code-switching, Lahaja, Voice of India (2026) - for: Whisper small, large-v3, large-v3-turbo,
    distil-whisper, NVIDIA Nemotron 3.5 / Canary / Parakeet multilingual, AI4Bharat IndicConformer 600M, Sarvam
    Saarika/Saaras, Meta MMS / Omnilingual ASR, and any newer 2026 open models. Note the dataset, split and whether
    Hinglish is in Roman or Devanagari.
 2. Which models output Hinglish in Roman vs Devanagari, and how code-mixed speech is scored.
 3. Latency/RTF on Apple Silicon (MLX, whisper.cpp, WhisperKit) and on small NVIDIA GPUs (faster-whisper int8,
-   NeMo/TensorRT), for 3–8 s utterances.
-4. Effects of trimming Whisper's 30 s input window to ~8–10 s on hallucinations and accuracy (any papers, issues,
+   NeMo/TensorRT), for 3-8 s utterances.
+4. Effects of trimming Whisper's 30 s input window to ~8-10 s on hallucinations and accuracy (any papers, issues,
    or reports), and safer ways to cut encoder cost (VAD trimming, padding strategies).
 5. Streaming ASR options with partial hypotheses that work for Hindi (Nemotron streaming, Sarvam streaming,
    IndicConformer streaming?), their licences and hardware needs.
-6. Free/open real-speech test sets I can legally download (≤ 1 hour) to build a 40–100 clip evaluation for Hindi and
+6. Free/open real-speech test sets I can legally download (≤ 1 hour) to build a 40-100 clip evaluation for Hindi and
    Hinglish, with licences.
 
 Output: a comparison table (model × dataset × WER/CER × latency × licence × hardware), a recommended ASR setup for each
-machine, a recommended evaluation set, and the risks of window trimming — with source URLs.
+machine, a recommended evaluation set, and the risks of window trimming - with source URLs.
 ```
 
 ### A4. Reliable offline tool calling under 5 GB
@@ -116,16 +116,16 @@ Hindi/Hinglish/English request like "Kal subah 11 baje Dr. Rao ke saath appointm
 98…". With Llama-3.2-3B-4bit and Gemma-4-E4B-4bit on MLX, offline tool-call accuracy was only 25% and 12% (Gemma
 needs thinking on to get 7/8, but then takes ~30 s).
 
-Research (2025–2026):
+Research (2025-2026):
 1. Small models (≤ ~5 GB at 4-bit) with the best measured function-calling accuracy (BFCL v3/v4, tau-bench,
    NexusRaven, multilingual tool-use benchmarks): Qwen3 / Qwen3.5 small, Gemma 4 variants, Llama 3.x/4 small,
-   Phi-4-mini, Hammer, xLAM-2, ToolACE, Granite, Sarvam-M-small — with Hindi/Hinglish ability.
+   Phi-4-mini, Hammer, xLAM-2, ToolACE, Granite, Sarvam-M-small - with Hindi/Hinglish ability.
 2. Constrained decoding on Apple Silicon: grammar/JSON-schema constrained generation in mlx_lm or mlx-structured /
    outlines / xgrammar / llguidance on MLX, and how much it improves small-model tool calls and latency.
 3. Small fine-tunes: datasets and recipes (LoRA on MLX) for multilingual tool calling, how many examples are needed,
    expected gains; synthetic data generation from a bigger model (Groq) for Indian-language booking intents.
 4. Prompting tricks proven to help small models with tools (few-shot, slot-filling first, two-step plan→call).
-5. Date/time resolution ("kal", "parso", "agle Monday", "tomorrow at four") — known failure modes and deterministic
+5. Date/time resolution ("kal", "parso", "agle Monday", "tomorrow at four") - known failure modes and deterministic
    pre-parsing libraries for Hindi/Hinglish dates.
 
 Output: a ranked shortlist (model/technique → measured accuracy → memory → latency on M4 → licence), a recommended
@@ -149,7 +149,7 @@ Research:
    MLX get_active_memory/get_peak_memory/get_cache_memory).
 3. Proven ways to reduce wired memory for multi-model MLX stacks: one process hosting several models vs one per
    model, lazy loading, unloading, weight sharing, quantised Whisper, limits that don't hurt speed.
-4. Interactions with PyTorch (CPU) models and the macOS compressor/swap — when swap hurts latency and when it's stale.
+4. Interactions with PyTorch (CPU) models and the macOS compressor/swap - when swap hurts latency and when it's stale.
 5. Any known MLX issues/bugs (GitHub) about memory not being freed, leaks in long-running servers, and fixes in 2026
    versions.
 
@@ -168,7 +168,7 @@ Context: [paste the shared context above]
 
 Today, BonClay checks consent at enrolment (one-time sentence + speaker match) and watermarks every output with a
 receipt. I want to explore making consent cryptographically and technically BOUND to the cloned voice, so that a
-voice prompt/embedding cannot be used without a valid, unrevoked consent — even if someone copies the files.
+voice prompt/embedding cannot be used without a valid, unrevoked consent - even if someone copies the files.
 
 Research deeply and propose novel designs:
 1. Prior art: consent management for biometric/voice data, "voice NFTs"/tokens, ElevenLabs/Resemble voice-verification
@@ -182,7 +182,7 @@ Research deeply and propose novel designs:
 3. Threat model: what each design defends against (stolen files, malicious operator, replayed consent, a clone reading
    the consent code) and what it cannot.
 4. Liveness/anti-spoofing for the consent recording on real Indian speech: challenge-response timing, acoustic
-   environment/room-response consistency between sample and consent, SSL-based synthetic speech detectors — measured
+   environment/room-response consistency between sample and consent, SSL-based synthetic speech detectors - measured
    accuracy on Indian languages.
 5. Regulatory fit: India DPDP Rules 2025 (consent managers from Nov 2026), IT Rules 2026 on synthetic media, EU AI Act
    Article 50, UK/US guidance.
@@ -198,8 +198,8 @@ Context: [paste the shared context above]
 
 Idea: instead of running ASR → retrieval → LLM → TTS for every question, "compile" each agent's documents ahead of time
 into a graph of likely questions and approved, pre-synthesised, watermarked answers (in each supported language and
-script), then serve a near-instant spoken answer when a caller's question matches — falling back to the live pipeline
-otherwise. This could cut answer latency from ~2–3 s to ~0.3 s for common questions.
+script), then serve a near-instant spoken answer when a caller's question matches - falling back to the live pipeline
+otherwise. This could cut answer latency from ~2-3 s to ~0.3 s for common questions.
 
 Research deeply:
 1. Prior art: FAQ retrieval for voice bots, semantic caching for LLMs (GPTCache, semantic-router, vCache), answer
@@ -215,7 +215,7 @@ Research deeply:
 5. Evaluation design: hit rate, latency, false-hit harm on a realistic Indian SMB question set.
 
 Output: an architecture, matching approach with expected false-hit rates, a safe rollout plan, an evaluation protocol,
-and which parts are novel — with sources.
+and which parts are novel - with sources.
 ```
 
 ### B3. Talking before the caller finishes (speculative pipeline for Hindi and Hinglish)
@@ -224,8 +224,8 @@ and which parts are novel — with sources.
 Context: [paste the shared context above]
 
 I want near-human turn-taking on a laptop: begin ASR, retrieval and even LLM drafting while the caller is still
-speaking, decide end-of-turn early and correctly in Hindi/Hinglish, and start speaking within ~300–500 ms of the caller
-finishing — without cutting people off.
+speaking, decide end-of-turn early and correctly in Hindi/Hinglish, and start speaking within ~300-500 ms of the caller
+finishing - without cutting people off.
 
 Research deeply:
 1. Streaming ASR with stable partial hypotheses (and stability scoring) for Hindi/Hinglish; incremental retrieval on
@@ -234,14 +234,14 @@ Research deeply:
 2. End-of-turn prediction using prosody + semantics for Indian languages: Smart Turn, LiveKit turn detector,
    VAP (voice activity projection) models, and what is known about Hindi turn-taking cues; how to build a small Hindi
    turn-taking dataset ethically.
-3. Backchannels and fillers ("haan", "ji", "ek second") — when they help perceived latency without being annoying;
+3. Backchannels and fillers ("haan", "ji", "ek second") - when they help perceived latency without being annoying;
    culturally appropriate patterns.
 4. Scheduling on one laptop: running streaming ASR, embeddings and the LLM concurrently on Apple GPU/ANE/CPU without
    contention; on a 4 GB NVIDIA GPU.
 5. Evaluation: metrics for perceived responsiveness and interruption errors; a test protocol with real callers.
 
 Output: a staged design (what to build first), expected latency gains with arithmetic, risks for code-mixed speech,
-and what would be novel — with sources.
+and what would be novel - with sources.
 ```
 
 ### B4. One scheduler for the Apple Neural Engine, GPU and CPU
@@ -251,11 +251,11 @@ Context: [paste the shared context above]
 
 On Apple Silicon, all my models compete for the same GPU and memory. Idea: a scheduler that places each model on the
 best unit (ANE via CoreML, GPU via MLX/Metal, CPU via Accelerate/ONNX) and orders work per turn to minimise latency and
-memory — e.g. ASR encoder on ANE, LLM on GPU, embeddings on ANE/CPU, TTS on GPU only when needed.
+memory - e.g. ASR encoder on ANE, LLM on GPU, embeddings on ANE/CPU, TTS on GPU only when needed.
 
 Research deeply:
 1. Measured performance of ANE vs GPU vs CPU on M3/M4 for Whisper encoders (WhisperKit, whisper.cpp CoreML), BERT-
-   class embedders (CoreML, ANEMLL), small TTS (Kokoro CoreML), and small LLMs (ANEMLL, CoreML LLMs) — and the cost of
+   class embedders (CoreML, ANEMLL), small TTS (Kokoro CoreML), and small LLMs (ANEMLL, CoreML LLMs) - and the cost of
    moving data between units.
 2. Concurrency: can ANE and GPU run truly in parallel for different processes? Memory bandwidth contention (120 GB/s on
    M4) and how it limits overlap. Metal/MLX streams, priorities, QoS.
@@ -265,7 +265,7 @@ Research deeply:
    Siri pipeline papers, Qualcomm AI Hub, academic work).
 
 Output: a placement plan with expected per-stage latency and memory, a feasibility rating per component, the main
-risks, and what would be novel — with sources and any benchmark numbers.
+risks, and what would be novel - with sources and any benchmark numbers.
 ```
 
 ### B5. Teacher in the cloud, student on the laptop
@@ -276,7 +276,7 @@ Context: [paste the shared context above]
 Idea: when online, BonClay uses a strong cloud model (Groq qwen 27B / gpt-oss-120b); offline it falls back to a weak 3B
 local model (49% judged quality on Indian-language tasks vs 84% for Gemma 4 E4B). Could each agent continuously distil
 the cloud model's behaviour (its own documents, tools, Hindi/Hinglish style) into a small per-agent LoRA adapter for the
-local model, trained overnight on the laptop with MLX — so offline quality approaches online quality for that agent?
+local model, trained overnight on the laptop with MLX - so offline quality approaches online quality for that agent?
 
 Research deeply:
 1. Prior art on task-specific distillation from large to small models, on-device LoRA fine-tuning with MLX (speed and
@@ -284,14 +284,14 @@ Research deeply:
 2. Data: generating synthetic conversations per agent from its documents (question generation, multilingual,
    code-mixed), using cloud replies as targets, filtering with a judge; privacy constraints (DPDP) when using real
    call transcripts.
-3. Expected gains: published results for distilling tool use, grounded QA and Hindi/Hinglish style into 1–4B models;
+3. Expected gains: published results for distilling tool use, grounded QA and Hindi/Hinglish style into 1-4B models;
    how many examples and minutes of training are needed.
 4. Safety: preserving guardrails (refusals, AI disclosure) through distillation; evaluating with the 60-case
    Hindi/Hinglish attack suite.
 5. Same idea on Windows with a 4 GB NVIDIA GPU (QLoRA feasibility).
 
 Output: a concrete pipeline (data → training → evaluation → serving), time/memory budget on an M4 16 GB, expected
-quality gains with evidence, risks, and the novel angle — with sources.
+quality gains with evidence, risks, and the novel angle - with sources.
 ```
 
 ### B6. Provenance that survives a phone call
@@ -304,18 +304,18 @@ MP3, Opus and 8 kHz μ-law, but not ±5% speed, pitch shift, heavy noise or neur
 person on the other end of a live call. I want provenance that works for the LISTENER of a phone/WhatsApp call in India.
 
 Research deeply:
-1. Watermark robustness research 2024–2026 (AudioSeal, WavMark, Timbre, SilentCipher, XAttnMark, latent watermarks,
-   AudioMarkBench, RAW-Bench) — which survive speed/pitch changes, telephony codecs (AMR-NB/WB, G.711, EVS), VoLTE,
+1. Watermark robustness research 2024-2026 (AudioSeal, WavMark, Timbre, SilentCipher, XAttnMark, latent watermarks,
+   AudioMarkBench, RAW-Bench) - which survive speed/pitch changes, telephony codecs (AMR-NB/WB, G.711, EVS), VoLTE,
    acoustic re-recording, and neural codecs; capacity vs robustness trade-offs; psychoacoustic masking per language.
 2. Live-call provenance UX: spoken disclosure plus a verifiable token (DTMF code, short spoken code, SMS/WhatsApp link
    with receipt), STIR/SHAKEN-like caller attestation in India, C2PA for live streams, how a caller could verify "this
    AI call is from clinic X" in under 10 s.
-3. Detecting BonClay audio in the wild (social media re-uploads) — fingerprinting + watermark + receipt lookup.
-4. India's 2026 IT Rules on labelling synthetic audio and TRAI rules — what a compliant live-call disclosure must
+3. Detecting BonClay audio in the wild (social media re-uploads) - fingerprinting + watermark + receipt lookup.
+4. India's 2026 IT Rules on labelling synthetic audio and TRAI rules - what a compliant live-call disclosure must
    contain.
 
 Output: a recommended multi-layer provenance design for calls (what each layer survives), a listener-verification
-flow, expected robustness numbers, regulatory fit, and what is novel — with sources.
+flow, expected robustness numbers, regulatory fit, and what is novel - with sources.
 ```
 
 ---

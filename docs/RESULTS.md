@@ -445,20 +445,20 @@ every query. Latency is warm, per gated query, measured on the reranker call ove
 
 | Reranker (size) | Candidates | Device | All: hit@1 / hit@3 | Gated: hit@1 / hit@3 | Gated MRR rq / dq | Gated p50 / p95 ms | RSS growth |
 |---|---|---|---|---|---|---|---|
-| bge-reranker-v2-m3 (568M) | 20 (RERANKER=on) | mps fp16 | 134 / 155 | — | — | — | — |
+| bge-reranker-v2-m3 (568M) | 20 (RERANKER=on) | mps fp16 | 134 / 155 | - | - | - | - |
 | | 8 | mps fp16 | 135 / 155 | 132 / 155 | 0.891 / 0.959 | 343 / 421 | 0.2-0.6 GB |
 | | 8 | cpu fp32 | 135 / 155 | 132 / 155 | same | 1179 / 3751 | 1.6 GB |
 | | 4 | mps fp16 | 135 / 156 | 132 / 156 | 0.891 / 0.960 | 159 / 184 | |
 | | 3 | mps fp16 | 136 / 155 | **133** / 155 | 0.891 / 0.964 | 122 / 141 | 0.55 GB |
 | | 3 | cpu fp32 | same | same | same | 382 / 438 | 2.1 GB |
-| **gte-multilingual-reranker-base (306M)** | 20 (RERANKER=on) | cpu fp32 | 132 / 150 | — | — | — | — |
+| **gte-multilingual-reranker-base (306M)** | 20 (RERANKER=on) | cpu fp32 | 132 / 150 | - | - | - | - |
 | | 8 | mps fp16 | 132 / 151 | 131 / 151 | 0.885 / 0.945 | 132 / 145 | 0.5 GB |
 | | 8 | cpu fp32 | same | same | same | 399 / 525 | 0.85 GB |
 | | 4 | mps fp16 | 133 / 153 | 132 / 153 | 0.893 / 0.951 | 67 / 77 | |
 | | **3** | **mps fp16** | 133 / 155 | **132** / 155 | **0.895 / 0.951** | **50 / 59** | 0.5-0.9 GB |
 | | 3 | cpu fp32 | same | same | same | 150 / 176 | 0.9-2.0 GB |
 | | 3 | cpu fp16 | same | same | same | 782 / 910 | |
-| Qwen3-Reranker-0.6B | 20 (RERANKER=on) | mps fp16 | 132 / 152 | — | — | — | — |
+| Qwen3-Reranker-0.6B | 20 (RERANKER=on) | mps fp16 | 132 / 152 | - | - | - | - |
 | | 8 | mps fp16 | 132 / 152 | 130 / 152 | 0.913 / 0.932 | 1190 / 1496 | |
 | | 8 | cpu fp32 | same | same | same | 2607 / 5543 | 2.5 GB |
 | | 4 | mps fp16 | 133 / 154 | 131 / 154 | 0.913 / 0.944 | 496 / 597 | |

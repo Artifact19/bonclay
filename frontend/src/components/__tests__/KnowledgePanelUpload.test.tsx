@@ -20,7 +20,7 @@ const upload = api.upload as jest.Mock;
 
 /** What the backend sends for a PDF with no text layer (backend.py: AppError NO_TEXT_FOUND, HTTP 400). */
 const scannedError = () =>
-  Object.assign(new Error("No text found — OCR is not supported in this version."), { code: "NO_TEXT_FOUND", status: 400 });
+  Object.assign(new Error("No text found - OCR is not supported in this version."), { code: "NO_TEXT_FOUND", status: 400 });
 
 const file = (name: string, type = "application/pdf") => new File(["x"], name, { type });
 const choose = (files: File[]) => fireEvent.change(screen.getByLabelText("Upload documents"), { target: { files } });
@@ -32,7 +32,7 @@ describe("friendlyUploadError", () => {
     expect(friendlyUploadError(scannedError(), "a.pdf")).toBe(SCANNED_PDF_MESSAGE);
     expect(friendlyUploadError(Object.assign(new Error("No extractable text found"), { code: "NO_TEXT" }), "a.pdf")).toBe(SCANNED_PDF_MESSAGE);
     // by message alone, when the code is missing
-    expect(friendlyUploadError(new Error("No text found — OCR is not supported in this version."), "A.PDF")).toBe(SCANNED_PDF_MESSAGE);
+    expect(friendlyUploadError(new Error("No text found - OCR is not supported in this version."), "A.PDF")).toBe(SCANNED_PDF_MESSAGE);
   });
 
   it("does not call a text file scanned, and passes other errors through", () => {

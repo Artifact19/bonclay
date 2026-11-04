@@ -27,7 +27,7 @@ const SITE_STEPS: TourStep[] = [
     description:
       "Use this top bar to see how BonClay works, which phone and web channels it supports, real speed benchmarks, and answers to common questions.",
     beginnerTip:
-      "You don't need any technical background—each page explains things in plain language with real audio examples you can click and play.",
+      "You don't need any technical background - each page explains things in plain language with real audio examples you can click and play.",
   },
   {
     id: "site-hero",
@@ -47,7 +47,7 @@ const SITE_STEPS: TourStep[] = [
     description:
       "Pick any voice from the list on the left and press the Play button to hear how natural BonClay sounds in English and Indian languages.",
     beginnerTip:
-      "Watch the words light up as the voice speaks—this is the exact speech engine you will use inside the Studio.",
+      "Watch the words light up as the voice speaks - this is the exact speech engine you will use inside the Studio.",
   },
   {
     id: "site-products",
@@ -67,7 +67,7 @@ const SITE_STEPS: TourStep[] = [
     description:
       "Click 'Open studio' to enter the app workspace. Once inside, you can click the 'Tour Guide' button again for a step-by-step walkthrough of every tool.",
     beginnerTip:
-      "No sign-up or credit card is required when running locally—your work is saved privately on your computer.",
+      "No sign-up or credit card is required when running locally - your work is saved privately on your computer.",
   },
 ];
 
@@ -108,7 +108,7 @@ const DASHBOARD_STEPS: TourStep[] = [
     category: "4 · Main Workspace",
     title: "Where Your Task Happens",
     description:
-      "The center of the screen is where you work on the option you selected—with clear percentage progress bars whenever BonClay is generating audio, uploading files, or checking safety.",
+      "The center of the screen is where you work on the option you selected - with clear percentage progress bars whenever BonClay is generating audio, uploading files, or checking safety.",
     beginnerTip:
       "Look for the 'Set up your agent' checklist or 'Sample data' card on the home screen if you want to load two ready-made example agents in one click!",
   },

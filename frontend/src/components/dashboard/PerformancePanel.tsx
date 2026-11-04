@@ -37,7 +37,7 @@ function Stat({ label, ms, target, small = false }: { label: string; ms: number 
       <p
         className={`font-display ${small ? "text-3xl" : "text-4xl"} font-semibold tabular-nums tracking-tight ${over ? "text-accent-error" : "text-text-primary"}`}
       >
-        {ms == null ? "—" : fmtSeconds(ms)}
+        {ms == null ? " - " : fmtSeconds(ms)}
       </p>
     </div>
   );
@@ -105,7 +105,7 @@ function TurnBar({ turn, scale, target }: { turn: PerfTurn; scale: number; targe
         />
       </div>
       <span className="col-start-2 truncate text-[11px] text-text-secondary sm:col-start-3">
-        {[turn.fallback ? "fallback reply" : null, turn.engine, provider].filter(Boolean).join(" · ") || "—"}
+        {[turn.fallback ? "fallback reply" : null, turn.engine, provider].filter(Boolean).join(" · ") || " - "}
       </span>
     </li>
   );
@@ -139,7 +139,7 @@ export function PerformancePanel({ agentId, hideHeading = false, className }: Pr
       ) : !turns.length || data?.p50_ms == null || data.p95_ms == null ? (
         <div className="rounded-xl border border-dashed border-border px-4 py-8 text-center">
           <p className="text-sm text-text-secondary">
-            No conversations yet —{" "}
+            No conversations yet -{" "}
             <Link href="/dashboard/playground" className="font-medium text-text-primary underline underline-offset-2">
               talk to an agent in the Playground
             </Link>

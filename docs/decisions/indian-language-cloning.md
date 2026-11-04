@@ -31,7 +31,7 @@ other Indian languages still go to DhVaani, because Chatterbox cannot clone them
 
 ## Licence
 
-**Licence: the project owner obtained approval from ARTPARK-IISc for this use (15–17 Oct 2026); keep the written
+**Licence: the project owner obtained approval from ARTPARK-IISc for this use (15-17 Oct 2026); keep the written
 approval on file.** The Hugging Face repository ARTPARK-IISc/DhVaani-0.5 is gated and access was granted for the
 owner's token. This decision does not replace the written approval: anyone deploying BonClay elsewhere needs their own.
 
@@ -82,16 +82,16 @@ in each of Hindi, Marathi, Tamil, Bengali and Telugu, two synthetic Kokoro refer
 
 | Language | Read-back CER (range over the two references) | Speaker similarity |
 |---|---|---|
-| Hindi | 5–8 % | 0.69 from a Hindi reference, 0.41 from an English one |
-| Tamil | 4–6 % | (same pooled figures) |
-| Telugu | 7–11 % | |
-| Marathi | 9–18 % | |
-| Bengali | 12–18 % | |
+| Hindi | 5-8 % | 0.69 from a Hindi reference, 0.41 from an English one |
+| Tamil | 4-6 % | (same pooled figures) |
+| Telugu | 7-11 % | |
+| Marathi | 9-18 % | |
+| Bengali | 12-18 % | |
 
 BonClay's consent threshold for "same speaker" is 0.45; similarity from an English reference sits at or just under it, so
-a Hindi (or other Indic) sample gives a much closer voice than an English one. Speed was 1.3–3 x real time with other jobs
-running (the machine was at load average 5–20), and about 3–5 x faster than Chatterbox on equal footing. Chatterbox took
-25–40 s per sentence on the CPU when idle.
+a Hindi (or other Indic) sample gives a much closer voice than an English one. Speed was 1.3-3 x real time with other jobs
+running (the machine was at load average 5-20), and about 3-5 x faster than Chatterbox on equal footing. Chatterbox took
+25-40 s per sentence on the CPU when idle.
 
 **3. Live check of the integrated engine (17 October, `backend/bench/dhvaani_live_check.py`).** Only the DhVaani worker
 was started (no app server), through the same client class the app uses. One sentence in each of Marathi, Tamil, Bengali,
@@ -104,8 +104,8 @@ Telugu, Kannada, Gujarati, Malayalam and Punjabi, from both synthetic references
 | 8 | Hindi | 2.9 | 0.63 | 0.11 | 0.69 |
 | 8 | English | 2.4 | 0.75 | 0.18 | 0.40 |
 
-The worker is ready in about 4 s (the first request costs 3–4 s more for warm-up). Kannada, Gujarati and Tamil read back
-like the earlier languages (CER 6–20 %); Malayalam and Punjabi were clearly worse (CER 18–39 %), which Whisper's own
+The worker is ready in about 4 s (the first request costs 3-4 s more for warm-up). Kannada, Gujarati and Tamil read back
+like the earlier languages (CER 6-20 %); Malayalam and Punjabi were clearly worse (CER 18-39 %), which Whisper's own
 weakness in those languages may exaggerate: listen before promising them. Eight sampling steps ran about twice as fast
 with no visible loss on these 16 sentences (`DHVAANI_STEPS=8`); 16 stays the default because it is what the 50-render
 trial measured.
@@ -115,7 +115,7 @@ trial measured.
 - Any consented sample, including an English one, can speak the Indian languages above, under a licence the owner has
   approval for. A sample in an Indian language clones much closer.
 - DhVaani needs the exact words of the reference clip as well as the audio. A voice sample of up to 10 s is used whole
-  with the transcript stored on the voice; a longer one is cut at a pause into a clean 4–10 s clip, the cut is
+  with the transcript stored on the voice; a longer one is cut at a pause into a clean 4-10 s clip, the cut is
   transcribed with the app's speech recognition, and the pair is cached next to the voice (`{id}.dhvaani.wav` and
   `.json` in `backend/data/audio`) and deleted with it. Without speech recognition a proportional slice of the stored
   transcript is used for that render only, and a clear error is returned when there are no words at all.

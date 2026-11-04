@@ -1,4 +1,4 @@
-# BonClay — Demo Day Runbook
+# BonClay - Demo Day Runbook
 
 ## 1. Tonight: setup (this Mac has no venv, no `node_modules`, no `.env.local`)
 
@@ -38,7 +38,7 @@ Running on Colab or another GPU box? Set `NEXT_PUBLIC_API_URL` to the tunnel URL
 
 1. Start the backend and frontend. Open **Overview** and click **Warm up** on every engine until all show *Warm*.
 2. Log in. Confirm Chrome microphone permission (do one test recording).
-3. Have these ready: the demo PDF (hotel FAQ), a clean 5–10 s reference clip, and the backup video in another tab.
+3. Have these ready: the demo PDF (hotel FAQ), a clean 5-10 s reference clip, and the backup video in another tab.
 
 ## 4. Demo script (≈7 min)
 
